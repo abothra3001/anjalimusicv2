@@ -643,7 +643,7 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // =============================================
 // GOOGLE CALENDAR CONFIG — fill these in!
 // =============================================
@@ -660,22 +660,33 @@ const CALENDAR_CONFIG = {
 async function loadShows() {
   const container = document.getElementById('upcoming-shows');
 
+  // ---- DEMO MODE (remove this block once you add real API credentials) ----
+  /* const isDemo = CALENDAR_CONFIG.calendarId.includes('YOUR_');
+  if (isDemo) {
+    renderDemoShows(container);
+    return;
+  }
+  */
+  // ---- END DEMO MODE ----
 
   try {
     const now = new Date().toISOString();
     const sixMonths = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString();
     const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_CONFIG.calendarId)}/events?key=${CALENDAR_CONFIG.apiKey}&timeMin=${now}&timeMax=${sixMonths}&singleEvents=true&orderBy=startTime&maxResults=20`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error('calendar fetch failed');
     const data = await res.json();
+    if (!res.ok) {
+      const errMsg = data?.error?.message || data?.error?.status || res.status;
+      throw new Error(errMsg);
+    }
     if (!data.items || data.items.length === 0) {
       container.innerHTML = '<div class="no-shows">no upcoming shows right now — check back soon 🌸</div>';
       return;
     }
     container.innerHTML = data.items.map(ev => renderShowRow(ev)).join('');
   } catch(e) {
-    container.innerHTML = '<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load shows — check API key setup.</div>';
-    console.error(e);
+    container.innerHTML = `<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load shows — error: ${e.message}</div>`;
+    console.error('Calendar error:', e);
   }
 }
 
@@ -794,4 +805,23 @@ function copyBio(btn, idx) {
   const boxes = document.querySelectorAll('.press-bio-box');
   const text = [...boxes[idx].querySelectorAll('p')].slice(1).map(p=>p.innerText).join('\n\n');
   navigator.clipboard.writeText(text).then(()=>{
-    const orig = 
+    const orig = btn.textContent;
+    btn.textContent = 'copied!';
+    setTimeout(()=>btn.textContent=orig, 2000);
+  });
+}
+
+// =============================================
+// INIT
+// =============================================
+loadShows();
+loadMerch();
+</script>
+
+<!-- CART BUTTON -->
+<button class="cart-btn" onclick="alert('Checkout coming soon! Connect your Shopify store to enable.')">
+  🛍️ cart <span class="cart-count">0</span>
+</button>
+
+</body>
+</html>
