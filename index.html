@@ -690,6 +690,27 @@ async function loadShows() {
   }
 }
 
+function buildCalendarLink(event) {
+  const start = event.start.dateTime || event.start.date;
+  const end = event.end?.dateTime || event.end?.date || start;
+  const isAllDay = !event.start.dateTime;
+
+  // Google Calendar expects dates as YYYYMMDDTHHmmssZ or YYYYMMDD for all-day
+  function toGCalDate(iso) {
+    if (isAllDay) return iso.replace(/-/g, '');
+    return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  }
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: event.summary || 'Anjali — Live Performance',
+    dates: `${toGCalDate(start)}/${toGCalDate(end)}`,
+    details: event.description || 'Live performance by Anjali. More info at anjalimusicv2.vercel.app',
+    location: event.location || '',
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
 function renderShowRow(event) {
   const start = event.start.dateTime || event.start.date;
   const d = new Date(start);
@@ -709,7 +730,7 @@ function renderShowRow(event) {
       </div>
       <div class="show-right">
         <span class="show-pill upcoming">upcoming</span>
-        <a href="https://calendar.google.com/calendar/r/eventedit" target="_blank" class="show-expand-hint" style="text-decoration:none;">+ save to calendar</a>
+        <a href="${buildCalendarLink(event)}" target="_blank" class="show-expand-hint" style="text-decoration:none;">+ save to calendar</a>
       </div>
     </div>`;
 }
