@@ -45,6 +45,33 @@ body{background:var(--bg);color:var(--cream);font-family:'Montserrat',sans-serif
 .cart-btn:hover{background:#f06ba6;transform:translateY(-2px);}
 .cart-count{background:var(--bg);color:var(--pink);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
 
+
+/* ===== LISTEN MODAL ===== */
+.listen-modal-overlay{position:fixed;inset:0;background:rgba(17,16,16,0.88);z-index:250;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.listen-modal-overlay.open{display:flex;}
+.listen-modal{background:var(--bg2);border:1px solid var(--border);border-radius:4px;width:100%;max-width:400px;padding:32px 36px;position:relative;text-align:center;}
+.listen-modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
+.listen-modal-close:hover{color:var(--pink);}
+.listen-modal-art{width:120px;height:120px;border-radius:3px;object-fit:cover;margin:0 auto 16px;display:block;border:1px solid var(--border);}
+.listen-modal-title{font-family:'Fraunces',serif;font-size:22px;font-style:italic;color:var(--cream);margin-bottom:4px;}
+.listen-modal-type{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
+.listen-platforms{display:flex;flex-direction:column;gap:10px;}
+.platform-btn{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:3px;background:none;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:0.1em;cursor:pointer;text-decoration:none;transition:all 0.2s;width:100%;}
+.platform-btn:hover{border-color:var(--pink);color:var(--pink);}
+.platform-btn svg{width:18px;height:18px;flex-shrink:0;fill:currentColor;}
+.platform-btn span{flex:1;text-align:left;}
+.platform-btn .platform-arrow{opacity:0.4;font-size:12px;}
+.platform-btn.spotify-btn:hover{border-color:#1DB954;color:#1DB954;}
+.platform-btn.apple-btn:hover{border-color:#fc3c44;color:#fc3c44;}
+.platform-btn.youtube-btn:hover{border-color:#FF0000;color:#FF0000;}
+.platform-manual-note{font-size:10px;color:rgba(244,241,235,0.25);margin-top:16px;line-height:1.6;}
+.platform-manual-note a{color:rgba(224,82,141,0.5);text-decoration:none;}
+.platform-manual-note a:hover{color:var(--pink);}
+
+
+/* ===== DRIVE GALLERY NOTE ===== */
+.gdrive-note{font-size:10px;letter-spacing:0.1em;color:rgba(244,241,235,0.2);margin-bottom:0;padding:12px 56px 0;}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(17,16,16,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
 .nav-logo{font-family:'Fraunces',serif;font-size:24px;font-style:italic;font-weight:300;letter-spacing:0.08em;color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:10px;}
@@ -308,10 +335,7 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
       <h2 class="section-heading">upcoming <em>performances</em></h2>
     </div>
   </div>
-  <p class="cal-api-note">
-    powered by Google Calendar API — 
-    <a href="#" onclick="showCalSetup();return false;">how to connect your calendar →</a>
-  </p>
+
   <div class="shows-list" id="upcoming-shows">
     <div class="cal-loading"><div class="cal-spinner"></div> loading upcoming shows…</div>
   </div>
@@ -321,21 +345,15 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
 <section class="section-wrap" id="music">
   <p class="section-eyebrow">discography</p>
   <h2 class="section-heading">music &amp; <em>releases</em></h2>
-  <div class="releases-grid">
-    <a href="https://open.spotify.com/album/1sBnB1tOHM8KPqzYaOgOAS" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d00004851638d47d67d3feedb5a1b07cc" alt="Sociopath"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">Sociopath</div><div class="release-year">2025</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/3U2YKUtk7bMdgUmyDrTd5e" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d000048514a86c501b72c48b306e890bb" alt="missinu."><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">missinu.</div><div class="release-year">2025</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/2VhLriYymdNdBWKypAwTw6" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d00001e02416a72011b65deb5a3ec5e54" alt="mini m&ms"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">mini m&amp;m's</div><div class="release-year">2024</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/4B3s21ktLwKXBSQsjpjFuZ" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d00004851bf5698ff21309caf8569092d" alt="Displacement"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">Displacement</div><div class="release-year">2024</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/1qo4IiS5C1B6QQ1FPkdRjA" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d000048513dffa2ed9352129e9ec410c0" alt="Lost in Translation"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">Lost in Translation</div><div class="release-year">2024</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/7DyPIG7zMFhfAc9JPF52Ae" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d000048512ce0edb57791cc6be641f189" alt="Magazine"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">Magazine</div><div class="release-year">2024</div><span class="release-type">Single</span></div></a>
-    <a href="https://open.spotify.com/album/339t43R4LIcZtFlXhq4IW5" class="release-card" target="_blank"><div class="release-art"><img src="https://i.scdn.co/image/ab67616d00001e0213242fd5583ad99f77e1bcc2" alt="Apathy"><div class="release-art-overlay"></div></div><div class="release-info"><div class="release-title">Apathy</div><div class="release-year">2023</div><span class="release-type">Album</span></div></a>
+  <div class="releases-grid" id="releases-grid">
+    <div class="cal-loading"><div class="cal-spinner"></div> loading releases…</div>
   </div>
   <div class="stream-bar">
     <div style="font-size:28px">🎧</div>
     <div class="stream-bar-text">
       <h3>stream everywhere</h3>
       <p>all releases on Spotify, Apple Music, and YouTube</p>
-      <a href="https://open.spotify.com/artist/0398q6h9AKJSfRbxDcIXAh" target="_blank">open Anjali on Spotify →</a>
+      <a href="https://open.spotify.com/artist/0398q6h9AKJSfRbxDcIXAh" target="_blank">open on Spotify →</a>
     </div>
   </div>
 </section>
@@ -354,7 +372,7 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   </div>
 
   <div style="text-align:center;margin-top:8px;">
-    <a href="https://yourstore.myshopify.com" target="_blank" class="btn-outline" id="merch-shop-link" style="display:none;">view full store →</a>
+    <a href="https://anjali-llc.myshopify.com" target="_blank" class="btn-outline" id="merch-shop-link" style="display:none;">view full store →</a>
   </div>
 </section>
 
@@ -431,28 +449,15 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
 <section class="section-wrap dark" id="gallery">
   <p class="section-eyebrow">photos</p>
   <h2 class="section-heading">photo <em>gallery</em></h2>
+  <p class="cal-api-note" id="gdrive-note" style="margin-bottom:24px;">photos load from Google Drive — <a href="#" onclick="showDriveSetup();return false;">how to connect →</a></p>
 
   <div style="margin:0 -56px 56px;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
     <div class="gallery-track-wrap">
-      <div class="gallery-track">
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1520,#4a1535)">📸<br>press photo 1</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">add caption</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a)">📸<br>live @ The Bistro</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">The Bistro, Feb '25</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#251520,#3a1535)">📸<br>studio session</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">studio session</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a1a2a,#1a2a4a)">📸<br>press photo 2</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">press photo</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1a15,#4a2a15)">📸<br>on stage</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">on stage</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1525,#4a1540)">📸<br>behind the scenes</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">behind the scenes</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a251a,#2a4a35)">📸<br>album art shoot</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">album art shoot</div></div>
-        <div class="gallery-photo" onclick="openLightbox(this)"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#251a1a,#4a2a2a)">📸<br>press photo 3</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">press photo</div></div>
-        <!-- duplicated for seamless infinite scroll -->
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1520,#4a1535)">📸<br>press photo 1</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">add caption</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a2a1a,#2a4a2a)">📸<br>live @ The Bistro</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">The Bistro, Feb '25</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#251520,#3a1535)">📸<br>studio session</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">studio session</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a1a2a,#1a2a4a)">📸<br>press photo 2</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">press photo</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1a15,#4a2a15)">📸<br>on stage</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">on stage</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#2a1525,#4a1540)">📸<br>behind the scenes</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">behind the scenes</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a251a,#2a4a35)">📸<br>album art shoot</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">album art shoot</div></div>
-        <div class="gallery-photo"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#251a1a,#4a2a2a)">📸<br>press photo 3</div><div class="gallery-photo-overlay"></div><div class="gallery-photo-label">press photo</div></div>
+      <div class="gallery-track" id="gallery-track">
+        <div class="cal-loading" style="padding:60px 56px;"><div class="cal-spinner"></div> loading photos…</div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -491,6 +496,32 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   <span>© 2026 Anjali LLC</span>
   <a href="#home">back to top ↑</a>
 </footer>
+
+
+<!-- LISTEN MODAL -->
+<div class="listen-modal-overlay" id="listen-modal-overlay" onclick="closeListenModal(event)">
+  <div class="listen-modal" id="listen-modal">
+    <button class="listen-modal-close" onclick="closeListenModalDirect()">✕</button>
+    <img class="listen-modal-art" id="listen-art" src="" alt="">
+    <div class="listen-modal-title" id="listen-title"></div>
+    <div class="listen-modal-type" id="listen-type"></div>
+    <div class="listen-platforms">
+      <a class="platform-btn spotify-btn" id="listen-spotify" href="#" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        <span>listen on Spotify</span><span class="platform-arrow">→</span>
+      </a>
+      <a class="platform-btn apple-btn" id="listen-apple" href="#" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 0 0-1.877-.726 10.496 10.496 0 0 0-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026C4.786.07 4.043.15 3.34.428 2.004.958 1.04 1.88.475 3.208a4.98 4.98 0 0 0-.35 1.467c-.05.316-.077.636-.09.955C.02 5.915.007 6.17 0 6.424v11.593c.01.228.02.455.034.683.052.89.214 1.77.6 2.59.24.504.558.964.966 1.356a5.148 5.148 0 0 0 2.4 1.29c.56.133 1.13.19 1.7.22.224.012.448.02.672.024h11.4c.252-.008.503-.02.754-.038.742-.05 1.475-.17 2.17-.453 1.344-.538 2.31-1.46 2.876-2.79.24-.558.37-1.148.44-1.748.047-.405.073-.812.087-1.22.01-.292.01-11.964.01-11.964s.003-.316-.003-.474zM12 17.77a5.77 5.77 0 1 1 0-11.54 5.77 5.77 0 0 1 0 11.54zm0-9.54a3.77 3.77 0 1 0 0 7.54 3.77 3.77 0 0 0 0-7.54zm5.99-2.55a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7z"/></svg>
+        <span>listen on Apple Music</span><span class="platform-arrow">→</span>
+      </a>
+      <a class="platform-btn youtube-btn" id="listen-youtube" href="#" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        <span>watch on YouTube</span><span class="platform-arrow">→</span>
+      </a>
+    </div>
+    <p class="platform-manual-note" id="listen-note"></p>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -644,31 +675,256 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
 </div>
 
 <script>
-// =============================================
-// GOOGLE CALENDAR CONFIG — fill these in!
-// =============================================
+// ============================================================
+// ★ SITE CONFIG — edit these values, nothing else needed ★
+// ============================================================
+
 const CALENDAR_CONFIG = {
   calendarId: 'c_78d85eb73041849eaf6d21edbf41fabf500935ff630484b3ccf718c8ee9719fb@group.calendar.google.com',
   apiKey: 'AIzaSyADPX6I05NI_F2gRwvlO5gqPc6jlppjq_o',
-  // Once filled in, the site auto-fetches upcoming events and renders them below.
-  // Add events to your Google Calendar — this updates automatically.
 };
 
+const SHOPIFY_CONFIG = {
+  storeDomain: 'anjali-llc.myshopify.com',
+  storefrontAccessToken: 'YOUR_STOREFRONT_ACCESS_TOKEN', // ← paste token here once you get it
+};
+
+const DRIVE_CONFIG = {
+  folderId: 'YOUR_GOOGLE_DRIVE_FOLDER_ID', // ← paste Google Drive folder ID here
+  apiKey: CALENDAR_CONFIG.apiKey,
+};
+
+const SPOTIFY_CONFIG = {
+  artistId: '0398q6h9AKJSfRbxDcIXAh',
+  clientId: 'YOUR_SPOTIFY_CLIENT_ID',         // ← optional: auto-refreshes releases
+  clientSecret: 'YOUR_SPOTIFY_CLIENT_SECRET', // ← optional: get at developer.spotify.com
+};
+
+// Per-release Apple Music + YouTube links (Spotify links are automatic)
+// To add: paste the direct URL for each release, keyed by Spotify release ID
+const PLATFORM_LINKS = {
+  '1sBnB1tOHM8KPqzYaOgOAS': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Sociopath
+  '3U2YKUtk7bMdgUmyDrTd5e': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // missinu.
+  '2VhLriYymdNdBWKypAwTw6': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // mini m&m's
+  '4B3s21ktLwKXBSQsjpjFuZ': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Displacement
+  '1qo4IiS5C1B6QQ1FPkdRjA': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Lost in Translation
+  '7DyPIG7zMFhfAc9JPF52Ae': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Magazine
+  '339t43R4LIcZtFlXhq4IW5': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: 'https://www.youtube.com/@anjalibothra196' }, // Apathy
+};
+
+// ============================================================
+// (everything below this line runs automatically — no edits needed)
+// ============================================================
+
 // =============================================
-// CALENDAR API FETCH + RENDER
+// SPOTIFY — fetch releases automatically
+// =============================================
+let spotifyToken = null;
+
+async function getSpotifyToken() {
+  if (spotifyToken) return spotifyToken;
+  if (SPOTIFY_CONFIG.clientId.includes('YOUR_')) return null;
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(SPOTIFY_CONFIG.clientId + ':' + SPOTIFY_CONFIG.clientSecret),
+      },
+      body: 'grant_type=client_credentials',
+    });
+    const data = await res.json();
+    spotifyToken = data.access_token;
+    return spotifyToken;
+  } catch(e) { return null; }
+}
+
+async function loadReleases() {
+  const grid = document.getElementById('releases-grid');
+  const token = await getSpotifyToken();
+
+  // Fall back to hardcoded releases if no Spotify credentials yet
+  if (!token) {
+    renderHardcodedReleases(grid);
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api.spotify.com/v1/artists/${SPOTIFY_CONFIG.artistId}/albums?include_groups=album,single&market=US&limit=20`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (!data.items?.length) { renderHardcodedReleases(grid); return; }
+    grid.innerHTML = data.items.map(album => {
+      const img = album.images[1]?.url || album.images[0]?.url;
+      const year = album.release_date?.substring(0,4);
+      const type = album.album_type === 'album' ? 'Album' : 'Single';
+      const id = album.id;
+      return `<div class="release-card" onclick="openListenModal('${id}','${album.name.replace(/'/g,"\'")}','${img}','${type}','${album.external_urls.spotify}')" style="cursor:pointer;">
+        <div class="release-art"><img src="${img}" alt="${album.name}" loading="lazy"><div class="release-art-overlay"></div></div>
+        <div class="release-info">
+          <div class="release-title">${album.name}</div>
+          <div class="release-year">${year}</div>
+          <span class="release-type">${type}</span>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    renderHardcodedReleases(grid);
+  }
+}
+
+function renderHardcodedReleases(grid) {
+  const releases = [
+    { id:'1sBnB1tOHM8KPqzYaOgOAS', title:'Sociopath', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d00004851638d47d67d3feedb5a1b07cc', spotify:'https://open.spotify.com/album/1sBnB1tOHM8KPqzYaOgOAS' },
+    { id:'3U2YKUtk7bMdgUmyDrTd5e', title:'missinu.', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d000048514a86c501b72c48b306e890bb', spotify:'https://open.spotify.com/album/3U2YKUtk7bMdgUmyDrTd5e' },
+    { id:'2VhLriYymdNdBWKypAwTw6', title:"mini m&m's", year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d00001e02416a72011b65deb5a3ec5e54', spotify:'https://open.spotify.com/album/2VhLriYymdNdBWKypAwTw6' },
+    { id:'4B3s21ktLwKXBSQsjpjFuZ', title:'Displacement', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d00004851bf5698ff21309caf8569092d', spotify:'https://open.spotify.com/album/4B3s21ktLwKXBSQsjpjFuZ' },
+    { id:'1qo4IiS5C1B6QQ1FPkdRjA', title:'Lost in Translation', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d000048513dffa2ed9352129e9ec410c0', spotify:'https://open.spotify.com/album/1qo4IiS5C1B6QQ1FPkdRjA' },
+    { id:'7DyPIG7zMFhfAc9JPF52Ae', title:'Magazine', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d000048512ce0edb57791cc6be641f189', spotify:'https://open.spotify.com/album/7DyPIG7zMFhfAc9JPF52Ae' },
+    { id:'339t43R4LIcZtFlXhq4IW5', title:'Apathy', year:'2023', type:'Album', img:'https://i.scdn.co/image/ab67616d00001e0213242fd5583ad99f77e1bcc2', spotify:'https://open.spotify.com/album/339t43R4LIcZtFlXhq4IW5' },
+  ];
+  grid.innerHTML = releases.map(r => `
+    <div class="release-card" onclick="openListenModal('${r.id}','${r.title.replace(/'/g,"\'")}','${r.img}','${r.type}','${r.spotify}')" style="cursor:pointer;">
+      <div class="release-art"><img src="${r.img}" alt="${r.title}" loading="lazy"><div class="release-art-overlay"></div></div>
+      <div class="release-info">
+        <div class="release-title">${r.title}</div>
+        <div class="release-year">${r.year}</div>
+        <span class="release-type">${r.type}</span>
+      </div>
+    </div>`).join('');
+}
+
+// =============================================
+// LISTEN MODAL (Spotify / Apple Music / YouTube)
+// =============================================
+function openListenModal(id, title, img, type, spotifyUrl) {
+  document.getElementById('listen-art').src = img;
+  document.getElementById('listen-title').textContent = title;
+  document.getElementById('listen-type').textContent = type;
+  document.getElementById('listen-spotify').href = spotifyUrl;
+
+  const links = PLATFORM_LINKS[id] || {};
+  const appleBtn = document.getElementById('listen-apple');
+  const ytBtn = document.getElementById('listen-youtube');
+  const note = document.getElementById('listen-note');
+
+  if (links.apple) {
+    appleBtn.href = links.apple;
+    appleBtn.style.opacity = '1';
+    appleBtn.style.pointerEvents = 'auto';
+  } else {
+    appleBtn.href = 'https://music.apple.com/us/artist/anjali/1675189476';
+    appleBtn.style.opacity = '0.4';
+    appleBtn.style.pointerEvents = 'auto';
+  }
+
+  if (links.youtube) {
+    ytBtn.href = links.youtube;
+    ytBtn.style.opacity = '1';
+    ytBtn.style.pointerEvents = 'auto';
+  } else {
+    ytBtn.href = 'https://www.youtube.com/@anjalibothra196';
+    ytBtn.style.opacity = '0.4';
+  }
+
+  const missingLinks = !links.apple || !links.youtube;
+  note.innerHTML = missingLinks
+    ? 'some links may go to your general profile — to add direct links per release, update <code style="background:var(--bg3);padding:1px 5px;border-radius:2px;font-size:11px;">PLATFORM_LINKS</code> in the site code.'
+    : '';
+
+  document.getElementById('listen-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeListenModal(e) {
+  if (e.target === document.getElementById('listen-modal-overlay')) closeListenModalDirect();
+}
+function closeListenModalDirect() {
+  document.getElementById('listen-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// =============================================
+// GOOGLE DRIVE GALLERY
+// =============================================
+async function loadGallery() {
+  const track = document.getElementById('gallery-track');
+  const isDemo = DRIVE_CONFIG.folderId.includes('YOUR_');
+
+  if (isDemo) {
+    renderDemoGallery(track);
+    document.getElementById('gdrive-note').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('gdrive-note').style.display = 'none';
+
+  try {
+    const url = `https://www.googleapis.com/drive/v3/files?q='${DRIVE_CONFIG.folderId}'+in+parents+and+mimeType+contains+'image/'&fields=files(id,name,thumbnailLink,webContentLink)&orderBy=name&key=${DRIVE_CONFIG.apiKey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.files?.length) {
+      track.innerHTML = '<div style="padding:60px 56px;font-family:Cormorant Garamond,serif;font-style:italic;color:var(--muted);">no photos yet — upload images to your Google Drive folder</div>';
+      return;
+    }
+
+    // Build tiles + duplicates for infinite scroll
+    const tiles = data.files.map(f => {
+      // Caption = filename without extension
+      const caption = f.name.replace(/\.[^.]+$/, '').replace(/_/g, ' ');
+      const src = `https://drive.google.com/thumbnail?id=${f.id}&sz=w600`;
+      return `<div class="gallery-photo" onclick="openDriveLightbox('${src}','${caption}')">
+        <img src="${src}" alt="${caption}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-photo-overlay"></div>
+        <div class="gallery-photo-label">${caption}</div>
+      </div>`;
+    }).join('');
+
+    track.innerHTML = tiles + tiles; // duplicate for seamless loop
+    track.style.animation = 'galleryScroll 38s linear infinite';
+
+  } catch(e) {
+    renderDemoGallery(track);
+    console.error('Drive gallery error:', e);
+  }
+}
+
+function openDriveLightbox(src, caption) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderDemoGallery(track) {
+  const placeholders = [
+    {bg:'linear-gradient(135deg,#2a1520,#4a1535)', label:'press photo 1'},
+    {bg:'linear-gradient(135deg,#1a2a1a,#2a4a2a)', label:'live @ The Bistro'},
+    {bg:'linear-gradient(135deg,#251520,#3a1535)', label:'studio session'},
+    {bg:'linear-gradient(135deg,#1a1a2a,#1a2a4a)', label:'press photo 2'},
+    {bg:'linear-gradient(135deg,#2a1a15,#4a2a15)', label:'on stage'},
+    {bg:'linear-gradient(135deg,#2a1525,#4a1540)', label:'behind the scenes'},
+    {bg:'linear-gradient(135deg,#1a251a,#2a4a35)', label:'album art shoot'},
+    {bg:'linear-gradient(135deg,#251a1a,#4a2a2a)', label:'press photo 3'},
+  ];
+  const tiles = placeholders.map(p => `
+    <div class="gallery-photo">
+      <div class="gallery-placeholder" style="background:${p.bg}">📸<br>${p.label}</div>
+      <div class="gallery-photo-overlay"></div>
+      <div class="gallery-photo-label">${p.label}</div>
+    </div>`).join('');
+  track.innerHTML = tiles + tiles;
+}
+
+function showDriveSetup() {
+  alert('Google Drive Gallery Setup:\n\n1. Create a folder in Google Drive\n2. Right-click → Share → "Anyone with the link can view"\n3. Copy the folder ID from the URL (the long string after /folders/)\n4. Enable Google Drive API in Google Cloud Console (same project as Calendar)\n5. Paste the folder ID into DRIVE_CONFIG.folderId in the site code\n\nPhotos load automatically. Name files like "The Bistro Feb 2025.jpg" — the filename becomes the caption.');
+}
+
+// =============================================
+// GOOGLE CALENDAR
 // =============================================
 async function loadShows() {
   const container = document.getElementById('upcoming-shows');
-
-  // ---- DEMO MODE (remove this block once you add real API credentials) ----
-  /* const isDemo = CALENDAR_CONFIG.calendarId.includes('YOUR_');
-  if (isDemo) {
-    renderDemoShows(container);
-    return;
-  }
-  */
-  // ---- END DEMO MODE ----
-
   try {
     const now = new Date().toISOString();
     const sixMonths = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString();
@@ -694,13 +950,10 @@ function buildCalendarLink(event) {
   const start = event.start.dateTime || event.start.date;
   const end = event.end?.dateTime || event.end?.date || start;
   const isAllDay = !event.start.dateTime;
-
-  // Google Calendar expects dates as YYYYMMDDTHHmmssZ or YYYYMMDD for all-day
   function toGCalDate(iso) {
     if (isAllDay) return iso.replace(/-/g, '');
     return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   }
-
   const params = new URLSearchParams({
     action: 'TEMPLATE',
     text: event.summary || 'Anjali — Live Performance',
@@ -744,19 +997,16 @@ function renderDemoShows(container) {
   container.innerHTML = demoShows.map(s => `
     <div class="show-row upcoming">
       <div class="show-date"><span class="show-month">${s.month}</span>${s.day}</div>
-      <div class="show-info">
-        <h4>${s.title}</h4>
-        <p>${s.time} · ${s.location}</p>
-      </div>
+      <div class="show-info"><h4>${s.title}</h4><p>${s.time} · ${s.location}</p></div>
       <div class="show-right">
         <span class="show-pill ${s.pill}">${s.pill}</span>
         <span class="show-expand-hint">+ save to calendar</span>
       </div>
-    </div>`).join('') + '<p style="font-size:9px;letter-spacing:0.1em;color:rgba(244,241,235,0.18);margin-top:12px;text-align:right;">demo data — <a href="#" onclick="showCalSetup();return false;" style="color:rgba(224,82,141,0.4);">connect your real calendar →</a></p>';
+    </div>`).join('');
 }
 
 // =============================================
-// MODAL
+// ENQUIRE MODAL
 // =============================================
 function openModal() {
   document.getElementById('modal-overlay').classList.add('open');
@@ -772,7 +1022,6 @@ function closeModalOutside(e) {
 function showCalSetup() {
   document.getElementById('cal-setup-overlay').classList.add('open');
 }
-
 function submitForm() {
   const name = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
@@ -783,8 +1032,6 @@ function submitForm() {
     alert('please fill in the required fields (name, email, event type, date, and venue).');
     return;
   }
-  // In production: POST this data to a form handler (Formspree, Netlify Forms, etc.)
-  // For now — show success state
   document.getElementById('modal-body').innerHTML = `
     <div class="form-success">
       <div class="form-success-icon">🌸</div>
@@ -800,7 +1047,7 @@ function submitForm() {
 // =============================================
 function openLightbox(el) {
   const img = el.querySelector('img');
-  if(!img) return; // placeholder tiles — skip lightbox until real photos added
+  if(!img) return;
   document.getElementById('lightbox-img').src = img.src;
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
@@ -833,9 +1080,107 @@ function copyBio(btn, idx) {
 }
 
 // =============================================
+// SHOPIFY MERCH
+// =============================================
+let cart = [];
+
+async function loadMerch() {
+  const grid = document.getElementById('merch-grid');
+  const isDemo = SHOPIFY_CONFIG.storeDomain.includes('your-store');
+  if (isDemo) { renderDemoMerch(grid); return; }
+  try {
+    const query = `{
+      products(first: 8) {
+        edges { node {
+          id title handle
+          priceRange { minVariantPrice { amount currencyCode } }
+          images(first: 1) { edges { node { url altText } } }
+          variants(first: 1) { edges { node { id } } }
+          tags
+        }}
+      }
+    }`;
+    const res = await fetch(`https://${SHOPIFY_CONFIG.storeDomain}/api/2024-01/graphql.json`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_CONFIG.storefrontAccessToken },
+      body: JSON.stringify({ query }),
+    });
+    const data = await res.json();
+    const products = data.data.products.edges.map(e => e.node);
+    if (!products.length) { grid.innerHTML = '<div class="no-shows">no products yet</div>'; return; }
+    grid.innerHTML = products.map(p => {
+      const price = parseFloat(p.priceRange.minVariantPrice.amount).toFixed(2);
+      const img = p.images.edges[0]?.node;
+      const variantId = p.variants.edges[0]?.node.id;
+      const isNew = p.tags.includes('new');
+      return `<div class="merch-card">
+        <div class="merch-img">
+          ${img ? `<img src="${img.url}" alt="${img.altText || p.title}">` : '<div class="merch-placeholder">🛍️</div>'}
+          ${isNew ? '<span class="merch-badge">new</span>' : ''}
+        </div>
+        <div class="merch-info">
+          <div class="merch-name">${p.title}</div>
+          <div class="merch-variant">Shopify × Printful</div>
+          <div class="merch-footer">
+            <span class="merch-price">$${price}</span>
+            <button class="merch-add" onclick="addToCart('${variantId}','${p.title}','$${price}')">add to cart</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('merch-shop-link').style.display = 'inline-flex';
+    document.getElementById('merch-shop-link').href = `https://${SHOPIFY_CONFIG.storeDomain}`;
+  } catch(e) {
+    grid.innerHTML = '<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load products</div>';
+    console.error(e);
+  }
+}
+
+function renderDemoMerch(grid) {
+  const demoProducts = [
+    { name:'ANJALI Logo Tee', price:'$32', variant:'Bella+Canvas 3001 · Printful', badge:'new', bg:'linear-gradient(135deg,#2a1520,#3a1530)', icon:'👕' },
+    { name:'Apathy Album Hoodie', price:'$58', variant:'Premium Fleece · Printful', badge:'', bg:'linear-gradient(135deg,#1a2a1a,#2a3a25)', icon:'🧥' },
+    { name:'Sunflower Tote Bag', price:'$24', variant:'Canvas Tote · Printful', badge:'new', bg:'linear-gradient(135deg,#251a10,#3a2a15)', icon:'👜' },
+    { name:'"Sociopath" Poster', price:'$18', variant:'18×24 Print · Printful', badge:'', bg:'linear-gradient(135deg,#1a1525,#251535)', icon:'🖼️' },
+    { name:'ANJALI Mug', price:'$19', variant:'11oz Ceramic · Printful', badge:'', bg:'linear-gradient(135deg,#201520,#351530)', icon:'☕' },
+    { name:'Displacement Sticker Pack', price:'$8', variant:'Vinyl · Printful', badge:'new', bg:'linear-gradient(135deg,#15201a,#20352a)', icon:'🌸' },
+  ];
+  grid.innerHTML = demoProducts.map(p => `
+    <div class="merch-card">
+      <div class="merch-img">
+        <div class="merch-placeholder" style="background:${p.bg}">${p.icon}<br><span style="font-size:12px;">${p.name}</span></div>
+        ${p.badge ? `<span class="merch-badge">${p.badge}</span>` : ''}
+      </div>
+      <div class="merch-info">
+        <div class="merch-name">${p.name}</div>
+        <div class="merch-variant">${p.variant}</div>
+        <div class="merch-footer">
+          <span class="merch-price">${p.price}</span>
+          <button class="merch-add" onclick="addToCart('demo','${p.name}','${p.price}')">add to cart</button>
+        </div>
+      </div>
+    </div>`).join('') + `<p style="font-size:9px;letter-spacing:0.1em;color:rgba(244,241,235,0.18);grid-column:1/-1;text-align:right;margin-top:-8px;">demo products — <a href="#" onclick="showMerchSetup();return false;" style="color:rgba(224,82,141,0.4);">connect your Shopify store →</a></p>`;
+}
+
+function addToCart(variantId, name, price) {
+  cart.push({ variantId, name, price });
+  const btn = document.querySelector('.cart-btn');
+  btn.classList.add('visible');
+  btn.querySelector('.cart-count').textContent = cart.length;
+  btn.style.transform = 'scale(1.12) translateY(-2px)';
+  setTimeout(() => btn.style.transform = '', 200);
+}
+
+function showMerchSetup() {
+  document.getElementById('merch-setup-overlay').classList.add('open');
+}
+
+// =============================================
 // INIT
 // =============================================
 loadShows();
+loadReleases();
+loadGallery();
 loadMerch();
 </script>
 
