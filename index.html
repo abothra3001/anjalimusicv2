@@ -45,33 +45,6 @@ body{background:var(--bg);color:var(--cream);font-family:'Montserrat',sans-serif
 .cart-btn:hover{background:#f06ba6;transform:translateY(-2px);}
 .cart-count{background:var(--bg);color:var(--pink);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
 
-
-/* ===== LISTEN MODAL ===== */
-.listen-modal-overlay{position:fixed;inset:0;background:rgba(17,16,16,0.88);z-index:250;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
-.listen-modal-overlay.open{display:flex;}
-.listen-modal{background:var(--bg2);border:1px solid var(--border);border-radius:4px;width:100%;max-width:400px;padding:32px 36px;position:relative;text-align:center;}
-.listen-modal-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;}
-.listen-modal-close:hover{color:var(--pink);}
-.listen-modal-art{width:120px;height:120px;border-radius:3px;object-fit:cover;margin:0 auto 16px;display:block;border:1px solid var(--border);}
-.listen-modal-title{font-family:'Fraunces',serif;font-size:22px;font-style:italic;color:var(--cream);margin-bottom:4px;}
-.listen-modal-type{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;}
-.listen-platforms{display:flex;flex-direction:column;gap:10px;}
-.platform-btn{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:3px;background:none;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:0.1em;cursor:pointer;text-decoration:none;transition:all 0.2s;width:100%;}
-.platform-btn:hover{border-color:var(--pink);color:var(--pink);}
-.platform-btn svg{width:18px;height:18px;flex-shrink:0;fill:currentColor;}
-.platform-btn span{flex:1;text-align:left;}
-.platform-btn .platform-arrow{opacity:0.4;font-size:12px;}
-.platform-btn.spotify-btn:hover{border-color:#1DB954;color:#1DB954;}
-.platform-btn.apple-btn:hover{border-color:#fc3c44;color:#fc3c44;}
-.platform-btn.youtube-btn:hover{border-color:#FF0000;color:#FF0000;}
-.platform-manual-note{font-size:10px;color:rgba(244,241,235,0.25);margin-top:16px;line-height:1.6;}
-.platform-manual-note a{color:rgba(224,82,141,0.5);text-decoration:none;}
-.platform-manual-note a:hover{color:var(--pink);}
-
-
-/* ===== DRIVE GALLERY NOTE ===== */
-.gdrive-note{font-size:10px;letter-spacing:0.1em;color:rgba(244,241,235,0.2);margin-bottom:0;padding:12px 56px 0;}
-
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(17,16,16,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
 .nav-logo{font-family:'Fraunces',serif;font-size:24px;font-style:italic;font-weight:300;letter-spacing:0.08em;color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:10px;}
@@ -364,73 +337,43 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--muted);margin-bottom:36px;margin-top:-24px;">all items ship via Printful — print on demand, straight to your door.</p>
   <div class="merch-grid">
       <a class="merch-card" href="https://anjali-llc.myshopify.com/products/shopping-bag" target="_blank" style="text-decoration:none;color:inherit;">
-        <div class="merch-img">
-          <img src="https://anjali-llc.myshopify.com/cdn/shop/files/all-over-print-shopping-bag-white-front-69abcdf13d768.jpg?v=1772867076&width=600" alt="Shopping Bag" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;">
-          <span class="merch-badge">new</span>
-        </div>
+        <div class="merch-img"><img src="https://anjali-llc.myshopify.com/cdn/shop/files/all-over-print-shopping-bag-white-front-69abcdf13d768.jpg?v=1772867076&width=600" alt="Shopping Bag" loading="lazy" style="width:100%;height:100%;object-fit:cover;"><span class="merch-badge">new</span></div>
         <div class="merch-info">
           <div class="merch-name">Shopping Bag</div>
           <div class="merch-variant">pink sunflower print · reusable</div>
-          <div class="merch-footer">
-            <span class="merch-price">$23.00</span>
-            <span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span>
-          </div>
+          <div class="merch-footer"><span class="merch-price">$23.00</span><span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span></div>
         </div>
       </a>
       <a class="merch-card" href="https://anjali-llc.myshopify.com/products/cotton-heritage-mc1082-i-mens-premium-short-sleeve-tee" target="_blank" style="text-decoration:none;color:inherit;">
-        <div class="merch-img">
-          <img src="https://anjali-llc.myshopify.com/cdn/shop/files/cotton-heritage-mc1082-i-mens-premium-short-sleeve-tee-black-front-69abcc14efd56.jpg?v=1772866606&width=600" alt="Premium Tee" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;">
-          
-        </div>
+        <div class="merch-img"><img src="https://anjali-llc.myshopify.com/cdn/shop/files/cotton-heritage-mc1082-i-mens-premium-short-sleeve-tee-black-front-69abcc14efd56.jpg?v=1772866606&width=600" alt="Premium Tee" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></div>
         <div class="merch-info">
           <div class="merch-name">Premium Tee</div>
           <div class="merch-variant">coast to coast · premium cotton</div>
-          <div class="merch-footer">
-            <span class="merch-price">$25.00</span>
-            <span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span>
-          </div>
+          <div class="merch-footer"><span class="merch-price">$25.00</span><span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span></div>
         </div>
       </a>
       <a class="merch-card" href="https://anjali-llc.myshopify.com/products/essential-oversized-boxy-fit-fleece-hoodie" target="_blank" style="text-decoration:none;color:inherit;">
-        <div class="merch-img">
-          <img src="https://anjali-llc.myshopify.com/cdn/shop/files/97f5ccc4e5d94132827581649153f416.png?v=1772935175&width=600" alt="Oversized Fleece Hoodie" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;">
-          <span class="merch-badge">bestseller</span>
-        </div>
+        <div class="merch-img"><img src="https://anjali-llc.myshopify.com/cdn/shop/files/97f5ccc4e5d94132827581649153f416.png?v=1772935175&width=600" alt="Oversized Fleece Hoodie" loading="lazy" style="width:100%;height:100%;object-fit:cover;"><span class="merch-badge">bestseller</span></div>
         <div class="merch-info">
           <div class="merch-name">Oversized Fleece Hoodie</div>
           <div class="merch-variant">ANJALI back print · oversized fit</div>
-          <div class="merch-footer">
-            <span class="merch-price">$46.00</span>
-            <span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span>
-          </div>
+          <div class="merch-footer"><span class="merch-price">$46.00</span><span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span></div>
         </div>
       </a>
       <a class="merch-card" href="https://anjali-llc.myshopify.com/products/die-cut-stickers" target="_blank" style="text-decoration:none;color:inherit;">
-        <div class="merch-img">
-          <img src="https://anjali-llc.myshopify.com/cdn/shop/files/die-cut-stickers-satin-2x2-front-69abcbde11808.jpg?v=1772866563&width=600" alt="Die-Cut Stickers" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;">
-          
-        </div>
+        <div class="merch-img"><img src="https://anjali-llc.myshopify.com/cdn/shop/files/die-cut-stickers-satin-2x2-front-69abcbde11808.jpg?v=1772866563&width=600" alt="Die-Cut Stickers" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></div>
         <div class="merch-info">
           <div class="merch-name">Die-Cut Stickers</div>
           <div class="merch-variant">ANJALI sunflower logo · vinyl</div>
-          <div class="merch-footer">
-            <span class="merch-price">$5.00</span>
-            <span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span>
-          </div>
+          <div class="merch-footer"><span class="merch-price">$5.00</span><span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span></div>
         </div>
       </a>
       <a class="merch-card" href="https://anjali-llc.myshopify.com/products/embroidered-beanie" target="_blank" style="text-decoration:none;color:inherit;">
-        <div class="merch-img">
-          <img src="https://anjali-llc.myshopify.com/cdn/shop/files/knit-beanie-black-front-69abcb8f0503d.jpg?v=1772866462&width=600" alt="Embroidered Beanie" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;">
-          
-        </div>
+        <div class="merch-img"><img src="https://anjali-llc.myshopify.com/cdn/shop/files/knit-beanie-black-front-69abcb8f0503d.jpg?v=1772866462&width=600" alt="Embroidered Beanie" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></div>
         <div class="merch-info">
           <div class="merch-name">Embroidered Beanie</div>
           <div class="merch-variant">ANJALI embroidered patch · one size</div>
-          <div class="merch-footer">
-            <span class="merch-price">$18.00</span>
-            <span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span>
-          </div>
+          <div class="merch-footer"><span class="merch-price">$18.00</span><span class="merch-add" style="padding:6px 14px;border:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border-radius:2px;">shop →</span></div>
         </div>
       </a>
   </div>
@@ -487,8 +430,6 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
 <section class="section-wrap dark" id="gallery">
   <p class="section-eyebrow">photos</p>
   <h2 class="section-heading">photo <em>gallery</em></h2>
-
-
   <div style="margin:0 -56px 56px;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
     <div class="gallery-track-wrap">
       <div class="gallery-track" id="gallery-track">
@@ -496,13 +437,9 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
       </div>
     </div>
   </div>
-    </div>
-  </div>
-
-  <!-- Hire box -->
   <div class="hire-box">
     <div>
-      <h3>book <span class="amarante" style="font-family:'Amarante',cursive;letter-spacing:0.05em;">ANJALI</span> for your event</h3>
+      <h3>book <span style="font-family:'Amarante',cursive;letter-spacing:0.05em;">ANJALI</span> for your event</h3>
       <p>available for private events, venues, and festivals on both coasts and beyond.</p>
     </div>
     <div class="rates-mini">
@@ -519,7 +456,7 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
     <p class="section-eyebrow" style="justify-content:center;">get in touch</p>
     <div class="contact-name amarante" style="font-family:'Amarante',cursive;letter-spacing:0.05em;"><svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 8px rgba(224,82,141,0.5))"><g fill="#E0528D"><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(0 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(45 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(90 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(135 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(180 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(225 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(270 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(315 16 16)"/></g><circle cx="16" cy="16" r="6" fill="#6B2040"/><circle cx="16" cy="16" r="4" fill="#8B3050"/></svg> ANJALI <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 0 8px rgba(224,82,141,0.5))"><g fill="#E0528D"><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(0 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(45 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(90 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(135 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(180 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(225 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(270 16 16)"/><ellipse cx="16" cy="5" rx="3" ry="5.5" transform="rotate(315 16 16)"/></g><circle cx="16" cy="16" r="6" fill="#6B2040"/><circle cx="16" cy="16" r="4" fill="#8B3050"/></svg></div>
     <p class="contact-tagline">singer-songwriter · producer · performer</p>
-    <a href="/cdn-cgi/l/email-protection#e2808d8d898b8c85a2838c88838e8b8f97918b81cc818d8f" class="contact-email"><span class="__cf_email__" data-cfemail="83e1ecece8eaede4c3e2ede9e2efeaeef6f0eae0ade0ecee">[email&#160;protected]</span></a>
+    <a href="mailto:booking@anjalimusic.com" class="contact-email">booking@anjalimusic.com</a>
     <div class="contact-links">
       <a href="https://open.spotify.com/artist/0398q6h9AKJSfRbxDcIXAh" class="contact-link" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>spotify</a>
       <a href="https://instagram.com/anjali_bunjali" class="contact-link" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>instagram</a>
@@ -535,10 +472,9 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   <a href="#home">back to top ↑</a>
 </footer>
 
-
 <!-- LISTEN MODAL -->
 <div class="listen-modal-overlay" id="listen-modal-overlay" onclick="closeListenModal(event)">
-  <div class="listen-modal" id="listen-modal">
+  <div class="listen-modal">
     <button class="listen-modal-close" onclick="closeListenModalDirect()">✕</button>
     <img class="listen-modal-art" id="listen-art" src="" alt="">
     <div class="listen-modal-title" id="listen-title"></div>
@@ -548,11 +484,11 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
         <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
         <span>listen on Spotify</span><span class="platform-arrow">→</span>
       </a>
-      <a class="platform-btn apple-btn" id="listen-apple" href="#" target="_blank">
+      <a class="platform-btn apple-btn" id="listen-apple" href="https://music.apple.com/us/artist/anjali/1675189476" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 0 0-1.877-.726 10.496 10.496 0 0 0-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026C4.786.07 4.043.15 3.34.428 2.004.958 1.04 1.88.475 3.208a4.98 4.98 0 0 0-.35 1.467c-.05.316-.077.636-.09.955C.02 5.915.007 6.17 0 6.424v11.593c.01.228.02.455.034.683.052.89.214 1.77.6 2.59.24.504.558.964.966 1.356a5.148 5.148 0 0 0 2.4 1.29c.56.133 1.13.19 1.7.22.224.012.448.02.672.024h11.4c.252-.008.503-.02.754-.038.742-.05 1.475-.17 2.17-.453 1.344-.538 2.31-1.46 2.876-2.79.24-.558.37-1.148.44-1.748.047-.405.073-.812.087-1.22.01-.292.01-11.964.01-11.964s.003-.316-.003-.474zM12 17.77a5.77 5.77 0 1 1 0-11.54 5.77 5.77 0 0 1 0 11.54zm0-9.54a3.77 3.77 0 1 0 0 7.54 3.77 3.77 0 0 0 0-7.54zm5.99-2.55a1.35 1.35 0 1 1 0 2.7 1.35 1.35 0 0 1 0-2.7z"/></svg>
         <span>listen on Apple Music</span><span class="platform-arrow">→</span>
       </a>
-      <a class="platform-btn youtube-btn" id="listen-youtube" href="#" target="_blank">
+      <a class="platform-btn youtube-btn" id="listen-youtube" href="https://www.youtube.com/@anjalibothra196" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
         <span>watch on YouTube</span><span class="platform-arrow">→</span>
       </a>
@@ -711,107 +647,30 @@ footer a{color:var(--muted);text-decoration:none;}footer a:hover{color:var(--pin
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ============================================================
-// ★ SITE CONFIG — edit these values, nothing else needed ★
+// ★ SITE CONFIG — only edit values in this block ★
 // ============================================================
-
 const CALENDAR_CONFIG = {
   calendarId: 'c_78d85eb73041849eaf6d21edbf41fabf500935ff630484b3ccf718c8ee9719fb@group.calendar.google.com',
   apiKey: 'AIzaSyADPX6I05NI_F2gRwvlO5gqPc6jlppjq_o',
 };
-
-const SHOPIFY_CONFIG = {
-  storeDomain: 'anjali-llc.myshopify.com',
-  storefrontAccessToken: 'YOUR_STOREFRONT_ACCESS_TOKEN', // ← paste token here once you get it
-};
-
 const DRIVE_CONFIG = {
-  folderId: '1k1cvteSPoUCwxYc-OtAC-qVUF091UCZd', // ← paste Google Drive folder ID here
-  apiKey: CALENDAR_CONFIG.apiKey,
+  folderId: '1k1cvteSPoUCwxYc-OtAC-qVUF091UCZd',
+  apiKey: 'AIzaSyADPX6I05NI_F2gRwvlO5gqPc6jlppjq_o',
 };
-
-const SPOTIFY_CONFIG = {
-  artistId: '0398q6h9AKJSfRbxDcIXAh',
-  clientId: 'YOUR_SPOTIFY_CLIENT_ID',         // ← optional: auto-refreshes releases
-  clientSecret: 'YOUR_SPOTIFY_CLIENT_SECRET', // ← optional: get at developer.spotify.com
-};
-
-// Per-release Apple Music + YouTube links (Spotify links are automatic)
-// To add: paste the direct URL for each release, keyed by Spotify release ID
 const PLATFORM_LINKS = {
-  '1sBnB1tOHM8KPqzYaOgOAS': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Sociopath
-  '3U2YKUtk7bMdgUmyDrTd5e': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // missinu.
-  '2VhLriYymdNdBWKypAwTw6': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // mini m&m's
-  '4B3s21ktLwKXBSQsjpjFuZ': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Displacement
-  '1qo4IiS5C1B6QQ1FPkdRjA': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Lost in Translation
-  '7DyPIG7zMFhfAc9JPF52Ae': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' }, // Magazine
-  '339t43R4LIcZtFlXhq4IW5': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: 'https://www.youtube.com/@anjalibothra196' }, // Apathy
+  '1sBnB1tOHM8KPqzYaOgOAS': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '3U2YKUtk7bMdgUmyDrTd5e': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '2VhLriYymdNdBWKypAwTw6': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '4B3s21ktLwKXBSQsjpjFuZ': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '1qo4IiS5C1B6QQ1FPkdRjA': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '7DyPIG7zMFhfAc9JPF52Ae': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: '' },
+  '339t43R4LIcZtFlXhq4IW5': { apple: 'https://music.apple.com/us/artist/anjali/1675189476', youtube: 'https://www.youtube.com/@anjalibothra196' },
 };
-
-// ============================================================
-// (everything below this line runs automatically — no edits needed)
 // ============================================================
 
-// =============================================
-// SPOTIFY — fetch releases automatically
-// =============================================
-let spotifyToken = null;
-
-async function getSpotifyToken() {
-  if (spotifyToken) return spotifyToken;
-  if (SPOTIFY_CONFIG.clientId.includes('YOUR_')) return null;
-  try {
-    const res = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(SPOTIFY_CONFIG.clientId + ':' + SPOTIFY_CONFIG.clientSecret),
-      },
-      body: 'grant_type=client_credentials',
-    });
-    const data = await res.json();
-    spotifyToken = data.access_token;
-    return spotifyToken;
-  } catch(e) { return null; }
-}
-
-async function loadReleases() {
-  const grid = document.getElementById('releases-grid');
-  const token = await getSpotifyToken();
-
-  // Fall back to hardcoded releases if no Spotify credentials yet
-  if (!token) {
-    renderHardcodedReleases(grid);
-    return;
-  }
-
-  try {
-    const res = await fetch(`https://api.spotify.com/v1/artists/${SPOTIFY_CONFIG.artistId}/albums?include_groups=album,single&market=US&limit=20`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await res.json();
-    if (!data.items?.length) { renderHardcodedReleases(grid); return; }
-    grid.innerHTML = data.items.map(album => {
-      const img = album.images[1]?.url || album.images[0]?.url;
-      const year = album.release_date?.substring(0,4);
-      const type = album.album_type === 'album' ? 'Album' : 'Single';
-      const id = album.id;
-      return `<div class="release-card" onclick="openListenModal('${id}','${album.name.replace(/'/g,"\'")}','${img}','${type}','${album.external_urls.spotify}')" style="cursor:pointer;">
-        <div class="release-art"><img src="${img}" alt="${album.name}" loading="lazy"><div class="release-art-overlay"></div></div>
-        <div class="release-info">
-          <div class="release-title">${album.name}</div>
-          <div class="release-year">${year}</div>
-          <span class="release-type">${type}</span>
-        </div>
-      </div>`;
-    }).join('');
-  } catch(e) {
-    renderHardcodedReleases(grid);
-  }
-}
-
-// Release data stored globally so cards can reference by index — no strings in onclick
+// ── RELEASES stored as data, not strings in onclick ──
 const RELEASES = [
   { id:'1sBnB1tOHM8KPqzYaOgOAS', title:'Sociopath', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d00004851638d47d67d3feedb5a1b07cc', spotify:'https://open.spotify.com/album/1sBnB1tOHM8KPqzYaOgOAS' },
   { id:'3U2YKUtk7bMdgUmyDrTd5e', title:'missinu.', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d000048514a86c501b72c48b306e890bb', spotify:'https://open.spotify.com/album/3U2YKUtk7bMdgUmyDrTd5e' },
@@ -822,173 +681,23 @@ const RELEASES = [
   { id:'339t43R4LIcZtFlXhq4IW5', title:'Apathy', year:'2023', type:'Album', img:'https://i.scdn.co/image/ab67616d00001e0213242fd5583ad99f77e1bcc2', spotify:'https://open.spotify.com/album/339t43R4LIcZtFlXhq4IW5' },
 ];
 
-function renderHardcodedReleases(grid) {
-  grid.innerHTML = RELEASES.map((r, i) => `
-    <div class="release-card" data-release-index="${i}" style="cursor:pointer;">
-      <div class="release-art"><img src="${r.img}" alt="${r.title}" loading="lazy"><div class="release-art-overlay"></div></div>
-      <div class="release-info">
-        <div class="release-title">${r.title}</div>
-        <div class="release-year">${r.year}</div>
-        <span class="release-type">${r.type}</span>
-      </div>
-    </div>`).join('');
-  // Attach click handlers via JS — no inline onclick, no string escaping issues
-  grid.querySelectorAll('.release-card[data-release-index]').forEach(card => {
-    card.addEventListener('click', () => {
-      const r = RELEASES[parseInt(card.dataset.releaseIndex)];
-      openListenModal(r.id, r.title, r.img, r.type, r.spotify);
-    });
-  });
-}
-
-// =============================================
-// LISTEN MODAL (Spotify / Apple Music / YouTube)
-// =============================================
-function openListenModal(id, title, img, type, spotifyUrl) {
-  document.getElementById('listen-art').src = img;
-  document.getElementById('listen-title').textContent = title;
-  document.getElementById('listen-type').textContent = type;
-  document.getElementById('listen-spotify').href = spotifyUrl;
-
-  const links = PLATFORM_LINKS[id] || {};
-  const appleBtn = document.getElementById('listen-apple');
-  const ytBtn = document.getElementById('listen-youtube');
-  const note = document.getElementById('listen-note');
-
-  if (links.apple) {
-    appleBtn.href = links.apple;
-    appleBtn.style.opacity = '1';
-    appleBtn.style.pointerEvents = 'auto';
-  } else {
-    appleBtn.href = 'https://music.apple.com/us/artist/anjali/1675189476';
-    appleBtn.style.opacity = '0.4';
-    appleBtn.style.pointerEvents = 'auto';
-  }
-
-  if (links.youtube) {
-    ytBtn.href = links.youtube;
-    ytBtn.style.opacity = '1';
-    ytBtn.style.pointerEvents = 'auto';
-  } else {
-    ytBtn.href = 'https://www.youtube.com/@anjalibothra196';
-    ytBtn.style.opacity = '0.4';
-  }
-
-  const missingLinks = !links.apple || !links.youtube;
-  note.innerHTML = missingLinks
-    ? 'some links may go to your general profile — to add direct links per release, update <code style="background:var(--bg3);padding:1px 5px;border-radius:2px;font-size:11px;">PLATFORM_LINKS</code> in the site code.'
-    : '';
-
-  document.getElementById('listen-modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeListenModal(e) {
-  if (e.target === document.getElementById('listen-modal-overlay')) closeListenModalDirect();
-}
-function closeListenModalDirect() {
-  document.getElementById('listen-modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// =============================================
-// GOOGLE DRIVE GALLERY
-// =============================================
-async function loadGallery() {
-  const track = document.getElementById('gallery-track');
-  const isDemo = DRIVE_CONFIG.folderId.includes('YOUR_');
-
-  if (isDemo) {
-    renderDemoGallery(track);
-    document.getElementById('gdrive-note').style.display = 'block';
-    return;
-  }
-
-  document.getElementById('gdrive-note').style.display = 'none';
-
-  try {
-    const url = `https://www.googleapis.com/drive/v3/files?q='${DRIVE_CONFIG.folderId}'+in+parents+and+mimeType+contains+'image/'&fields=files(id,name,thumbnailLink,webContentLink)&orderBy=name&key=${DRIVE_CONFIG.apiKey}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (!data.files?.length) {
-      track.innerHTML = '<div style="padding:60px 56px;font-family:Cormorant Garamond,serif;font-style:italic;color:var(--muted);">no photos yet — upload images to your Google Drive folder</div>';
-      return;
-    }
-
-    // Build tiles + duplicates for infinite scroll
-    const tiles = data.files.map(f => {
-      // Caption = filename without extension
-      const caption = f.name.replace(/\.[^.]+$/, '').replace(/_/g, ' ');
-      const src = `https://drive.google.com/thumbnail?id=${f.id}&sz=w600`;
-      return `<div class="gallery-photo" onclick="openDriveLightbox('${src}','${caption}')">
-        <img src="${src}" alt="${caption}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
-        <div class="gallery-photo-overlay"></div>
-        <div class="gallery-photo-label">${caption}</div>
-      </div>`;
-    }).join('');
-
-    track.innerHTML = tiles + tiles; // duplicate for seamless loop
-    track.style.animation = 'galleryScroll 38s linear infinite';
-
-  } catch(e) {
-    renderDemoGallery(track);
-    console.error('Drive gallery error:', e);
-  }
-}
-
-function openDriveLightbox(src, caption) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function renderDemoGallery(track) {
-  const placeholders = [
-    {bg:'linear-gradient(135deg,#2a1520,#4a1535)', label:'press photo 1'},
-    {bg:'linear-gradient(135deg,#1a2a1a,#2a4a2a)', label:'live @ The Bistro'},
-    {bg:'linear-gradient(135deg,#251520,#3a1535)', label:'studio session'},
-    {bg:'linear-gradient(135deg,#1a1a2a,#1a2a4a)', label:'press photo 2'},
-    {bg:'linear-gradient(135deg,#2a1a15,#4a2a15)', label:'on stage'},
-    {bg:'linear-gradient(135deg,#2a1525,#4a1540)', label:'behind the scenes'},
-    {bg:'linear-gradient(135deg,#1a251a,#2a4a35)', label:'album art shoot'},
-    {bg:'linear-gradient(135deg,#251a1a,#4a2a2a)', label:'press photo 3'},
-  ];
-  const tiles = placeholders.map(p => `
-    <div class="gallery-photo">
-      <div class="gallery-placeholder" style="background:${p.bg}">📸<br>${p.label}</div>
-      <div class="gallery-photo-overlay"></div>
-      <div class="gallery-photo-label">${p.label}</div>
-    </div>`).join('');
-  track.innerHTML = tiles + tiles;
-}
-
-function showDriveSetup() {
-  alert('Google Drive Gallery Setup:\n\n1. Create a folder in Google Drive\n2. Right-click → Share → "Anyone with the link can view"\n3. Copy the folder ID from the URL (the long string after /folders/)\n4. Enable Google Drive API in Google Cloud Console (same project as Calendar)\n5. Paste the folder ID into DRIVE_CONFIG.folderId in the site code\n\nPhotos load automatically. Name files like "The Bistro Feb 2025.jpg" — the filename becomes the caption.');
-}
-
-// =============================================
-// GOOGLE CALENDAR
-// =============================================
+// ── CALENDAR ──
 async function loadShows() {
   const container = document.getElementById('upcoming-shows');
   try {
     const now = new Date().toISOString();
-    const sixMonths = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString();
+    const sixMonths = new Date(Date.now() + 180*24*60*60*1000).toISOString();
     const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_CONFIG.calendarId)}/events?key=${CALENDAR_CONFIG.apiKey}&timeMin=${now}&timeMax=${sixMonths}&singleEvents=true&orderBy=startTime&maxResults=20`;
     const res = await fetch(url);
     const data = await res.json();
-    if (!res.ok) {
-      const errMsg = data?.error?.message || data?.error?.status || res.status;
-      throw new Error(errMsg);
-    }
-    if (!data.items || data.items.length === 0) {
+    if (!res.ok) throw new Error(data?.error?.message || res.status);
+    if (!data.items || !data.items.length) {
       container.innerHTML = '<div class="no-shows">no upcoming shows right now — check back soon 🌸</div>';
       return;
     }
     container.innerHTML = data.items.map(ev => renderShowRow(ev)).join('');
   } catch(e) {
-    container.innerHTML = `<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load shows — error: ${e.message}</div>`;
-    console.error('Calendar error:', e);
+    container.innerHTML = `<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load shows — ${e.message}</div>`;
   }
 }
 
@@ -997,231 +706,150 @@ function buildCalendarLink(event) {
   const end = event.end?.dateTime || event.end?.date || start;
   const isAllDay = !event.start.dateTime;
   function toGCalDate(iso) {
-    if (isAllDay) return iso.replace(/-/g, '');
-    return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    if (isAllDay) return iso.replace(/-/g,'');
+    return new Date(iso).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
   }
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: event.summary || 'Anjali — Live Performance',
-    dates: `${toGCalDate(start)}/${toGCalDate(end)}`,
-    details: event.description || 'Live performance by Anjali. More info at anjalimusicv2.vercel.app',
-    location: event.location || '',
-  });
+  const params = new URLSearchParams({ action:'TEMPLATE', text: event.summary || 'Anjali — Live', dates:`${toGCalDate(start)}/${toGCalDate(end)}`, details: event.description || '', location: event.location || '' });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 function renderShowRow(event) {
   const start = event.start.dateTime || event.start.date;
   const d = new Date(start);
-  const month = d.toLocaleString('en-US', {month:'short'}).toUpperCase();
+  const month = d.toLocaleString('en-US',{month:'short'}).toUpperCase();
   const day = d.getDate();
-  const time = event.start.dateTime ? d.toLocaleString('en-US', {hour:'numeric',minute:'2-digit',hour12:true}) : 'all day';
+  const time = event.start.dateTime ? d.toLocaleString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}) : 'all day';
   const title = event.summary || 'Show';
   const location = event.location || '';
-  const desc = event.description || '';
   const mapLink = location ? `https://maps.google.com/?q=${encodeURIComponent(location)}` : '#';
-  return `
-    <div class="show-row upcoming">
-      <div class="show-date"><span class="show-month">${month}</span>${day}</div>
-      <div class="show-info">
-        <h4>${title}</h4>
-        <p>${time}${location ? ' · <a href="' + mapLink + '" target="_blank" style="color:var(--muted);text-decoration:none;">' + location + '</a>' : ''}${desc ? '<br><span style="font-size:11px;opacity:0.6">' + desc + '</span>' : ''}</p>
-      </div>
-      <div class="show-right">
-        <span class="show-pill upcoming">upcoming</span>
-        <a href="${buildCalendarLink(event)}" target="_blank" class="show-expand-hint" style="text-decoration:none;">+ save to calendar</a>
-      </div>
-    </div>`;
+  return `<div class="show-row upcoming">
+    <div class="show-date"><span class="show-month">${month}</span>${day}</div>
+    <div class="show-info"><h4>${title}</h4><p>${time}${location ? ' · <a href="'+mapLink+'" target="_blank" style="color:var(--muted);text-decoration:none;">'+location+'</a>' : ''}</p></div>
+    <div class="show-right"><span class="show-pill upcoming">upcoming</span><a href="${buildCalendarLink(event)}" target="_blank" class="show-expand-hint" style="text-decoration:none;">+ save to calendar</a></div>
+  </div>`;
 }
 
-function renderDemoShows(container) {
-  const demoShows = [
-    { month:'APR', day:10, title:'Brewery Thirty-Three', time:'8:00 PM', location:'Riverton, NJ', pill:'upcoming' },
-    { month:'APR', day:18, title:'Crossroads', time:'9:00 PM', location:'Garwood, NJ', pill:'upcoming' },
-    { month:'MAY', day:3, title:'Outpost in the Burbs', time:'7:30 PM', location:'Montclair, NJ', pill:'upcoming' },
-  ];
-  container.innerHTML = demoShows.map(s => `
-    <div class="show-row upcoming">
-      <div class="show-date"><span class="show-month">${s.month}</span>${s.day}</div>
-      <div class="show-info"><h4>${s.title}</h4><p>${s.time} · ${s.location}</p></div>
-      <div class="show-right">
-        <span class="show-pill ${s.pill}">${s.pill}</span>
-        <span class="show-expand-hint">+ save to calendar</span>
+// ── RELEASES ──
+function loadReleases() {
+  const grid = document.getElementById('releases-grid');
+  if (!grid) return;
+  grid.innerHTML = RELEASES.map((r,i) => `
+    <div class="release-card" data-idx="${i}" style="cursor:pointer;">
+      <div class="release-art"><img src="${r.img}" alt="${r.title}" loading="lazy"><div class="release-art-overlay"></div></div>
+      <div class="release-info">
+        <div class="release-title">${r.title}</div>
+        <div class="release-year">${r.year}</div>
+        <span class="release-type">${r.type}</span>
       </div>
     </div>`).join('');
+  grid.querySelectorAll('.release-card[data-idx]').forEach(card => {
+    card.addEventListener('click', () => {
+      const r = RELEASES[+card.dataset.idx];
+      openListenModal(r.id, r.title, r.img, r.type, r.spotify);
+    });
+  });
 }
 
-// =============================================
-// ENQUIRE MODAL
-// =============================================
-function openModal() {
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
+// ── LISTEN MODAL ──
+function openListenModal(id, title, img, type, spotifyUrl) {
+  document.getElementById('listen-art').src = img;
+  document.getElementById('listen-title').textContent = title;
+  document.getElementById('listen-type').textContent = type;
+  document.getElementById('listen-spotify').href = spotifyUrl;
+  const links = PLATFORM_LINKS[id] || {};
+  document.getElementById('listen-apple').href = links.apple || 'https://music.apple.com/us/artist/anjali/1675189476';
+  document.getElementById('listen-youtube').href = links.youtube || 'https://www.youtube.com/@anjalibothra196';
+  document.getElementById('listen-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow='';
+function closeListenModal(e) { if (e.target === document.getElementById('listen-modal-overlay')) closeListenModalDirect(); }
+function closeListenModalDirect() {
+  document.getElementById('listen-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
-function closeModalOutside(e) {
-  if(e.target===document.getElementById('modal-overlay')) closeModal();
+
+// ── GOOGLE DRIVE GALLERY ──
+async function loadGallery() {
+  const track = document.getElementById('gallery-track');
+  if (!track) return;
+  try {
+    const url = `https://www.googleapis.com/drive/v3/files?q='${DRIVE_CONFIG.folderId}'+in+parents+and+mimeType+contains+'image/'&fields=files(id,name)&orderBy=name&key=${DRIVE_CONFIG.apiKey}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.files || !data.files.length) {
+      track.innerHTML = '<div style="padding:60px 56px;font-family:Cormorant Garamond,serif;font-style:italic;color:var(--muted);">no photos yet — upload images to your Google Drive folder</div>';
+      return;
+    }
+    const tiles = data.files.map(f => {
+      const caption = f.name.replace(/[.][^.]+$/, '').replace(/_/g,' ');
+      const src = `https://drive.google.com/thumbnail?id=${f.id}&sz=w600`;
+      return `<div class="gallery-photo" onclick="openDriveLightbox('${src}','${caption.replace(/'/g,'')}')">
+        <img src="${src}" alt="${caption}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <div class="gallery-photo-overlay"></div>
+        <div class="gallery-photo-label">${caption}</div>
+      </div>`;
+    }).join('');
+    track.innerHTML = tiles + tiles;
+  } catch(e) {
+    track.innerHTML = '<div style="padding:60px 56px;font-family:Cormorant Garamond,serif;font-style:italic;color:rgba(224,82,141,0.5);">could not load gallery</div>';
+    console.error('Drive gallery:', e);
+  }
 }
-function showCalSetup() {
-  document.getElementById('cal-setup-overlay').classList.add('open');
+function openDriveLightbox(src, caption) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
+
+// ── LIGHTBOX ──
+function openLightbox(el) {
+  const img = el.querySelector('img');
+  if (!img) return;
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (!e || e.target !== document.getElementById('lightbox-img')) {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+// ── ENQUIRE MODAL ──
+function openModal() { document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow=''; }
+function closeModalOutside(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
 function submitForm() {
   const name = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const type = document.getElementById('f-type').value;
   const date = document.getElementById('f-date').value;
   const venue = document.getElementById('f-venue').value.trim();
-  if (!name || !email || !type || !date || !venue) {
-    alert('please fill in the required fields (name, email, event type, date, and venue).');
-    return;
-  }
-  document.getElementById('modal-body').innerHTML = `
-    <div class="form-success">
-      <div class="form-success-icon">🌸</div>
-      <h3>enquiry received!</h3>
-      <p>thanks ${name}, Anjali will be in touch at <strong>${email}</strong> within 48 hours.<br><br>
-      in the meantime, <a href="https://open.spotify.com/artist/0398q6h9AKJSfRbxDcIXAh" target="_blank" style="color:var(--pink);">stream the music on Spotify</a>.</p>
-      <button class="btn-primary" style="margin-top:28px;" onclick="closeModal()">close</button>
-    </div>`;
+  if (!name||!email||!type||!date||!venue) { alert('please fill in all required fields.'); return; }
+  document.getElementById('modal-body').innerHTML = `<div class="form-success"><div class="form-success-icon">🌸</div><h3>enquiry received!</h3><p>thanks ${name}, Anjali will be in touch at <strong>${email}</strong> within 48 hours.</p><button class="btn-primary" style="margin-top:28px;" onclick="closeModal()">close</button></div>`;
 }
 
-// =============================================
-// GALLERY LIGHTBOX
-// =============================================
-function openLightbox(el) {
-  const img = el.querySelector('img');
-  if(!img) return;
-  document.getElementById('lightbox-img').src = img.src;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLightbox(e) {
-  if(!e || e.target !== document.getElementById('lightbox-img')) {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow='';
-  }
-}
-
-// =============================================
-// PAST SHOW TOGGLE
-// =============================================
-function toggleShow(id) {
-  document.getElementById(id).classList.toggle('open');
-}
-
-// =============================================
-// COPY BIO
-// =============================================
+// ── COPY BIO ──
 function copyBio(btn, idx) {
   const boxes = document.querySelectorAll('.press-bio-box');
   const text = [...boxes[idx].querySelectorAll('p')].slice(1).map(p=>p.innerText).join('\n\n');
-  navigator.clipboard.writeText(text).then(()=>{
-    const orig = btn.textContent;
-    btn.textContent = 'copied!';
-    setTimeout(()=>btn.textContent=orig, 2000);
-  });
+  navigator.clipboard.writeText(text).then(()=>{ const o=btn.textContent; btn.textContent='copied!'; setTimeout(()=>btn.textContent=o,2000); });
 }
 
-// =============================================
-// SHOPIFY MERCH
-// =============================================
-let cart = [];
+function showCalSetup() {}
+function toggleShow(id) { document.getElementById(id)?.classList.toggle('open'); }
 
-async function loadMerch() {
-  const grid = document.getElementById('merch-grid');
-  const isDemo = SHOPIFY_CONFIG.storeDomain.includes('your-store');
-  if (isDemo) { renderDemoMerch(grid); return; }
-  try {
-    const query = `{
-      products(first: 8) {
-        edges { node {
-          id title handle
-          priceRange { minVariantPrice { amount currencyCode } }
-          images(first: 1) { edges { node { url altText } } }
-          variants(first: 1) { edges { node { id } } }
-          tags
-        }}
-      }
-    }`;
-    const res = await fetch(`https://${SHOPIFY_CONFIG.storeDomain}/api/2024-01/graphql.json`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_CONFIG.storefrontAccessToken },
-      body: JSON.stringify({ query }),
-    });
-    const data = await res.json();
-    const products = data.data.products.edges.map(e => e.node);
-    if (!products.length) { grid.innerHTML = '<div class="no-shows">no products yet</div>'; return; }
-    grid.innerHTML = products.map(p => {
-      const price = parseFloat(p.priceRange.minVariantPrice.amount).toFixed(2);
-      const img = p.images.edges[0]?.node;
-      const variantId = p.variants.edges[0]?.node.id;
-      const isNew = p.tags.includes('new');
-      return `<div class="merch-card">
-        <div class="merch-img">
-          ${img ? `<img src="${img.url}" alt="${img.altText || p.title}">` : '<div class="merch-placeholder">🛍️</div>'}
-          ${isNew ? '<span class="merch-badge">new</span>' : ''}
-        </div>
-        <div class="merch-info">
-          <div class="merch-name">${p.title}</div>
-          <div class="merch-variant">Shopify × Printful</div>
-          <div class="merch-footer">
-            <span class="merch-price">$${price}</span>
-            <button class="merch-add" onclick="addToCart('${variantId}','${p.title}','$${price}')">add to cart</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-    document.getElementById('merch-shop-link').style.display = 'inline-flex';
-    document.getElementById('merch-shop-link').href = `https://${SHOPIFY_CONFIG.storeDomain}`;
-  } catch(e) {
-    grid.innerHTML = '<div class="no-shows" style="color:rgba(224,82,141,0.5);">could not load products</div>';
-    console.error(e);
-  }
-}
+// ── INIT ──
+loadShows();
+loadReleases();
+loadGallery();
+</script>
 
-function renderDemoMerch(grid) {
-  const demoProducts = [
-    { name:'ANJALI Logo Tee', price:'$32', variant:'Bella+Canvas 3001 · Printful', badge:'new', bg:'linear-gradient(135deg,#2a1520,#3a1530)', icon:'👕' },
-    { name:'Apathy Album Hoodie', price:'$58', variant:'Premium Fleece · Printful', badge:'', bg:'linear-gradient(135deg,#1a2a1a,#2a3a25)', icon:'🧥' },
-    { name:'Sunflower Tote Bag', price:'$24', variant:'Canvas Tote · Printful', badge:'new', bg:'linear-gradient(135deg,#251a10,#3a2a15)', icon:'👜' },
-    { name:'"Sociopath" Poster', price:'$18', variant:'18×24 Print · Printful', badge:'', bg:'linear-gradient(135deg,#1a1525,#251535)', icon:'🖼️' },
-    { name:'ANJALI Mug', price:'$19', variant:'11oz Ceramic · Printful', badge:'', bg:'linear-gradient(135deg,#201520,#351530)', icon:'☕' },
-    { name:'Displacement Sticker Pack', price:'$8', variant:'Vinyl · Printful', badge:'new', bg:'linear-gradient(135deg,#15201a,#20352a)', icon:'🌸' },
-  ];
-  grid.innerHTML = demoProducts.map(p => `
-    <div class="merch-card">
-      <div class="merch-img">
-        <div class="merch-placeholder" style="background:${p.bg}">${p.icon}<br><span style="font-size:12px;">${p.name}</span></div>
-        ${p.badge ? `<span class="merch-badge">${p.badge}</span>` : ''}
-      </div>
-      <div class="merch-info">
-        <div class="merch-name">${p.name}</div>
-        <div class="merch-variant">${p.variant}</div>
-        <div class="merch-footer">
-          <span class="merch-price">${p.price}</span>
-          <button class="merch-add" onclick="addToCart('demo','${p.name}','${p.price}')">add to cart</button>
-        </div>
-      </div>
-    </div>`).join('') + `<p style="font-size:9px;letter-spacing:0.1em;color:rgba(244,241,235,0.18);grid-column:1/-1;text-align:right;margin-top:-8px;">demo products — <a href="#" onclick="showMerchSetup();return false;" style="color:rgba(224,82,141,0.4);">connect your Shopify store →</a></p>`;
-}
+<!-- CART BUTTON -->
+<button class="cart-btn" onclick="alert('Checkout coming soon! Connect your Shopify store to enable.')">
+  🛍️ cart <span class="cart-count">0</span>
+</button>
 
-function addToCart(variantId, name, price) {
-  cart.push({ variantId, name, price });
-  const btn = document.querySelector('.cart-btn');
-  btn.classList.add('visible');
-  btn.querySelector('.cart-count').textContent = cart.length;
-  btn.style.transform = 'scale(1.12) translateY(-2px)';
-  setTimeout(() => btn.style.transform = '', 200);
-}
-
-function showMerchSetup() {
-  document.getElementById('merch-setup-overlay').classList.add('open');
-}
-
-// =============================================
-// INIT
-// =============================================
-loadS
+</body>
+</html>
