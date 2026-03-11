@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Request a Song — ANJALI</title>
+  <meta name="theme-color" content="#111010">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,wght@1,300&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #111010; }
+    #root { min-height: 100vh; }
+    input::placeholder { color: rgba(244,241,235,0.25); }
+    input:focus { outline: none; border-color: rgba(224,82,141,0.5) !important; }
+    button { cursor: pointer; }
+    a { text-decoration: none; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb { background: rgba(224,82,141,0.3); border-radius: 2px; }
+    @keyframes float { from { transform: translateY(0px); } to { transform: translateY(-14px); } }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    .card { animation: fadeIn 0.4s ease forwards; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+// ============================================================
+// ★ CONFIG — edit these
+// ============================================================
+const VENMO_USERNAME     = "AnjaliBothra";
+const DASHBOARD_PASSWORD = "anjali2024";   // ← change this!
+const ARTIST_NAME        = "ANJALI";
+// ============================================================
+
+const PINK   = "#E0528D";
+const CREAM  = "#F4F1EB";
+const BG     = "#111010";
+const BG2    = "#1a1818";
+const MUTED  = "rgba(244,241,235,0.45)";
+const BORDER = "rgba(244,241,235,0.1)";
+
+const TIP_OPTIONS = [
+  { label: "$1",  amount: 1 },
+  { label: "$5",  amount: 5 },
+  { label: "$10", amount: 10 },
+  { label: "$20", amount: 20 },
+  { label: "💖",  amount: 50 },
+];
+
+// ── Storage (shared across all users via window.storage) ──
+function useRequests() {
+  const getAll = useCallback(async () => {
+    try {
+      const r = await window.storage.get("anjali_requests", true);
+      return r ? JSON.parse(r.value) : [];
+    } catch { return []; }
+  }, []);
+
+  const saveAll = useCallback(async (reqs) => {
+    await window.storage.set("anjali_requests", JSON.stringify(reqs), true);
+  }, []);
+
+  return { getAll, saveAll };
+}
+
+// ── Decorative dots ──
+function Petals() {
+  const dots = [
+    { top:"8%",  left:"6%",  size:3, delay:0,   dur:5 },
+    { top:"22%", left:"88%", size:2, delay:0.8, dur:4 },
+    { top:"55%", left:"4%",  size:2, delay:1.5, dur:6 },
+    { top:"70%", left:"92%", size:3, delay:0.3, dur:5 },
+    { top:"40%", left:"50%", size:1, delay:2,   dur:7 },
+    { top:"85%", left:"20%", size:2, delay:1,   dur:4 },
+  ];
+  return (
+    <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
+      {dots.map((d,i) => (
+        <div key={i} style={{
+          position:"absolute", width:d.size, height:d.size, borderRadius:"50%",
+          background:PINK, opacity:0.2, top:d.top, left:d.left,
+          animation:`float ${d.dur}s ease-in-out ${d.delay}s infinite alternate`,
+        }}/>
+      ))}
+    </div>
+  );
+}
+
+// ── Shared card wrapper ──
+function Card({ children, maxWidth=420 }) {
+  return (
+    <div style={{minHeight:"100vh",background:BG,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 16px 64px",position:"relative"}}>
+      <Petals/>
+      <div className="card" style={{background:BG2,border:`1px solid ${BORDER}`,borderRadius:8,padding:"32px 28px",width:"100%",maxWidth,position:"relative",zIndex:1}}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function Logo() {
+  return <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:11,letterSpacing:"0.35em",textTransform:"uppercase",color:PINK,marginBottom:20,textAlign:"center"}}>{ARTIST_NAME}</div>;
+}
+
+// ══════════════════════════════════════════════════════════
+// FAN PAGE
+// ══════════════════════════════════════════════════════════
+function FanPage({ onQueue }) {
+  const [song, setSong]         = useState("");
+  const [name, setName]         = useState("");
+  const [tip, setTip]           = useState(0);
+  const [custom, setCustom]     = useState("");
+  const [step, setStep]         = useState("form");
+  const [busy, setBusy]         = useState(false);
+  const { getAll, saveAll }     = useRequests();
+
+  const tipAmt = tip === "custom" ? (parseFloat(custom) || 0) : (tip || 0);
+
+  async function submit() {
+    if (!song.trim() || busy) return;
+    setBusy(true);
+    const all = await getAll();
+    await saveAll([...all, {
+      id: Date.now(),
+      song: song.trim(),
+      name: name.trim() || "Anonymous",
+      tip: tipAmt,
+      ts: Date.now(),
+      played: false,
+    }]);
+    setBusy(false);
+    setStep(tipAmt > 0 ? "pay" : "done");
+  }
+
+  function reset() { setSong(""); setName(""); setTip(0); setCustom(""); setStep("form"); }
+
+  if (step === "pay") return (
+    <Card>
+      <Logo/>
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <div style={{fontSize:48,marginBottom:8}}>💸</div>
+        <h2 style={S.h2}>send your tip</h2>
+        <p style={S.sub}>tip <strong style={{color:PINK}}>${tipAmt}</strong> to boost <em>"{song}"</em> up the queue</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+        <a href={`https://venmo.com/${VENMO_USERNAME}?txn=pay&amount=${tipAmt}&note=${encodeURIComponent("Song request: "+song)}`}
+           target="_blank" style={{...S.payBtn, background:"#3D95CE"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.03 1.89c.47.84.68 1.71.68 2.82 0 3.51-2.99 8.07-5.43 11.27H8.97L6.71 2.56l5.22-.5 1.2 9.55c1.12-1.87 2.5-4.82 2.5-6.83 0-1.1-.19-1.84-.48-2.46l3.88-.43z"/></svg>
+          Pay with Venmo
+        </a>
+      </div>
+      <button onClick={() => setStep("done")} style={S.ghost}>skip tip — just submit →</button>
+    </Card>
+  );
+
+  if (step === "done") return (
+    <Card>
+      <Logo/>
+      <div style={{textAlign:"center"}}>
+        <div style={{fontSize:52,marginBottom:12}}>🌸</div>
+        <h2 style={{...S.h2,marginBottom:8}}>request received!</h2>
+        <p style={{color:CREAM,fontStyle:"italic",fontSize:18,marginBottom:6}}>"{song}"</p>
+        <p style={{...S.sub,marginBottom:28}}>{tipAmt > 0 ? `your $${tipAmt} tip bumps you up the list 💖` : "we'll do our best to get to it!"}</p>
+        <button onClick={onQueue} style={{...S.primary,width:"100%",marginBottom:10,justifyContent:"center"}}>see the live queue →</button>
+        <button onClick={reset} style={S.ghost}>request another song</button>
+      </div>
+    </Card>
+  );
+
+  return (
+    <Card>
+      <Logo/>
+      <h1 style={{...S.h2,fontSize:30,marginBottom:4}}>request a song</h1>
+      <p style={{...S.sub,marginBottom:28}}>live tonight — make it yours ✨</p>
+
+      <div style={S.field}>
+        <label style={S.label}>song request *</label>
+        <input style={S.input} placeholder="song name (+ artist if not mine)" value={song}
+          onChange={e => setSong(e.target.value)} onKeyDown={e => e.key==="Enter" && submit()} autoFocus/>
+      </div>
+
+      <div style={S.field}>
+        <label style={S.label}>your name <span style={{opacity:0.5,fontWeight:400}}>(optional)</span></label>
+        <input style={S.input} placeholder="leave blank to stay anonymous" value={name}
+          onChange={e => setName(e.target.value)}/>
+      </div>
+
+      <div style={S.field}>
+        <label style={S.label}>
+          boost your request with a tip
+          <span style={{color:MUTED,marginLeft:6,fontWeight:400,fontSize:9}}>higher tip = higher in queue</span>
+        </label>
+        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+          <button onClick={() => setTip(0)} style={{...S.tipBtn,...(tip===0?S.tipOn:{})}}>no tip</button>
+          {TIP_OPTIONS.map(o => (
+            <button key={o.amount} onClick={() => {setTip(o.amount);setCustom("");}}
+              style={{...S.tipBtn,...(tip===o.amount?S.tipOn:{})}}>{o.label}</button>
+          ))}
+          <button onClick={() => setTip("custom")} style={{...S.tipBtn,...(tip==="custom"?S.tipOn:{})}}>other</button>
+        </div>
+        {tip === "custom" && (
+          <input style={{...S.input,marginTop:8}} type="number" min="1" placeholder="enter amount e.g. 15"
+            value={custom} onChange={e => setCustom(e.target.value)}/>
+        )}
+      </div>
+
+      <button onClick={submit} disabled={!song.trim()||busy}
+        style={{...S.primary,width:"100%",justifyContent:"center",opacity:(!song.trim()||busy)?0.4:1}}>
+        {busy ? "submitting…" : tipAmt > 0 ? `submit + tip $${tipAmt} →` : "submit request →"}
+      </button>
+      <button onClick={onQueue} style={S.ghost}>see the live queue</button>
+    </Card>
+  );
+}
+
+// ══════════════════════════════════════════════════════════
+// QUEUE PAGE (public)
+// ══════════════════════════════════════════════════════════
+function QueuePage({ onBack }) {
+  const [reqs, setReqs]     = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { getAll }          = useRequests();
+
+  useEffect(() => {
+    let alive = true;
+    async function poll() {
+      const all = await getAll();
+      if (!alive) return;
+      const active = all.filter(r => !r.played).sort((a,b) => b.tip-a.tip || a.ts-b.ts);
+      setReqs(active);
+      setLoading(false);
+    }
+    poll();
+    const t = setInterval(poll, 3000);
+    return () => { alive=false; clearInterval(t); };
+  }, [getAll]);
+
+  return (
+    <Card maxWidth={500}>
+      <Logo/>
+      <h1 style={{...S.h2,marginBottom:4}}>live queue</h1>
+      <p style={{...S.sub,marginBottom:24}}>updates every 3 seconds ✨</p>
+
+      {loading ? (
+        <p style={{textAlign:"center",color:MUTED,padding:"40px 0"}}>loading…</p>
+      ) : reqs.length === 0 ? (
+        <div style={{textAlign:"center",padding:"48px 0"}}>
+          <div style={{fontSize:36,marginBottom:12}}>🎵</div>
+          <p style={{color:MUTED,fontStyle:"italic"}}>no requests yet — be the first!</p>
+        </div>
+      ) : reqs.map((r,i) => (
+        <div key={r.id} style={{
+          display:"flex",alignItems:"center",gap:12,padding:"12px 14px",
+          border:`1px solid ${i===0?"rgba(224,82,141,0.45)":BORDER}`,
+          borderRadius:6,marginBottom:8,
+          background:i===0?"rgba(224,82,141,0.05)":"transparent",
+          position:"relative",
+        }}>
+          {i===0 && <div style={{position:"absolute",top:-8,right:10,background:PINK,color:"#fff",fontSize:8,letterSpacing:"0.15em",textTransform:"uppercase",padding:"2px 8px",borderRadius:10}}>up next</div>}
+          <div style={{width:28,height:28,borderRadius:"50%",background:i===0?PINK:"rgba(244,241,235,0.06)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,color:i===0?"#fff":MUTED,flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{color:CREAM,fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:17}}>{r.song}</div>
+            <div style={{color:MUTED,fontSize:11,marginTop:2}}>from {r.name}</div>
+          </div>
+          {r.tip > 0 && <div style={{color:PINK,fontSize:11,fontWeight:600,flexShrink:0}}>boosted 💖</div>}
+        </div>
+      ))}
+
+      <button onClick={onBack} style={{...S.ghost,marginTop:16}}>← request a song</button>
+    </Card>
+  );
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+function Dashboard({ onLock }) {
+  const [reqs, setReqs]       = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [notif, setNotif]     = useState(false);
+  const prevLen               = useRef(0);
+  const { getAll, saveAll }   = useRequests();
+
+  useEffect(() => {
+    setNotif("Notification" in window && Notification.permission === "granted");
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    async function poll() {
+      const all = await getAll();
+      if (!alive) return;
+      const active = all.filter(r=>!r.played).sort((a,b)=>b.tip-a.tip||a.ts-b.ts);
+      if (prevLen.current > 0 && active.length > prevLen.current) {
+        const newest = active.find(r => r.ts > Date.now() - 6000);
+        if (newest && "Notification" in window && Notification.permission === "granted") {
+          new Notification(`🎵 New request: "${newest.song}"`, {
+            body: newest.name + (newest.tip > 0 ? ` · $${newest.tip} tip` : ""),
+          });
+        }
+      }
+      prevLen.current = active.length;
+      setReqs(active);
+      setLoading(false);
+    }
+    poll();
+    const t = setInterval(poll, 2500);
+    return () => { alive=false; clearInterval(t); };
+  }, [getAll]);
+
+  async function markPlayed(id) {
+    const all = await getAll();
+    await saveAll(all.map(r => r.id===id ? {...r,played:true} : r));
+    setReqs(p => p.filter(r => r.id!==id));
+  }
+
+  async function clearAll() {
+    if (!window.confirm("Clear entire queue?")) return;
+    await saveAll([]);
+    setReqs([]);
+  }
+
+  async function enableNotifs() {
+    const p = await Notification.requestPermission();
+    setNotif(p === "granted");
+  }
+
+  const totalTips = reqs.reduce((s,r) => s+(r.tip||0), 0);
+
+  return (
+    <div style={{minHeight:"100vh",background:"#0a0a0a",fontFamily:"'Cormorant Garamond',Georgia,serif"}}>
+      <div style={{maxWidth:580,margin:"0 auto",padding:"24px 16px 64px"}}>
+
+        {/* Header */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
+          <div>
+            <div style={{fontSize:10,letterSpacing:"0.2em",color:PINK,textTransform:"uppercase",marginBottom:2}}>performer dashboard</div>
+            <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:24,color:CREAM}}>{ARTIST_NAME} — live</div>
+          </div>
+          <button onClick={onLock} style={{background:"rgba(244,241,235,0.06)",border:`1px solid ${BORDER}`,color:MUTED,padding:"8px 14px",borderRadius:4,fontSize:11,letterSpacing:"0.1em"}}>
+            lock 🔒
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
+          {[{l:"in queue",v:reqs.length},{l:"tips pending",v:`$${totalTips}`},{l:"notifications",v:notif?"on ✓":"off"}].map(s=>(
+            <div key={s.l} style={{background:BG2,border:`1px solid ${BORDER}`,borderRadius:6,padding:"14px",textAlign:"center"}}>
+              <div style={{fontSize:24,fontFamily:"'Fraunces',serif",fontStyle:"italic",color:PINK,marginBottom:3}}>{s.v}</div>
+              <div style={{fontSize:9,letterSpacing:"0.15em",textTransform:"uppercase",color:MUTED}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Enable notifs */}
+        {!notif && "Notification" in window && (
+          <button onClick={enableNotifs} style={{...S.primary,width:"100%",marginBottom:16,justifyContent:"center",background:"rgba(224,82,141,0.12)",border:`1px solid ${PINK}`}}>
+            🔔 enable push notifications
+          </button>
+        )}
+
+        {/* Queue */}
+        {loading ? (
+          <p style={{color:MUTED,textAlign:"center",padding:"40px 0"}}>loading…</p>
+        ) : reqs.length === 0 ? (
+          <div style={{textAlign:"center",padding:"48px 0",color:MUTED}}>
+            <div style={{fontSize:32,marginBottom:8}}>🎵</div>
+            no requests yet
+          </div>
+        ) : reqs.map((r,i) => (
+          <div key={r.id} style={{
+            background:BG2,border:`1px solid ${i===0?"rgba(224,82,141,0.5)":BORDER}`,
+            borderRadius:6,padding:"14px 16px",display:"flex",alignItems:"center",gap:12,marginBottom:8,
+          }}>
+            <div style={{width:30,height:30,borderRadius:"50%",background:i===0?PINK:"rgba(244,241,235,0.07)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,color:i===0?"#fff":MUTED,flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{color:CREAM,fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:17}}>{r.song}</div>
+              <div style={{color:MUTED,fontSize:11,marginTop:2}}>
+                {r.name}
+                {r.tip>0 && <span style={{color:PINK,marginLeft:8,fontWeight:600}}>${r.tip} tip 💖</span>}
+              </div>
+            </div>
+            <button onClick={() => markPlayed(r.id)} style={{background:"rgba(79,101,79,0.25)",border:"1px solid rgba(79,101,79,0.5)",color:"#8bc48b",borderRadius:4,padding:"7px 14px",fontSize:11,letterSpacing:"0.05em",flexShrink:0}}>
+              ✓ played
+            </button>
+          </div>
+        ))}
+
+        {reqs.length > 0 && (
+          <button onClick={clearAll} style={{...S.ghost,display:"block",width:"100%",marginTop:8}}>
+            clear entire queue
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════════════
+function Login({ onSuccess }) {
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState(false);
+  function attempt() {
+    if (pw === DASHBOARD_PASSWORD) onSuccess();
+    else { setErr(true); setPw(""); }
+  }
+  return (
+    <Card maxWidth={340}>
+      <Logo/>
+      <h2 style={{...S.h2,fontSize:20,marginBottom:24}}>performer login</h2>
+      <input type="password" style={{...S.input,marginBottom:err?6:12}} placeholder="password"
+        value={pw} onChange={e=>{setPw(e.target.value);setErr(false);}} onKeyDown={e=>e.key==="Enter"&&attempt()} autoFocus/>
+      {err && <p style={{color:"#ff6b6b",fontSize:11,textAlign:"center",marginBottom:10}}>incorrect password</p>}
+      <button onClick={attempt} style={{...S.primary,width:"100%",justifyContent:"center"}}>enter →</button>
+    </Card>
+  );
+}
+
+// ══════════════════════════════════════════════════════════
+// STYLES
+// ══════════════════════════════════════════════════════════
+const S = {
+  h2:    { fontFamily:"'Fraunces',serif", fontStyle:"italic", fontWeight:300, fontSize:26, color:CREAM, textAlign:"center", marginBottom:8 },
+  sub:   { fontSize:13, color:MUTED, textAlign:"center", fontStyle:"italic" },
+  field: { marginBottom:18 },
+  label: { display:"block", fontSize:9, letterSpacing:"0.18em", textTransform:"uppercase", color:MUTED, marginBottom:6 },
+  input: { width:"100%", background:"rgba(244,241,235,0.04)", border:`1px solid ${BORDER}`, borderRadius:4, padding:"11px 14px", color:CREAM, fontSize:15, fontFamily:"'Cormorant Garamond',serif" },
+  tipBtn:{ padding:"7px 12px", background:"transparent", border:`1px solid ${BORDER}`, borderRadius:4, color:MUTED, fontSize:13, fontFamily:"'Cormorant Garamond',serif" },
+  tipOn: { borderColor:PINK, color:PINK, background:"rgba(224,82,141,0.08)" },
+  primary:{ display:"flex", alignItems:"center", gap:8, padding:"13px 24px", background:PINK, border:"none", borderRadius:4, color:"#fff", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", fontFamily:"'Montserrat',sans-serif" },
+  ghost: { display:"block", width:"100%", background:"transparent", border:"none", color:MUTED, fontSize:11, letterSpacing:"0.1em", textAlign:"center", padding:"8px 0", fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic" },
+  payBtn:{ display:"flex", alignItems:"center", justifyContent:"center", gap:10, padding:"14px 20px", borderRadius:6, border:"none", color:"#fff", fontSize:15, fontWeight:600, fontFamily:"system-ui,sans-serif" },
+};
+
+// ══════════════════════════════════════════════════════════
+// ROOT
+// ══════════════════════════════════════════════════════════
+function App() {
+  const [view, setView]   = useState("fan");
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    function onHash() {
+      const h = window.location.hash;
+      if (h === "#dashboard") setView(authed ? "dashboard" : "login");
+      else if (h === "#queue") setView("queue");
+      else setView("fan");
+    }
+    window.addEventListener("hashchange", onHash);
+    onHash();
+    return () => window.removeEventListener("hashchange", onHash);
+  }, [authed]);
+
+  if (view === "login")     return <Login onSuccess={() => { setAuthed(true); setView("dashboard"); window.location.hash="dashboard"; }}/>;
+  if (view === "dashboard" && authed) return <Dashboard onLock={() => { setAuthed(false); setView("fan"); window.location.hash=""; }}/>;
+  if (view === "queue")     return <QueuePage onBack={() => { setView("fan"); window.location.hash=""; }}/>;
+  return <FanPage onQueue={() => { setView("queue"); window.location.hash="queue"; }}/>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
