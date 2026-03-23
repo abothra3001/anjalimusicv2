@@ -9,7 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,wght@1,300&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Firebase -->
-  <script type="module">
+  <script>
+  // ============================================================
+  // ★ SITE CONFIG — edit these
+  // ============================================================
+  window.VENMO_USERNAME     = "AnjaliBothra";
+  window.DASHBOARD_PASSWORD = "anjali2024";   // ← change this!
+  window.ARTIST_NAME        = "ANJALI";
+  // ============================================================
+</script>
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
     import { getDatabase, ref, push, onValue, update, remove, get }
       from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
@@ -27,11 +36,7 @@
       appId:             "1:352245091478:web:5d118cb2468b97593b06b7",
     };
     // ============================================================
-    // ★ SITE CONFIG
-    // ============================================================
-    window.VENMO_USERNAME     = "AnjaliBothra";
-    window.DASHBOARD_PASSWORD = "anjali2026";   
-    window.ARTIST_NAME        = "ANJALI";
+    // ★ SITE CONFIG — edit in the <script> block above this one
     // ============================================================
 
     const app = initializeApp(firebaseConfig);
@@ -162,6 +167,20 @@
   </style>
 </head>
 <body>
+
+<a href="https://anjalimusic.com" style="
+  position:fixed;top:14px;left:16px;z-index:999;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:12px;letter-spacing:0.08em;
+  color:rgba(244,241,235,0.45);text-decoration:none;
+  padding:5px 10px;border:1px solid rgba(244,241,235,0.1);
+  border-radius:20px;background:rgba(17,16,16,0.8);
+  backdrop-filter:blur(6px);transition:color 0.2s,border-color 0.2s;
+" onmouseover="this.style.color='#E0528D';this.style.borderColor='rgba(224,82,141,0.4)'"
+   onmouseout="this.style.color='rgba(244,241,235,0.45)';this.style.borderColor='rgba(244,241,235,0.1)'">
+  ← anjalimusic.com
+</a>
+
 <div class="dots" id="dots"></div>
 <div id="root"><div class="page"><div class="spinner"></div></div></div>
 
