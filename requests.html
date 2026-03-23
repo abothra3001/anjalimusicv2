@@ -7,13 +7,69 @@
   <meta name="theme-color" content="#111010">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,wght@1,300&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, update, remove, get }
+      from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+
+    // ============================================================
+    // ★ FIREBASE CONFIG — paste your values here
+    // ============================================================
+    const firebaseConfig = {
+      apiKey:            "AIzaSyCHVFwE634VObOGsqS5kmUXhh_J5sIzNu0",
+      authDomain:        "anjali-requests.firebaseapp.com",
+      databaseURL:       "https://anjali-requests-default-rtdb.firebaseio.com",
+      projectId:         "anjali-requests",
+      storageBucket:     "anjali-requests.firebasestorage.app",
+      messagingSenderId: "352245091478",
+      appId:             "1:352245091478:web:5d118cb2468b97593b06b7",
+    };
+    // ============================================================
+    // ★ SITE CONFIG
+    // ============================================================
+    window.VENMO_USERNAME     = "AnjaliBothra";
+    window.DASHBOARD_PASSWORD = "anjali2024";   // ← change this!
+    window.ARTIST_NAME        = "ANJALI";
+    // ============================================================
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+
+    // Expose DB helpers to the app
+    window.fbSubmit = async (song, name, tip) => {
+      await push(ref(db, "requests"), {
+        song, name: name || "Anonymous", tip: tip || 0,
+        ts: Date.now(), played: false,
+      });
+    };
+
+    window.fbListen = (callback) => {
+      return onValue(ref(db, "requests"), snap => {
+        const data = snap.val() || {};
+        const list = Object.entries(data).map(([key, v]) => ({...v, key}));
+        callback(list);
+      });
+    };
+
+    window.fbMarkPlayed = async (key) => {
+      await update(ref(db, `requests/${key}`), { played: true });
+    };
+
+    window.fbClearAll = async () => {
+      await remove(ref(db, "requests"));
+    };
+
+    window.fbReady = true;
+    document.dispatchEvent(new Event("fb-ready"));
+  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: #111010; }
+    html, body { height: 100%; background: #111010; font-family: 'Cormorant Garamond', Georgia, serif; }
     #root { min-height: 100vh; }
+    input, button { font-family: inherit; }
     input::placeholder { color: rgba(244,241,235,0.25); }
     input:focus { outline: none; border-color: rgba(224,82,141,0.5) !important; }
     button { cursor: pointer; }
@@ -21,452 +77,485 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #111; }
     ::-webkit-scrollbar-thumb { background: rgba(224,82,141,0.3); border-radius: 2px; }
-    @keyframes float { from { transform: translateY(0px); } to { transform: translateY(-14px); } }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-    .card { animation: fadeIn 0.4s ease forwards; }
+
+    @keyframes float  { from { transform: translateY(0);    } to { transform: translateY(-14px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin   { to   { transform: rotate(360deg); } }
+
+    .page  { min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+             justify-content: flex-start; padding: 32px 16px 64px; position: relative; background: #111010; }
+    .card  { background: #1a1818; border: 1px solid rgba(244,241,235,0.1); border-radius: 8px;
+             padding: 32px 28px; width: 100%; max-width: 420px; position: relative; z-index: 1;
+             animation: fadeUp 0.4s ease forwards; }
+    .card.wide { max-width: 520px; }
+    .logo  { font-family: 'Fraunces', serif; font-style: italic; font-size: 11px;
+             letter-spacing: 0.35em; text-transform: uppercase; color: #E0528D;
+             margin-bottom: 20px; text-align: center; }
+    .h2    { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+             font-size: 28px; color: #F4F1EB; text-align: center; margin-bottom: 8px; }
+    .sub   { font-size: 13px; color: rgba(244,241,235,0.45); text-align: center;
+             font-style: italic; margin-bottom: 24px; }
+    .field { margin-bottom: 18px; }
+    .label { display: block; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+             color: rgba(244,241,235,0.45); margin-bottom: 6px; }
+    .input { width: 100%; background: rgba(244,241,235,0.04); border: 1px solid rgba(244,241,235,0.1);
+             border-radius: 4px; padding: 11px 14px; color: #F4F1EB; font-size: 15px;
+             font-family: 'Cormorant Garamond', serif; }
+    .tip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tip-btn { padding: 7px 12px; background: transparent; border: 1px solid rgba(244,241,235,0.1);
+               border-radius: 4px; color: rgba(244,241,235,0.45); font-size: 13px;
+               font-family: 'Cormorant Garamond', serif; transition: all 0.15s; }
+    .tip-btn.on { border-color: #E0528D; color: #E0528D; background: rgba(224,82,141,0.08); }
+    .btn-primary { display: flex; align-items: center; justify-content: center; gap: 8px;
+                   padding: 13px 24px; background: #E0528D; border: none; border-radius: 4px;
+                   color: #fff; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+                   font-family: 'Montserrat', sans-serif; width: 100%; transition: opacity 0.2s; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ghost  { display: block; width: 100%; background: transparent; border: none;
+                  color: rgba(244,241,235,0.45); font-size: 11px; letter-spacing: 0.1em;
+                  text-align: center; padding: 8px 0; font-style: italic; margin-top: 10px; }
+    .btn-outline { background: transparent; border: 1px solid rgba(244,241,235,0.15);
+                   color: rgba(244,241,235,0.5); border-radius: 4px; padding: 8px 14px;
+                   font-size: 11px; letter-spacing: 0.1em; }
+    .btn-played { background: rgba(79,101,79,0.25); border: 1px solid rgba(79,101,79,0.5);
+                  color: #8bc48b; border-radius: 4px; padding: 7px 14px; font-size: 11px;
+                  letter-spacing: 0.05em; flex-shrink: 0; }
+    .pay-btn  { display: flex; align-items: center; justify-content: center; gap: 10px;
+                padding: 14px 20px; border-radius: 6px; border: none; font-size: 15px;
+                font-weight: 600; font-family: system-ui, sans-serif; width: 100%; margin-bottom: 10px; }
+    .queue-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+                 border: 1px solid rgba(244,241,235,0.1); border-radius: 6px; margin-bottom: 8px;
+                 position: relative; transition: border-color 0.2s; }
+    .queue-row.top { border-color: rgba(224,82,141,0.45); background: rgba(224,82,141,0.05); }
+    .queue-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+                 justify-content: center; font-size: 12px; flex-shrink: 0; font-family: monospace;
+                 background: rgba(244,241,235,0.06); color: rgba(244,241,235,0.45); }
+    .queue-num.top { background: #E0528D; color: #fff; }
+    .up-next { position: absolute; top: -8px; right: 10px; background: #E0528D; color: #fff;
+               font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+               padding: 2px 8px; border-radius: 10px; }
+    .boosted { color: #E0528D; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+    .song-title { color: #F4F1EB; font-style: italic; font-size: 17px; }
+    .song-from  { color: rgba(244,241,235,0.45); font-size: 11px; margin-top: 2px; }
+    .tip-amt    { color: #E0528D; margin-left: 8px; font-weight: 600; }
+    .pill { background: #1a0f14; border: 0.5px solid #E0528D; border-radius: 9px;
+            padding: 3px 10px; font-style: italic; font-size: 11px; color: #E0528D;
+            text-align: center; margin: 12px auto 0; display: inline-block; }
+    .stat-box { background: #1a1818; border: 1px solid rgba(244,241,235,0.1); border-radius: 6px;
+                padding: 14px; text-align: center; }
+    .stat-val { font-family: 'Fraunces', serif; font-style: italic; font-size: 24px;
+                color: #E0528D; margin-bottom: 3px; }
+    .stat-lbl { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+                color: rgba(244,241,235,0.45); }
+    .dots { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .dot  { position: absolute; border-radius: 50%; background: #E0528D; opacity: 0.18; }
+    .spinner { width: 20px; height: 20px; border: 2px solid rgba(224,82,141,0.2);
+               border-top-color: #E0528D; border-radius: 50%;
+               animation: spin 0.8s linear infinite; margin: 40px auto; }
+    .error-box { background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.3);
+                 border-radius: 6px; padding: 14px 16px; color: #ff8080; font-size: 13px;
+                 text-align: center; margin-bottom: 16px; }
+    .notif-btn { background: rgba(224,82,141,0.1); border: 1px solid #E0528D; color: #E0528D;
+                 border-radius: 4px; padding: 11px 20px; font-size: 11px; letter-spacing: 0.1em;
+                 text-transform: uppercase; font-family: 'Montserrat', sans-serif;
+                 width: 100%; margin-bottom: 14px; }
   </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useCallback, useRef } = React;
+<div class="dots" id="dots"></div>
+<div id="root"><div class="page"><div class="spinner"></div></div></div>
 
-// ============================================================
-// ★ CONFIG — edit these
-// ============================================================
-const VENMO_USERNAME     = "AnjaliBothra";
-const DASHBOARD_PASSWORD = "anjali2024";   // ← change this!
-const ARTIST_NAME        = "ANJALI";
-// ============================================================
-
-const PINK   = "#E0528D";
-const CREAM  = "#F4F1EB";
-const BG     = "#111010";
-const BG2    = "#1a1818";
-const MUTED  = "rgba(244,241,235,0.45)";
-const BORDER = "rgba(244,241,235,0.1)";
-
-const TIP_OPTIONS = [
-  { label: "$1",  amount: 1 },
-  { label: "$5",  amount: 5 },
-  { label: "$10", amount: 10 },
-  { label: "$20", amount: 20 },
-  { label: "💖",  amount: 50 },
-];
-
-// ── Storage (shared across all users via window.storage) ──
-function useRequests() {
-  const getAll = useCallback(async () => {
-    try {
-      const r = await window.storage.get("anjali_requests", true);
-      return r ? JSON.parse(r.value) : [];
-    } catch { return []; }
-  }, []);
-
-  const saveAll = useCallback(async (reqs) => {
-    await window.storage.set("anjali_requests", JSON.stringify(reqs), true);
-  }, []);
-
-  return { getAll, saveAll };
-}
-
-// ── Decorative dots ──
-function Petals() {
-  const dots = [
-    { top:"8%",  left:"6%",  size:3, delay:0,   dur:5 },
-    { top:"22%", left:"88%", size:2, delay:0.8, dur:4 },
-    { top:"55%", left:"4%",  size:2, delay:1.5, dur:6 },
-    { top:"70%", left:"92%", size:3, delay:0.3, dur:5 },
-    { top:"40%", left:"50%", size:1, delay:2,   dur:7 },
-    { top:"85%", left:"20%", size:2, delay:1,   dur:4 },
+<script>
+// ── Decorative dots ──────────────────────────────────────────
+(function() {
+  const d = document.getElementById("dots");
+  const cfg = [
+    {top:"7%",left:"5%",s:4,dur:5,del:0},{top:"20%",left:"90%",s:3,dur:4,del:0.8},
+    {top:"50%",left:"3%",s:3,dur:6,del:1.5},{top:"72%",left:"93%",s:4,dur:5,del:0.3},
+    {top:"38%",left:"48%",s:2,dur:7,del:2},{top:"86%",left:"18%",s:3,dur:4,del:1},
   ];
-  return (
-    <div style={{position:"fixed",inset:0,pointerEvents:"none",zIndex:0,overflow:"hidden"}}>
-      {dots.map((d,i) => (
-        <div key={i} style={{
-          position:"absolute", width:d.size, height:d.size, borderRadius:"50%",
-          background:PINK, opacity:0.2, top:d.top, left:d.left,
-          animation:`float ${d.dur}s ease-in-out ${d.delay}s infinite alternate`,
-        }}/>
-      ))}
-    </div>
-  );
+  cfg.forEach(o => {
+    const el = document.createElement("div");
+    el.className = "dot";
+    Object.assign(el.style, {
+      top:o.top, left:o.left, width:o.s+"px", height:o.s+"px",
+      animation:`float ${o.dur}s ease-in-out ${o.del}s infinite alternate`,
+    });
+    d.appendChild(el);
+  });
+})();
+
+// ── State ────────────────────────────────────────────────────
+let view    = "fan";   // fan | queue | login | dashboard
+let authed  = false;
+let unsubscribe = null;
+
+// ── Wait for Firebase ────────────────────────────────────────
+function whenReady(fn) {
+  if (window.fbReady) fn();
+  else document.addEventListener("fb-ready", fn, { once: true });
 }
 
-// ── Shared card wrapper ──
-function Card({ children, maxWidth=420 }) {
-  return (
-    <div style={{minHeight:"100vh",background:BG,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"flex-start",padding:"32px 16px 64px",position:"relative"}}>
-      <Petals/>
-      <div className="card" style={{background:BG2,border:`1px solid ${BORDER}`,borderRadius:8,padding:"32px 28px",width:"100%",maxWidth,position:"relative",zIndex:1}}>
-        {children}
-      </div>
-    </div>
-  );
+// ── Router ───────────────────────────────────────────────────
+function navigate(v) {
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  view = v;
+  history.replaceState(null, "", "#" + v);
+  render();
 }
 
-function Logo() {
-  return <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:11,letterSpacing:"0.35em",textTransform:"uppercase",color:PINK,marginBottom:20,textAlign:"center"}}>{ARTIST_NAME}</div>;
+window.addEventListener("hashchange", () => {
+  const h = location.hash.replace("#","");
+  if (h === "dashboard") { view = authed ? "dashboard" : "login"; }
+  else if (h === "queue") { view = "queue"; }
+  else { view = "fan"; }
+  render();
+});
+
+// ── Render ───────────────────────────────────────────────────
+function render() {
+  const root = document.getElementById("root");
+  if      (view === "login")                root.innerHTML = loginHTML();
+  else if (view === "dashboard" && authed)  { root.innerHTML = dashHTML(); initDash(); }
+  else if (view === "queue")                { root.innerHTML = queueHTML(); initQueue(); }
+  else                                      root.innerHTML = fanHTML();
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // FAN PAGE
-// ══════════════════════════════════════════════════════════
-function FanPage({ onQueue }) {
-  const [song, setSong]         = useState("");
-  const [name, setName]         = useState("");
-  const [tip, setTip]           = useState(0);
-  const [custom, setCustom]     = useState("");
-  const [step, setStep]         = useState("form");
-  const [busy, setBusy]         = useState(false);
-  const { getAll, saveAll }     = useRequests();
+// ══════════════════════════════════════════════════════════════
+function fanHTML() {
+  return `
+  <div class="page">
+    <div class="card">
+      <div class="logo">${window.ARTIST_NAME}</div>
+      <h1 class="h2" style="font-size:30px;margin-bottom:4px">request a song</h1>
+      <p class="sub">live tonight — make it yours ✨</p>
 
-  const tipAmt = tip === "custom" ? (parseFloat(custom) || 0) : (tip || 0);
-
-  async function submit() {
-    if (!song.trim() || busy) return;
-    setBusy(true);
-    const all = await getAll();
-    await saveAll([...all, {
-      id: Date.now(),
-      song: song.trim(),
-      name: name.trim() || "Anonymous",
-      tip: tipAmt,
-      ts: Date.now(),
-      played: false,
-    }]);
-    setBusy(false);
-    setStep(tipAmt > 0 ? "pay" : "done");
-  }
-
-  function reset() { setSong(""); setName(""); setTip(0); setCustom(""); setStep("form"); }
-
-  if (step === "pay") return (
-    <Card>
-      <Logo/>
-      <div style={{textAlign:"center",marginBottom:24}}>
-        <div style={{fontSize:48,marginBottom:8}}>💸</div>
-        <h2 style={S.h2}>send your tip</h2>
-        <p style={S.sub}>tip <strong style={{color:PINK}}>${tipAmt}</strong> to boost <em>"{song}"</em> up the queue</p>
+      <div class="field">
+        <label class="label">song request *</label>
+        <input class="input" id="f-song" placeholder="song name (+ artist if not mine)" autofocus>
       </div>
-      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
-        <a href={`https://venmo.com/${VENMO_USERNAME}?txn=pay&amount=${tipAmt}&note=${encodeURIComponent("Song request: "+song)}`}
-           target="_blank" style={{...S.payBtn, background:"#3D95CE"}}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.03 1.89c.47.84.68 1.71.68 2.82 0 3.51-2.99 8.07-5.43 11.27H8.97L6.71 2.56l5.22-.5 1.2 9.55c1.12-1.87 2.5-4.82 2.5-6.83 0-1.1-.19-1.84-.48-2.46l3.88-.43z"/></svg>
-          Pay with Venmo
-        </a>
+      <div class="field">
+        <label class="label">your name <span style="opacity:0.5;font-weight:400">(optional)</span></label>
+        <input class="input" id="f-name" placeholder="leave blank to stay anonymous">
       </div>
-      <button onClick={() => setStep("done")} style={S.ghost}>skip tip — just submit →</button>
-    </Card>
-  );
-
-  if (step === "done") return (
-    <Card>
-      <Logo/>
-      <div style={{textAlign:"center"}}>
-        <div style={{fontSize:52,marginBottom:12}}>🌸</div>
-        <h2 style={{...S.h2,marginBottom:8}}>request received!</h2>
-        <p style={{color:CREAM,fontStyle:"italic",fontSize:18,marginBottom:6}}>"{song}"</p>
-        <p style={{...S.sub,marginBottom:28}}>{tipAmt > 0 ? `your $${tipAmt} tip bumps you up the list 💖` : "we'll do our best to get to it!"}</p>
-        <button onClick={onQueue} style={{...S.primary,width:"100%",marginBottom:10,justifyContent:"center"}}>see the live queue →</button>
-        <button onClick={reset} style={S.ghost}>request another song</button>
-      </div>
-    </Card>
-  );
-
-  return (
-    <Card>
-      <Logo/>
-      <h1 style={{...S.h2,fontSize:30,marginBottom:4}}>request a song</h1>
-      <p style={{...S.sub,marginBottom:28}}>live tonight — make it yours ✨</p>
-
-      <div style={S.field}>
-        <label style={S.label}>song request *</label>
-        <input style={S.input} placeholder="song name (+ artist if not mine)" value={song}
-          onChange={e => setSong(e.target.value)} onKeyDown={e => e.key==="Enter" && submit()} autoFocus/>
-      </div>
-
-      <div style={S.field}>
-        <label style={S.label}>your name <span style={{opacity:0.5,fontWeight:400}}>(optional)</span></label>
-        <input style={S.input} placeholder="leave blank to stay anonymous" value={name}
-          onChange={e => setName(e.target.value)}/>
-      </div>
-
-      <div style={S.field}>
-        <label style={S.label}>
+      <div class="field">
+        <label class="label">
           boost your request with a tip
-          <span style={{color:MUTED,marginLeft:6,fontWeight:400,fontSize:9}}>higher tip = higher in queue</span>
+          <span style="opacity:0.5;font-weight:400;margin-left:6px;font-size:9px">higher tip = higher in queue</span>
         </label>
-        <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-          <button onClick={() => setTip(0)} style={{...S.tipBtn,...(tip===0?S.tipOn:{})}}>no tip</button>
-          {TIP_OPTIONS.map(o => (
-            <button key={o.amount} onClick={() => {setTip(o.amount);setCustom("");}}
-              style={{...S.tipBtn,...(tip===o.amount?S.tipOn:{})}}>{o.label}</button>
-          ))}
-          <button onClick={() => setTip("custom")} style={{...S.tipBtn,...(tip==="custom"?S.tipOn:{})}}>other</button>
+        <div class="tip-row" id="tip-row">
+          <button class="tip-btn on" data-tip="0" onclick="selectTip(0)">no tip</button>
+          <button class="tip-btn" data-tip="1"  onclick="selectTip(1)">$1</button>
+          <button class="tip-btn" data-tip="5"  onclick="selectTip(5)">$5</button>
+          <button class="tip-btn" data-tip="10" onclick="selectTip(10)">$10</button>
+          <button class="tip-btn" data-tip="20" onclick="selectTip(20)">$20</button>
+          <button class="tip-btn" data-tip="50" onclick="selectTip(50)">💖</button>
+          <button class="tip-btn" data-tip="custom" onclick="selectTip('custom')">other</button>
         </div>
-        {tip === "custom" && (
-          <input style={{...S.input,marginTop:8}} type="number" min="1" placeholder="enter amount e.g. 15"
-            value={custom} onChange={e => setCustom(e.target.value)}/>
-        )}
+        <div id="custom-wrap" style="display:none;margin-top:8px">
+          <input class="input" id="f-custom" type="number" min="1" placeholder="enter amount e.g. 15">
+        </div>
       </div>
 
-      <button onClick={submit} disabled={!song.trim()||busy}
-        style={{...S.primary,width:"100%",justifyContent:"center",opacity:(!song.trim()||busy)?0.4:1}}>
-        {busy ? "submitting…" : tipAmt > 0 ? `submit + tip $${tipAmt} →` : "submit request →"}
-      </button>
-      <button onClick={onQueue} style={S.ghost}>see the live queue</button>
-    </Card>
-  );
+      <button class="btn-primary" id="submit-btn" onclick="submitRequest()">submit request →</button>
+      <div id="fan-error"></div>
+      <button class="btn-ghost" onclick="navigate('queue')">see the live queue</button>
+    </div>
+  </div>`;
 }
 
-// ══════════════════════════════════════════════════════════
-// QUEUE PAGE (public)
-// ══════════════════════════════════════════════════════════
-function QueuePage({ onBack }) {
-  const [reqs, setReqs]     = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { getAll }          = useRequests();
+let selectedTip = 0;
+function selectTip(val) {
+  selectedTip = val;
+  document.querySelectorAll(".tip-btn").forEach(b => {
+    b.classList.toggle("on", b.dataset.tip == val);
+  });
+  document.getElementById("custom-wrap").style.display = val === "custom" ? "block" : "none";
+  updateSubmitBtn();
+}
 
-  useEffect(() => {
-    let alive = true;
-    async function poll() {
-      const all = await getAll();
-      if (!alive) return;
+function updateSubmitBtn() {
+  const song = (document.getElementById("f-song")||{}).value || "";
+  const btn  = document.getElementById("submit-btn");
+  if (!btn) return;
+  const tip = selectedTip === "custom"
+    ? (parseFloat(document.getElementById("f-custom")?.value)||0)
+    : (selectedTip||0);
+  btn.textContent = tip > 0 ? `submit + tip $${tip} →` : "submit request →";
+  btn.disabled = !song.trim();
+}
+
+// Attach live input listener after render
+const _origFanHTML = fanHTML;
+document.addEventListener("input", e => {
+  if (e.target.id === "f-song" || e.target.id === "f-custom") updateSubmitBtn();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.id === "f-song") submitRequest();
+});
+
+async function submitRequest() {
+  const song = document.getElementById("f-song")?.value?.trim();
+  const name = document.getElementById("f-name")?.value?.trim();
+  if (!song) return;
+  const tip = selectedTip === "custom"
+    ? (parseFloat(document.getElementById("f-custom")?.value)||0)
+    : (selectedTip||0);
+
+  const btn = document.getElementById("submit-btn");
+  btn.disabled = true;
+  btn.textContent = "submitting…";
+
+  try {
+    await window.fbSubmit(song, name, tip);
+    // Show result
+    showFanResult(song, name, tip);
+  } catch(err) {
+    document.getElementById("fan-error").innerHTML =
+      `<div class="error-box" style="margin-top:12px">could not submit — check your connection and try again.<br><small>${err.message}</small></div>`;
+    btn.disabled = false;
+    btn.textContent = "try again →";
+  }
+}
+
+function showFanResult(song, name, tip) {
+  const root = document.getElementById("root");
+  if (tip > 0) {
+    root.innerHTML = `
+    <div class="page">
+      <div class="card" style="text-align:center">
+        <div class="logo">${window.ARTIST_NAME}</div>
+        <div style="font-size:48px;margin-bottom:12px">💸</div>
+        <h2 class="h2">send your tip</h2>
+        <p class="sub" style="margin-bottom:24px">tip <strong style="color:#E0528D">$${tip}</strong> to lock in your boost for<br><em>"${song}"</em></p>
+        <a href="https://venmo.com/${window.VENMO_USERNAME}?txn=pay&amount=${tip}&note=${encodeURIComponent("Song request: "+song)}"
+           target="_blank" class="pay-btn" style="background:#3D95CE;color:#fff">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.03 1.89c.47.84.68 1.71.68 2.82 0 3.51-2.99 8.07-5.43 11.27H8.97L6.71 2.56l5.22-.5 1.2 9.55c1.12-1.87 2.5-4.82 2.5-6.83 0-1.1-.19-1.84-.48-2.46l3.88-.43z"/></svg>
+          Pay @${window.VENMO_USERNAME} on Venmo
+        </a>
+        <button class="btn-ghost" onclick="navigate('queue')" style="margin-top:6px">skip — see the queue →</button>
+      </div>
+    </div>`;
+  } else {
+    root.innerHTML = `
+    <div class="page">
+      <div class="card" style="text-align:center">
+        <div class="logo">${window.ARTIST_NAME}</div>
+        <div style="font-size:52px;margin-bottom:12px">🌸</div>
+        <h2 class="h2">request received!</h2>
+        <p style="color:#F4F1EB;font-style:italic;font-size:18px;margin-bottom:6px">"${song}"</p>
+        <p class="sub" style="margin-bottom:28px">we'll do our best to get to it!</p>
+        <button class="btn-primary" onclick="navigate('queue')">see the live queue →</button>
+        <button class="btn-ghost" onclick="navigate('fan')">request another song</button>
+      </div>
+    </div>`;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// QUEUE PAGE
+// ══════════════════════════════════════════════════════════════
+function queueHTML() {
+  return `
+  <div class="page">
+    <div class="card wide">
+      <div class="logo">${window.ARTIST_NAME||"ANJALI"}</div>
+      <h1 class="h2" style="margin-bottom:4px">live queue</h1>
+      <p class="sub">updates in real time ✨</p>
+      <div id="queue-list"><div class="spinner"></div></div>
+      <button class="btn-ghost" style="margin-top:16px" onclick="navigate('fan')">← request a song</button>
+    </div>
+  </div>`;
+}
+
+function initQueue() {
+  whenReady(() => {
+    unsubscribe = window.fbListen(all => {
       const active = all.filter(r => !r.played).sort((a,b) => b.tip-a.tip || a.ts-b.ts);
-      setReqs(active);
-      setLoading(false);
-    }
-    poll();
-    const t = setInterval(poll, 3000);
-    return () => { alive=false; clearInterval(t); };
-  }, [getAll]);
-
-  return (
-    <Card maxWidth={500}>
-      <Logo/>
-      <h1 style={{...S.h2,marginBottom:4}}>live queue</h1>
-      <p style={{...S.sub,marginBottom:24}}> if i know it, ill play it ✨</p>
-
-      {loading ? (
-        <p style={{textAlign:"center",color:MUTED,padding:"40px 0"}}>loading…</p>
-      ) : reqs.length === 0 ? (
-        <div style={{textAlign:"center",padding:"48px 0"}}>
-          <div style={{fontSize:36,marginBottom:12}}>🎵</div>
-          <p style={{color:MUTED,fontStyle:"italic"}}>no requests yet — be the first!</p>
-        </div>
-      ) : reqs.map((r,i) => (
-        <div key={r.id} style={{
-          display:"flex",alignItems:"center",gap:12,padding:"12px 14px",
-          border:`1px solid ${i===0?"rgba(224,82,141,0.45)":BORDER}`,
-          borderRadius:6,marginBottom:8,
-          background:i===0?"rgba(224,82,141,0.05)":"transparent",
-          position:"relative",
-        }}>
-          {i===0 && <div style={{position:"absolute",top:-8,right:10,background:PINK,color:"#fff",fontSize:8,letterSpacing:"0.15em",textTransform:"uppercase",padding:"2px 8px",borderRadius:10}}>up next</div>}
-          <div style={{width:28,height:28,borderRadius:"50%",background:i===0?PINK:"rgba(244,241,235,0.06)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,color:i===0?"#fff":MUTED,flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{color:CREAM,fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:17}}>{r.song}</div>
-            <div style={{color:MUTED,fontSize:11,marginTop:2}}>from {r.name}</div>
+      const el = document.getElementById("queue-list");
+      if (!el) return;
+      if (!active.length) {
+        el.innerHTML = `<div style="text-align:center;padding:48px 0">
+          <div style="font-size:36px;margin-bottom:12px">🎵</div>
+          <p style="color:rgba(244,241,235,0.45);font-style:italic">no requests yet — be the first!</p>
+        </div>`;
+        return;
+      }
+      el.innerHTML = active.map((r,i) => `
+        <div class="queue-row ${i===0?"top":""}">
+          ${i===0?'<div class="up-next">up next</div>':""}
+          <div class="queue-num ${i===0?"top":""}">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div class="song-title">${escHtml(r.song)}</div>
+            <div class="song-from">from ${escHtml(r.name)}</div>
           </div>
-          {r.tip > 0 && <div style={{color:PINK,fontSize:11,fontWeight:600,flexShrink:0}}>boosted 💖</div>}
-        </div>
-      ))}
-
-      <button onClick={onBack} style={{...S.ghost,marginTop:16}}>← request a song</button>
-    </Card>
-  );
+          ${r.tip>0?'<div class="boosted">boosted 💖</div>':""}
+        </div>`).join("");
+    });
+  });
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 // DASHBOARD
-// ══════════════════════════════════════════════════════════
-function Dashboard({ onLock }) {
-  const [reqs, setReqs]       = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [notif, setNotif]     = useState(false);
-  const prevLen               = useRef(0);
-  const { getAll, saveAll }   = useRequests();
+// ══════════════════════════════════════════════════════════════
+function dashHTML() {
+  return `
+  <div style="min-height:100vh;background:#0a0a0a;font-family:'Cormorant Garamond',Georgia,serif">
+    <div style="max-width:580px;margin:0 auto;padding:24px 16px 64px">
 
-  useEffect(() => {
-    setNotif("Notification" in window && Notification.permission === "granted");
-  }, []);
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div>
+          <div style="font-size:10px;letter-spacing:0.2em;color:#E0528D;text-transform:uppercase;margin-bottom:2px">performer dashboard</div>
+          <div style="font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:#F4F1EB">${window.ARTIST_NAME||"ANJALI"} — live</div>
+        </div>
+        <button class="btn-outline" onclick="lockDash()">lock 🔒</button>
+      </div>
 
-  useEffect(() => {
-    let alive = true;
-    async function poll() {
-      const all = await getAll();
-      if (!alive) return;
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+        <div class="stat-box"><div class="stat-val" id="stat-count">—</div><div class="stat-lbl">in queue</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-tips">—</div><div class="stat-lbl">tips pending</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-notif">—</div><div class="stat-lbl">notifications</div></div>
+      </div>
+
+      <div id="notif-btn-wrap"></div>
+      <div id="dash-list"><div class="spinner"></div></div>
+      <div id="dash-footer"></div>
+    </div>
+  </div>`;
+}
+
+function initDash() {
+  // Notification state
+  const notifEl = document.getElementById("stat-notif");
+  const notifWrap = document.getElementById("notif-btn-wrap");
+  function updateNotifUI() {
+    const granted = "Notification" in window && Notification.permission === "granted";
+    if (notifEl) notifEl.textContent = granted ? "on ✓" : "off";
+    if (notifWrap) {
+      notifWrap.innerHTML = !granted && "Notification" in window
+        ? `<button class="notif-btn" onclick="enableNotifs()">🔔 enable push notifications</button>`
+        : "";
+    }
+  }
+  updateNotifUI();
+  window._updateNotifUI = updateNotifUI;
+
+  let prevLen = 0;
+  whenReady(() => {
+    unsubscribe = window.fbListen(all => {
       const active = all.filter(r=>!r.played).sort((a,b)=>b.tip-a.tip||a.ts-b.ts);
-      if (prevLen.current > 0 && active.length > prevLen.current) {
-        const newest = active.find(r => r.ts > Date.now() - 6000);
-        if (newest && "Notification" in window && Notification.permission === "granted") {
+      const totalTips = active.reduce((s,r)=>s+(r.tip||0),0);
+
+      // Stats
+      const sc = document.getElementById("stat-count");
+      const st = document.getElementById("stat-tips");
+      if (sc) sc.textContent = active.length;
+      if (st) st.textContent = "$"+totalTips;
+
+      // Push notification on new request
+      if (prevLen > 0 && active.length > prevLen) {
+        const newest = active.find(r => r.ts > Date.now() - 8000);
+        if (newest && Notification.permission === "granted") {
           new Notification(`🎵 New request: "${newest.song}"`, {
-            body: newest.name + (newest.tip > 0 ? ` · $${newest.tip} tip` : ""),
+            body: newest.name + (newest.tip>0 ? ` · $${newest.tip} tip` : ""),
+            icon: "/favicon.ico",
           });
         }
       }
-      prevLen.current = active.length;
-      setReqs(active);
-      setLoading(false);
-    }
-    poll();
-    const t = setInterval(poll, 2500);
-    return () => { alive=false; clearInterval(t); };
-  }, [getAll]);
+      prevLen = active.length;
 
-  async function markPlayed(id) {
-    const all = await getAll();
-    await saveAll(all.map(r => r.id===id ? {...r,played:true} : r));
-    setReqs(p => p.filter(r => r.id!==id));
-  }
-
-  async function clearAll() {
-    if (!window.confirm("Clear entire queue?")) return;
-    await saveAll([]);
-    setReqs([]);
-  }
-
-  async function enableNotifs() {
-    const p = await Notification.requestPermission();
-    setNotif(p === "granted");
-  }
-
-  const totalTips = reqs.reduce((s,r) => s+(r.tip||0), 0);
-
-  return (
-    <div style={{minHeight:"100vh",background:"#0a0a0a",fontFamily:"'Cormorant Garamond',Georgia,serif"}}>
-      <div style={{maxWidth:580,margin:"0 auto",padding:"24px 16px 64px"}}>
-
-        {/* Header */}
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:24}}>
-          <div>
-            <div style={{fontSize:10,letterSpacing:"0.2em",color:PINK,textTransform:"uppercase",marginBottom:2}}>performer dashboard</div>
-            <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:24,color:CREAM}}>{ARTIST_NAME} — live</div>
+      // List
+      const el = document.getElementById("dash-list");
+      if (!el) return;
+      if (!active.length) {
+        el.innerHTML = `<div style="text-align:center;padding:48px 0;color:rgba(244,241,235,0.45)">
+          <div style="font-size:32px;margin-bottom:8px">🎵</div>no requests yet</div>`;
+        document.getElementById("dash-footer").innerHTML = "";
+        return;
+      }
+      el.innerHTML = active.map((r,i) => `
+        <div style="background:#1a1818;border:1px solid ${i===0?"rgba(224,82,141,0.5)":"rgba(244,241,235,0.1)"};
+             border-radius:6px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div class="queue-num ${i===0?"top":""}">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div class="song-title">${escHtml(r.song)}</div>
+            <div class="song-from">${escHtml(r.name)}${r.tip>0?`<span class="tip-amt">$${r.tip} tip 💖</span>`:""}</div>
           </div>
-          <button onClick={onLock} style={{background:"rgba(244,241,235,0.06)",border:`1px solid ${BORDER}`,color:MUTED,padding:"8px 14px",borderRadius:4,fontSize:11,letterSpacing:"0.1em"}}>
-            lock 🔒
-          </button>
-        </div>
+          <button class="btn-played" onclick="markPlayed('${r.key}')">✓ played</button>
+        </div>`).join("");
 
-        {/* Stats */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
-          {[{l:"in queue",v:reqs.length},{l:"tips pending",v:`$${totalTips}`},{l:"notifications",v:notif?"on ✓":"off"}].map(s=>(
-            <div key={s.l} style={{background:BG2,border:`1px solid ${BORDER}`,borderRadius:6,padding:"14px",textAlign:"center"}}>
-              <div style={{fontSize:24,fontFamily:"'Fraunces',serif",fontStyle:"italic",color:PINK,marginBottom:3}}>{s.v}</div>
-              <div style={{fontSize:9,letterSpacing:"0.15em",textTransform:"uppercase",color:MUTED}}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Enable notifs */}
-        {!notif && "Notification" in window && (
-          <button onClick={enableNotifs} style={{...S.primary,width:"100%",marginBottom:16,justifyContent:"center",background:"rgba(224,82,141,0.12)",border:`1px solid ${PINK}`}}>
-            🔔 enable push notifications
-          </button>
-        )}
-
-        {/* Queue */}
-        {loading ? (
-          <p style={{color:MUTED,textAlign:"center",padding:"40px 0"}}>loading…</p>
-        ) : reqs.length === 0 ? (
-          <div style={{textAlign:"center",padding:"48px 0",color:MUTED}}>
-            <div style={{fontSize:32,marginBottom:8}}>🎵</div>
-            no requests yet
-          </div>
-        ) : reqs.map((r,i) => (
-          <div key={r.id} style={{
-            background:BG2,border:`1px solid ${i===0?"rgba(224,82,141,0.5)":BORDER}`,
-            borderRadius:6,padding:"14px 16px",display:"flex",alignItems:"center",gap:12,marginBottom:8,
-          }}>
-            <div style={{width:30,height:30,borderRadius:"50%",background:i===0?PINK:"rgba(244,241,235,0.07)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,color:i===0?"#fff":MUTED,flexShrink:0,fontFamily:"monospace"}}>{i+1}</div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{color:CREAM,fontFamily:"'Cormorant Garamond',serif",fontStyle:"italic",fontSize:17}}>{r.song}</div>
-              <div style={{color:MUTED,fontSize:11,marginTop:2}}>
-                {r.name}
-                {r.tip>0 && <span style={{color:PINK,marginLeft:8,fontWeight:600}}>${r.tip} tip 💖</span>}
-              </div>
-            </div>
-            <button onClick={() => markPlayed(r.id)} style={{background:"rgba(79,101,79,0.25)",border:"1px solid rgba(79,101,79,0.5)",color:"#8bc48b",borderRadius:4,padding:"7px 14px",fontSize:11,letterSpacing:"0.05em",flexShrink:0}}>
-              ✓ played
-            </button>
-          </div>
-        ))}
-
-        {reqs.length > 0 && (
-          <button onClick={clearAll} style={{...S.ghost,display:"block",width:"100%",marginTop:8}}>
-            clear entire queue
-          </button>
-        )}
-      </div>
-    </div>
-  );
+      document.getElementById("dash-footer").innerHTML = `
+        <button class="btn-ghost" onclick="clearAll()" style="margin-top:8px;display:block;width:100%">
+          clear entire queue
+        </button>`;
+    });
+  });
 }
 
-// ══════════════════════════════════════════════════════════
+function lockDash() {
+  authed = false;
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  navigate("fan");
+}
+
+async function markPlayed(key) {
+  await window.fbMarkPlayed(key);
+}
+
+async function clearAll() {
+  if (!confirm("Clear the entire queue?")) return;
+  await window.fbClearAll();
+}
+
+async function enableNotifs() {
+  const p = await Notification.requestPermission();
+  if (window._updateNotifUI) window._updateNotifUI();
+}
+
+// ══════════════════════════════════════════════════════════════
 // LOGIN
-// ══════════════════════════════════════════════════════════
-function Login({ onSuccess }) {
-  const [pw, setPw] = useState("");
-  const [err, setErr] = useState(false);
-  function attempt() {
-    if (pw === DASHBOARD_PASSWORD) onSuccess();
-    else { setErr(true); setPw(""); }
+// ══════════════════════════════════════════════════════════════
+function loginHTML() {
+  return `
+  <div class="page">
+    <div class="card" style="max-width:340px">
+      <div class="logo">${window.ARTIST_NAME||"ANJALI"}</div>
+      <h2 class="h2" style="font-size:20px;margin-bottom:24px">performer login</h2>
+      <input type="password" class="input" id="pw" placeholder="password" style="margin-bottom:10px"
+        onkeydown="if(event.key==='Enter')attemptLogin()">
+      <div id="login-err"></div>
+      <button class="btn-primary" onclick="attemptLogin()">enter →</button>
+    </div>
+  </div>`;
+}
+
+function attemptLogin() {
+  const pw = document.getElementById("pw")?.value;
+  if (pw === window.DASHBOARD_PASSWORD) {
+    authed = true;
+    view = "dashboard";
+    history.replaceState(null,"","#dashboard");
+    render();
+  } else {
+    document.getElementById("login-err").innerHTML =
+      `<p style="color:#ff6b6b;font-size:11px;text-align:center;margin-bottom:10px">incorrect password</p>`;
+    document.getElementById("pw").value = "";
   }
-  return (
-    <Card maxWidth={340}>
-      <Logo/>
-      <h2 style={{...S.h2,fontSize:20,marginBottom:24}}>performer login</h2>
-      <input type="password" style={{...S.input,marginBottom:err?6:12}} placeholder="password"
-        value={pw} onChange={e=>{setPw(e.target.value);setErr(false);}} onKeyDown={e=>e.key==="Enter"&&attempt()} autoFocus/>
-      {err && <p style={{color:"#ff6b6b",fontSize:11,textAlign:"center",marginBottom:10}}>incorrect password</p>}
-      <button onClick={attempt} style={{...S.primary,width:"100%",justifyContent:"center"}}>enter →</button>
-    </Card>
-  );
 }
 
-// ══════════════════════════════════════════════════════════
-// STYLES
-// ══════════════════════════════════════════════════════════
-const S = {
-  h2:    { fontFamily:"'Fraunces',serif", fontStyle:"italic", fontWeight:300, fontSize:26, color:CREAM, textAlign:"center", marginBottom:8 },
-  sub:   { fontSize:13, color:MUTED, textAlign:"center", fontStyle:"italic" },
-  field: { marginBottom:18 },
-  label: { display:"block", fontSize:9, letterSpacing:"0.18em", textTransform:"uppercase", color:MUTED, marginBottom:6 },
-  input: { width:"100%", background:"rgba(244,241,235,0.04)", border:`1px solid ${BORDER}`, borderRadius:4, padding:"11px 14px", color:CREAM, fontSize:15, fontFamily:"'Cormorant Garamond',serif" },
-  tipBtn:{ padding:"7px 12px", background:"transparent", border:`1px solid ${BORDER}`, borderRadius:4, color:MUTED, fontSize:13, fontFamily:"'Cormorant Garamond',serif" },
-  tipOn: { borderColor:PINK, color:PINK, background:"rgba(224,82,141,0.08)" },
-  primary:{ display:"flex", alignItems:"center", gap:8, padding:"13px 24px", background:PINK, border:"none", borderRadius:4, color:"#fff", fontSize:11, letterSpacing:"0.12em", textTransform:"uppercase", fontFamily:"'Montserrat',sans-serif" },
-  ghost: { display:"block", width:"100%", background:"transparent", border:"none", color:MUTED, fontSize:11, letterSpacing:"0.1em", textAlign:"center", padding:"8px 0", fontFamily:"'Cormorant Garamond',serif", fontStyle:"italic" },
-  payBtn:{ display:"flex", alignItems:"center", justifyContent:"center", gap:10, padding:"14px 20px", borderRadius:6, border:"none", color:"#fff", fontSize:15, fontWeight:600, fontFamily:"system-ui,sans-serif" },
-};
-
-// ══════════════════════════════════════════════════════════
-// ROOT
-// ══════════════════════════════════════════════════════════
-function App() {
-  const [view, setView]   = useState("fan");
-  const [authed, setAuthed] = useState(false);
-
-  useEffect(() => {
-    function onHash() {
-      const h = window.location.hash;
-      if (h === "#dashboard") setView(authed ? "dashboard" : "login");
-      else if (h === "#queue") setView("queue");
-      else setView("fan");
-    }
-    window.addEventListener("hashchange", onHash);
-    onHash();
-    return () => window.removeEventListener("hashchange", onHash);
-  }, [authed]);
-
-  if (view === "login")     return <Login onSuccess={() => { setAuthed(true); setView("dashboard"); window.location.hash="dashboard"; }}/>;
-  if (view === "dashboard" && authed) return <Dashboard onLock={() => { setAuthed(false); setView("fan"); window.location.hash=""; }}/>;
-  if (view === "queue")     return <QueuePage onBack={() => { setView("fan"); window.location.hash=""; }}/>;
-  return <FanPage onQueue={() => { setView("queue"); window.location.hash="queue"; }}/>;
+// ── Utilities ────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+// ── Init ─────────────────────────────────────────────────────
+const initHash = location.hash.replace("#","");
+if (initHash === "dashboard") { view = "login"; }
+else if (initHash === "queue") { view = "queue"; }
+else { view = "fan"; }
+render();
 </script>
 </body>
 </html>
