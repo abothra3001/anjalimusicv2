@@ -847,14 +847,51 @@ function closeLightbox(e) {
 function openModal() { document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow=''; }
 function closeModalOutside(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
-function submitForm() {
+async function submitForm() {
   const name = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const type = document.getElementById('f-type').value;
   const date = document.getElementById('f-date').value;
   const venue = document.getElementById('f-venue').value.trim();
-  if (!name||!email||!type||!date||!venue) { alert('please fill in all required fields.'); return; }
-  document.getElementById('modal-body').innerHTML = `<div class="form-success"><div class="form-success-icon">🌸</div><h3>enquiry received!</h3><p>thanks ${name}, Anjali will be in touch at <strong>${email}</strong> within 48 hours.</p><button class="btn-primary" style="margin-top:28px;" onclick="closeModal()">close</button></div>`;
+
+  if (!name || !email || !type || !date || !venue) {
+    alert('please fill in all required fields.');
+    return;
+  }
+
+  const data = {
+    name, email,
+    phone: document.getElementById('f-phone').value,
+    referral: document.getElementById('f-referral').value,
+    eventType: type,
+    setType: document.getElementById('f-set').value,
+    date,
+    duration: document.getElementById('f-duration').value,
+    venue,
+    guests: document.getElementById('f-guests').value,
+    budget: document.getElementById('f-budget').value,
+    notes: document.getElementById('f-notes').value,
+    _replyto: email,
+    _subject: `new booking enquiry from ${name}`
+  };
+
+  const res = await fetch('https://formspree.io/f/mbdppdpy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  if (res.ok) {
+    document.getElementById('modal-body').innerHTML = `
+      <div class="form-success">
+        <div class="form-success-icon">🌸</div>
+        <h3>enquiry received!</h3>
+        <p>thanks ${name}, Anjali will be in touch at <strong>${email}</strong> within 48 hours.</p>
+        <button class="btn-primary" style="margin-top:28px;" onclick="closeModal()">close</button>
+      </div>`;
+  } else {
+    alert('something went wrong — please try again or email directly.');
+  }
 }
 
 // ── COPY BIO ──
