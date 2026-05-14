@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANJALI: Live Event Performances | Weddings &amp; Corporate Events</title>
+  <meta name="description" content="Book Anjali for weddings, corporate events, and private gatherings. Multi-instrumentalist performing in 3 languages. Based bicoastally, available nationwide." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F8F4EE;
+      --warm-white: #FDFBF8;
+      --charcoal: #1C1C1A;
+      --deep: #0F0F0D;
+      --gold: #B8965A;
+      --gold-light: #D4B07A;
+      --muted: #8A8278;
+      --border: rgba(184,150,90,0.2);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--charcoal);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 4rem;
+      background: rgba(253,251,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--charcoal);
+      color: var(--cream) !important;
+      padding: 0.6rem 1.4rem !important;
+      border-radius: 0 !important;
+      letter-spacing: 0.14em !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold) !important; color: var(--deep) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 5rem;
+    }
+    .hero-left {
+      padding: 6rem 4rem 6rem 6rem;
+      position: relative;
+    }
+    .hero-overline {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-overline::before {
+      content: '';
+      display: block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-desc {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 1rem 2.2rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold); color: var(--deep); }
+    .btn-ghost {
+      color: var(--charcoal);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid var(--charcoal);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-right {
+      position: relative;
+      height: 100vh;
+      background: var(--charcoal);
+      overflow: hidden;
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--warm-white) 0%, transparent 15%),
+                  linear-gradient(to top, rgba(15,15,13,0.5) 0%, transparent 50%);
+    }
+    .hero-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #2a2520 0%, #1a1510 40%, #0f0f0d 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .hero-img-placeholder .placeholder-note {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: rgba(184,150,90,0.4);
+      font-style: italic;
+      letter-spacing: 0.05em;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-caption {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align: center;
+    }
+    .hero-caption span {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-style: italic;
+      color: rgba(248,244,238,0.85);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── LANGUAGES STRIP ── */
+    .languages-strip {
+      background: var(--charcoal);
+      padding: 2rem 0;
+      overflow: hidden;
+    }
+    .languages-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .lang-item {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 0.25rem 3rem;
+      border-right: 1px solid rgba(184,150,90,0.25);
+    }
+    .lang-item:last-child { border-right: none; }
+    .lang-flag { font-size: 1.4rem; }
+    .lang-name {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 7rem 6rem; }
+    .section-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ── WHAT I DO ── */
+    .events-section { background: var(--cream); }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 3.5rem;
+    }
+    .event-card {
+      background: var(--warm-white);
+      padding: 3rem 2.5rem;
+      position: relative;
+      transition: transform 0.2s;
+      border-top: 2px solid transparent;
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      border-top-color: var(--gold);
+    }
+    .event-num {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(184,150,90,0.15);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .event-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 0.75rem;
+    }
+    .event-desc {
+      font-size: 0.82rem;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+
+    /* ── WHAT MAKES IT DIFFERENT ── */
+    .differentiators {
+      background: var(--charcoal);
+      color: var(--cream);
+    }
+    .differentiators .section-title { color: var(--cream); }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem 5rem;
+      margin-top: 3.5rem;
+    }
+    .diff-item { padding-top: 1.5rem; border-top: 1px solid rgba(184,150,90,0.25); }
+    .diff-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .diff-text {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(248,244,238,0.85);
+    }
+
+    /* ── SET LIST PREVIEW ── */
+    .setlist-section { background: var(--warm-white); }
+    .setlist-tabs {
+      display: flex;
+      gap: 0;
+      margin-top: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .setlist-tab {
+      padding: 0.9rem 2rem;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: var(--font-sans);
+    }
+    .setlist-tab.active {
+      color: var(--charcoal);
+      border-bottom-color: var(--gold);
+    }
+    .setlist-content { display: none; padding-top: 2.5rem; }
+    .setlist-content.active { display: block; }
+    .setlist-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-style: italic;
+      font-family: var(--font-serif);
+    }
+    .songs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .song-item {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(28,28,26,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-right: 2rem;
+    }
+    .song-title {
+      font-size: 0.82rem;
+      color: var(--charcoal);
+      font-weight: 400;
+    }
+    .song-artist {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .setlist-cta {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .setlist-cta a { color: var(--gold); text-decoration: none; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--cream); }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .testimonial-card {
+      background: var(--warm-white);
+      padding: 2.5rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '\201C';
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      color: rgba(184,150,90,0.15);
+      line-height: 1;
+      position: absolute;
+      top: 1rem;
+      left: 2rem;
+    }
+    .testimonial-text {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .testimonial-author {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .testimonial-event {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── FOR PLANNERS ── */
+    .planners-section {
+      background: var(--charcoal);
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      padding: 7rem 6rem;
+    }
+    .planners-section .section-title { color: var(--cream); }
+    .planners-list { margin-top: 2rem; list-style: none; }
+    .planners-list li {
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(184,150,90,0.2);
+      font-size: 0.82rem;
+      color: rgba(248,244,238,0.75);
+      line-height: 1.6;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .planners-list li::before {
+      content: '→';
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .epk-box {
+      margin-top: 3rem;
+      padding: 2rem;
+      border: 1px solid rgba(184,150,90,0.3);
+    }
+    .epk-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .epk-text {
+      font-size: 0.8rem;
+      color: rgba(248,244,238,0.65);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── BOOKING FORM ── */
+    .booking-section { background: var(--warm-white); }
+    .booking-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+    .booking-info .info-item {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .booking-info .info-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .booking-info .info-value {
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      line-height: 1.6;
+    }
+    form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--cream);
+      border: 1px solid rgba(28,28,26,0.12);
+      padding: 0.85rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-submit {
+      background: var(--charcoal);
+      color: var(--cream);
+      padding: 1.1rem 2.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      align-self: flex-start;
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover { background: var(--gold); color: var(--deep); }
+    .form-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-style: italic;
+      font-family: var(--font-serif);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      padding: 3rem 6rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(184,150,90,0.15);
+    }
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: rgba(248,244,238,0.6);
+      letter-spacing: 0.15em;
+    }
+    .footer-back {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .footer-back:hover { color: var(--gold); }
+    .footer-right {
+      font-size: 0.68rem;
+      color: rgba(248,244,238,0.3);
+      text-align: right;
+    }
+
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #0f0f0d;
+    }
+    .hero-video-wrap iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      /* oversized to crop letterbox bars */
+      width: 177.78vh;
+      height: 100vh;
+      min-width: 100%;
+      min-height: 56.25vw;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .hero-overline { animation-delay: 0.1s; }
+    .hero h1 { animation-delay: 0.2s; }
+    .hero-desc { animation-delay: 0.35s; }
+    .hero-actions { animation-delay: 0.5s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 2rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 8rem 2rem 4rem; }
+      .hero-right { height: 50vw; min-height: 300px; }
+      section, .planners-section, footer { padding: 4rem 2rem; }
+      .events-grid, .testimonial-grid, .songs-grid { grid-template-columns: 1fr; }
+      .diff-grid, .booking-inner, .planners-section { grid-template-columns: 1fr; gap: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://anjalimusic.com" class="nav-logo">ANJALI</a>
+    <ul class="nav-links">
+      <li><a href="#events">Events</a></li>
+      <li><a href="#setlist">Set Lists</a></li>
+      <li><a href="#planners">For Planners</a></li>
+      <li><a href="#book" class="nav-cta">Check Availability</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero-left">
+      <p class="hero-overline fade-up">Live event performances</p>
+      <h1 class="fade-up">Music that<br/>makes your<br/><em>event unforgettable</em></h1>
+      <p class="hero-desc fade-up">Multi-instrumentalist. Three languages. Originals, covers, and requests. Every performance crafted entirely around your event.</p>
+      <div class="hero-actions fade-up">
+        <a href="#book" class="btn-primary">Check Availability</a>
+        <a href="#events" class="btn-ghost">See what I do</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-video-wrap">
+        <iframe
+          id="hero-yt"
+          src="https://www.youtube.com/embed/EQ65j66lEKo?start=43&autoplay=1&mute=1&controls=0&loop=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          title="Anjali live performance"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="hero-caption">
+        <span>Available nationwide</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <div class="languages-strip">
+    <div class="languages-inner">
+      <div class="lang-item">
+        <span class="lang-flag">🇺🇸</span><span class="lang-name">English</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-flag">🇮🇳</span><span class="lang-name">Hindi</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <section id="events" class="events-section">
+    <p class="section-label">What I do</p>
+    <h2 class="section-title">The right performance<br/>for every <em>occasion</em></h2>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-num">01</div>
+        <h3 class="event-title">Weddings</h3>
+        <p class="event-desc">From intimate ceremonies to grand receptions, I bring live music that moves with the emotion of your day. Ceremony, cocktail hour, and reception sets available. Multilingual repertoire for multicultural celebrations.</p>
+      </div>
+      <div class="event-card">
+        <div class="event-num">02</div>
+        <h3 class="event-title">Corporate Events</h3>
+        <p class="event-desc">Product launches, gala dinners, holiday parties, client receptions. Sophisticated live entertainment that elevates any professional setting without overpowering conversation.</p>
+      </div>
+      <div class="event-card">
+        <div class="event-num">03</div>
+        <h3 class="event-title">Private & Social</h3>
+        <p class="event-desc">Birthday milestones, engagement parties, family gatherings. Fully customizable sets with audience requests and direct interaction. I make every guest feel included.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFFERENTIATORS -->
+  <section class="differentiators">
+    <p class="section-label" style="color:var(--gold);">Why Anjali</p>
+    <h2 class="section-title">What sets this<br/><em>experience apart</em></h2>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <div class="diff-label">3 Languages</div>
+        <p class="diff-text">English, Hindi, and Spanish, so every guest feels a connection to the music.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Multiple Instruments</div>
+        <p class="diff-text">Piano, guitar, and more. Each instrument creates a different atmosphere, tailored to the room and the moment.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Originals &amp; Covers</div>
+        <p class="diff-text">A repertoire spanning decades and genres, plus original compositions, all performed live with the same polish.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Interactive &amp; Request-Friendly</div>
+        <p class="diff-text">Not just background music. I engage with your guests, take requests, and read the room. Every set is its own moment.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Original Song Commissions</div>
+        <p class="diff-text">I will write and perform an original song just for your event. A love song for the couple, a tribute to a guest of honor, a theme for your brand. Something no one else will ever have.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Solo or Full Band</div>
+        <p class="diff-text">Available as an intimate solo act or with a full band for larger events. Full band is available for West Coast bookings only.</p>
+      </div>
+      <div class="diff-item">
+        <div class="diff-label">Bicoastal Availability</div>
+        <p class="diff-text">Based in New Jersey and Portland, OR, with experience on both coasts and availability for events nationwide.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORIGINAL SONG COMMISSION -->
+  <section style="background:var(--cream); padding:7rem 6rem;">
+    <div style="max-width:800px; margin:0 auto; text-align:center;">
+      <p class="section-label" style="justify-content:center;">Something no one else will have</p>
+      <h2 class="section-title" style="margin:0 auto 1.5rem;">A song written <em>for your moment</em></h2>
+      <p style="font-size:0.95rem; color:var(--muted); line-height:1.9; max-width:55ch; margin:0 auto 3rem;">You tell me the story. I write the song. Whether it is a love song for the couple, a tribute to a parent, or a custom piece that captures the spirit of your brand, you walk away with something original that belongs only to you. It will never be performed at another event.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; text-align:left; margin-bottom:3rem;">
+        <div style="background:var(--warm-white); padding:2rem;">
+          <div style="font-size:0.6rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">Weddings</div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; color:var(--charcoal); line-height:1.6;">A first dance song built around your story. How you met, a place that matters, a private joke. Something that makes the room go quiet.</p>
+        </div>
+        <div style="background:var(--warm-white); padding:2rem;">
+          <div style="font-size:0.6rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">Corporate Events</div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; color:var(--charcoal); line-height:1.6;">A theme for your product launch, a tribute to a retiring executive, or a custom anthem that captures what your team is building.</p>
+        </div>
+        <div style="background:var(--warm-white); padding:2rem;">
+          <div style="font-size:0.6rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">Private Occasions</div>
+          <p style="font-family:var(--font-serif); font-size:1.1rem; color:var(--charcoal); line-height:1.6;">A birthday tribute, a milestone anniversary, a surprise for someone you love. Personal, specific, and entirely theirs.</p>
+        </div>
+      </div>
+      <a href="#book" class="btn-primary">Inquire About a Custom Song</a>
+    </div>
+  </section>
+
+  <!-- SET LISTS -->
+  <section id="setlist" class="setlist-section">
+    <p class="section-label">Sample Repertoire</p>
+    <h2 class="section-title">A taste of what<br/>your guests will <em>hear</em></h2>
+    <p style="font-size:0.83rem; color:var(--muted); margin-top:0.5rem; max-width:50ch; line-height:1.8;">These are sample sets. Every performance is fully customized, and I take requests in advance and on the night.</p>
+
+    <div class="setlist-tabs">
+      <button class="setlist-tab active" onclick="showTab('wedding')">Wedding</button>
+      <button class="setlist-tab" onclick="showTab('corporate')">Corporate</button>
+      <button class="setlist-tab" onclick="showTab('multilingual')">Multilingual</button>
+    </div>
+
+    <div id="tab-wedding" class="setlist-content active">
+      <p class="setlist-note">Romantic, emotional, timeless. For ceremony, cocktail hour, and reception.</p>
+      <div class="songs-grid">
+        <div class="song-item"><span class="song-title">Can't Help Falling in Love</span><span class="song-artist">Elvis Presley</span></div>
+        <div class="song-item"><span class="song-title">A Thousand Years</span><span class="song-artist">Christina Perri</span></div>
+        <div class="song-item"><span class="song-title">La Vie en Rose</span><span class="song-artist">Louis Armstrong</span></div>
+        <div class="song-item"><span class="song-title">Hallelujah</span><span class="song-artist">Jeff Buckley</span></div>
+        <div class="song-item"><span class="song-title">Perfect</span><span class="song-artist">Ed Sheeran</span></div>
+        <div class="song-item"><span class="song-title">Make You Feel My Love</span><span class="song-artist">Adele</span></div>
+        <div class="song-item"><span class="song-title">Tum Hi Ho</span><span class="song-artist">Aashiqui 2</span></div>
+        <div class="song-item"><span class="song-title">Somewhere Only We Know</span><span class="song-artist">Keane</span></div>
+        <div class="song-item"><span class="song-title">Everything Has Changed</span><span class="song-artist">Taylor Swift</span></div>
+        <div class="song-item"><span class="song-title">Shallow</span><span class="song-artist">A Star Is Born</span></div>
+        <div class="song-item"><span class="song-title">Best Part</span><span class="song-artist">Daniel Caesar</span></div>
+        <div class="song-item"><span class="song-title">Banana Pancakes</span><span class="song-artist">Jack Johnson</span></div>
+      </div>
+    </div>
+
+    <div id="tab-corporate" class="setlist-content">
+      <p class="setlist-note">Sophisticated and crowd-pleasing. Cocktail hours, dinners, and galas.</p>
+      <div class="songs-grid">
+        <div class="song-item"><span class="song-title">Fly Me to the Moon</span><span class="song-artist">Frank Sinatra</span></div>
+        <div class="song-item"><span class="song-title">The Girl from Ipanema</span><span class="song-artist">Stan Getz</span></div>
+        <div class="song-item"><span class="song-title">Just the Two of Us</span><span class="song-artist">Grover Washington Jr.</span></div>
+        <div class="song-item"><span class="song-title">Somethin' Stupid</span><span class="song-artist">Frank Sinatra</span></div>
+        <div class="song-item"><span class="song-title">Crazy</span><span class="song-artist">Patsy Cline</span></div>
+        <div class="song-item"><span class="song-title">Moon River</span><span class="song-artist">Audrey Hepburn</span></div>
+        <div class="song-item"><span class="song-title">Sunday Morning</span><span class="song-artist">Maroon 5</span></div>
+        <div class="song-item"><span class="song-title">Drops of Jupiter</span><span class="song-artist">Train</span></div>
+        <div class="song-item"><span class="song-title">Somewhere Only We Know</span><span class="song-artist">Keane</span></div>
+        <div class="song-item"><span class="song-title">Good Luck, Babe</span><span class="song-artist">Chappell Roan</span></div>
+        <div class="song-item"><span class="song-title">Espresso</span><span class="song-artist">Sabrina Carpenter</span></div>
+        <div class="song-item"><span class="song-title">Originals</span><span class="song-artist">Anjali</span></div>
+      </div>
+    </div>
+
+    <div id="tab-multilingual" class="setlist-content">
+      <p class="setlist-note">A sampling across languages, ideal for multicultural events and celebrations.</p>
+      <div class="songs-grid">
+        <div class="song-item"><span class="song-title">Tum Hi Ho</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Kesariya</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Teri Mitti</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Kabira</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Pani Da Rang</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Afreen Afreen</span><span class="song-artist">Hindi</span></div>
+        <div class="song-item"><span class="song-title">Despacito</span><span class="song-artist">Spanish</span></div>
+        <div class="song-item"><span class="song-title">Nunca Es Suficiente</span><span class="song-artist">Spanish</span></div>
+        <div class="song-item"><span class="song-title">Tú Sí Sabes Quererme</span><span class="song-artist">Spanish</span></div>
+        <div class="song-item"><span class="song-title">Rascacielos</span><span class="song-artist">Spanish</span></div>
+        <div class="song-item"><span class="song-title">Ser De Ti</span><span class="song-artist">Spanish</span></div>
+        <div class="song-item"><span class="song-title">Eres Tú</span><span class="song-artist">Spanish</span></div>
+      </div>
+    </div>
+
+    <p class="setlist-cta">Don't see a song you love? <a href="#book">Send a request</a> when you reach out. I learn songs for specific events.</p>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <p class="section-label">Kind words</p>
+    <h2 class="section-title">From guests &amp; <em>planners</em></h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">Add your first client testimonial here. Even a sentence or two from a happy couple or event planner goes a long way with new visitors.</p>
+        <div class="testimonial-author">Client Name</div>
+        <div class="testimonial-event">Wedding, 2024</div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">Add a corporate event testimonial here. Especially powerful if it comes from an event coordinator or HR professional who would resonate with other planners.</p>
+        <div class="testimonial-author">Client Name</div>
+        <div class="testimonial-event">Corporate Gala, 2024</div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">A third testimonial, ideally one that highlights the multilingual or interactive aspect of the performance, since that's a key differentiator.</p>
+        <div class="testimonial-author">Client Name</div>
+        <div class="testimonial-event">Private Event, 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR PLANNERS -->
+  <section id="planners" class="planners-section">
+    <div>
+      <p class="section-label" style="color:var(--gold);">For event planners</p>
+      <h2 class="section-title">Everything you need<br/>for <em>preferred vendor</em><br/>consideration</h2>
+      <ul class="planners-list">
+        <li>Fully insured, with certificate of insurance available on request</li>
+        <li>Professional tech rider available (PA requirements, stage plot, input list)</li>
+        <li>References from past event coordinators and couples available</li>
+        <li>Flexible booking: solo acoustic or full band (West Coast bookings only) depending on event size</li>
+        <li>Available for venue walkthroughs and pre-event sound checks</li>
+        <li>Bicoastal availability: NY/NJ metro and Portland, OR, plus nationwide travel</li>
+        <li>Original song commissions available: a custom love song or event piece written specifically for your occasion</li>
+        <li>Prompt communication and professional follow-through, always</li>
+      </ul>
+    </div>
+    <div>
+      <div class="epk-box">
+        <div class="epk-label">Electronic Press Kit</div>
+        <p class="epk-text">Planning to add me to your preferred vendor list? I'd love to send you my full EPK including professional photos, a video reel, and client references. Just reach out below.</p>
+        <a href="#book" class="btn-primary" style="display:inline-block;">Request EPK</a>
+      </div>
+      <div style="margin-top:2rem; padding:2rem; border:1px solid rgba(184,150,90,0.15);">
+        <div class="epk-label">What planners say</div>
+        <p class="epk-text" style="font-family:var(--font-serif); font-size:1.05rem; font-style:italic;">"Add a planner quote here once you have one. This section is your most powerful trust signal for the preferred vendor pitch."</p>
+        <div class="testimonial-author">Event Coordinator Name</div>
+        <div class="testimonial-event" style="color:rgba(248,244,238,0.35);">Venue / Company</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING FORM -->
+  <section id="book" class="booking-section">
+    <p class="section-label">Get in touch</p>
+    <h2 class="section-title">Check availability for<br/>your <em>event</em></h2>
+    <div class="booking-inner">
+      <div class="booking-info">
+        <div class="info-item">
+          <div class="info-label">Response time</div>
+          <div class="info-value">Within 24 to 48 hours</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Booking lead time</div>
+          <div class="info-value">Available from 2 weeks to 18 months out. Earlier is better for peak dates.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Location</div>
+          <div class="info-value">NY/NJ Metro · Portland, OR · Available nationwide</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Set lengths</div>
+          <div class="info-value">1 hour · 2 hours · 3+ hours with breaks</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Formats</div>
+          <div class="info-value">Solo acoustic · Full band (West Coast only) · Original song commissions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Direct contact</div>
+          <div class="info-value"><a href="mailto:booking@anjalimusic.com" style="color:var(--gold); text-decoration:none;">booking@anjalimusic.com</a></div>
+        </div>
+      </div>
+
+      <form id="booking-form" action="https://formspree.io/f/xnjwygor" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Full name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="event-type">Event Type</label>
+            <select id="event-type" name="event-type">
+              <option value="">Select…</option>
+              <option>Wedding — Ceremony</option>
+              <option>Wedding — Reception</option>
+              <option>Wedding — Full Day</option>
+              <option>Corporate Event</option>
+              <option>Private Party</option>
+              <option>Original Song Commission</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="event-date">Event Date</label>
+            <input type="date" id="event-date" name="event-date" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="location">Event Location</label>
+            <input type="text" id="location" name="location" placeholder="City, State" />
+          </div>
+          <div class="form-group">
+            <label for="budget">Approximate Budget</label>
+            <select id="budget" name="budget">
+              <option value="">Prefer not to say</option>
+              <option>Under $1,000</option>
+              <option>$1,000 – $2,500</option>
+              <option>$2,500 – $5,000</option>
+              <option>$5,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Tell me about your event</label>
+          <textarea id="message" name="message" placeholder="Venue, guest count, set length, song requests, languages, or if you'd like an original song written for your occasion..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Inquiry</button>
+        <p class="form-note">I respond to all inquiries within 48 hours.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">ANJALI</span>
+    <a href="https://anjalimusic.com" class="footer-back">← Back to main site</a>
+    <div class="footer-right">
+      anjalimusic.com/booking<br/>
+      <span style="color:rgba(248,244,238,0.18);">© 2025 Anjali</span>
+    </div>
+  </footer>
+
+  <script>
+    function showTab(id) {
+      document.querySelectorAll('.setlist-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.setlist-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Open booking form submission in a new tab
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response) {
+        if (response.ok) {
+          form.reset();
+          form.querySelector('.form-note').textContent = 'Message sent! I will be in touch within 48 hours.';
+        } else {
+          alert('Something went wrong. Please email booking@anjalimusic.com directly.');
+        }
+      }).catch(function() {
+        alert('Something went wrong. Please email booking@anjalimusic.com directly.');
+      });
+    });
+
+    // Subtle scroll fade-in for sections
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.event-card, .diff-item, .testimonial-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+
+    // YouTube loop between 43s–52s
+    const START = 43;
+    const END   = 52;
+    let player;
+
+    window.onYouTubeIframeAPIReady = function() {
+      player = new YT.Player('hero-yt', {
+        events: {
+          onReady: function(e) {
+            e.target.mute();
+            e.target.seekTo(START, true);
+            e.target.playVideo();
+          },
+          onStateChange: function(e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              scheduleLoop();
+            }
+          }
+        }
+      });
+    };
+
+    function scheduleLoop() {
+      clearTimeout(window._loopTimer);
+      const remaining = (END - START) * 1000;
+      window._loopTimer = setTimeout(function() {
+        if (player && player.seekTo) {
+          player.seekTo(START, true);
+          player.playVideo();
+        }
+      }, remaining);
+    }
+
+    // Load YouTube IFrame API
+    (function() {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    })();
+  </script>
+</body>
+</html>
