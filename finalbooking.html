@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANJALI — Event Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0d0d;
+    --black-2: #141414;
+    --black-3: #1c1c1c;
+    --black-4: #242424;
+    --pink: #e8468a;
+    --pink-light: #f075aa;
+    --pink-glow: rgba(232, 70, 138, 0.18);
+    --pink-subtle: rgba(232, 70, 138, 0.08);
+    --white: #f5f5f5;
+    --white-dim: rgba(245,245,245,0.55);
+    --border: rgba(232, 70, 138, 0.2);
+    --border-dim: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(232,70,138,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,70,138,0.07) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .logo-flower {
+    display: flex;
+    align-items: center;
+    animation: spin 18s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .artist-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 9vw, 72px);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .artist-tagline {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.38em;
+    color: var(--pink);
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 28px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 90px;
+    background: linear-gradient(90deg, transparent, var(--pink));
+  }
+
+  .divider::after {
+    background: linear-gradient(90deg, var(--pink), transparent);
+  }
+
+  .divider span { color: var(--pink); font-size: 12px; }
+
+  /* THANK YOU BANNER */
+  .thank-you-banner {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 28px;
+    margin-bottom: 44px;
+    background: var(--black-3);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+
+  .thank-you-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .thank-you-banner::after {
+    content: '♪';
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 52px;
+    opacity: 0.06;
+    color: var(--pink);
+  }
+
+  .thank-you-banner p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--white-dim);
+  }
+
+  .thank-you-banner p strong {
+    color: var(--white);
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* FORM */
+  .booking-form { animation: fadeUp 1s 0.3s ease both; }
+
+  .form-section { margin-bottom: 38px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .form-group.no-mb { margin-bottom: 0; }
+
+  label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.45);
+  }
+
+  input, select, textarea {
+    width: 100%;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: rgba(245,245,245,0.2);
+    font-style: italic;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--pink);
+    background: var(--black-4);
+    box-shadow: 0 0 0 3px var(--pink-glow);
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8468a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    background-color: var(--black-3);
+  }
+
+  select option { background: #1c1c1c; color: var(--white); }
+
+  textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+
+  /* Checkboxes */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .checkbox-item:hover {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    padding: 0;
+    cursor: pointer;
+    accent-color: var(--pink);
+    background: transparent;
+    border: 1px solid var(--border-dim);
+    border-radius: 2px;
+  }
+
+  .cb-label {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    cursor: pointer;
+  }
+
+  /* Budget */
+  .budget-display {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    color: var(--pink-light);
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: auto;
+    appearance: auto;
+    height: 3px;
+    border: none;
+    border-radius: 2px;
+    padding: 0;
+    box-shadow: none;
+    cursor: pointer;
+    accent-color: var(--pink);
+  }
+
+  /* Submit */
+  .submit-wrap { text-align: center; margin-top: 48px; }
+
+  .btn-submit {
+    background: var(--pink);
+    color: var(--black);
+    border: none;
+    padding: 16px 56px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  }
+
+  .btn-submit:hover {
+    background: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(232,70,138,0.35);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .submit-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(245,245,245,0.3);
+    font-style: italic;
+  }
+
+  /* Success */
+  .success-overlay {
+    display: none;
+    text-align: center;
+    padding: 80px 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .success-overlay.show { display: block; }
+  .success-overlay .big-icon { font-size: 60px; margin-bottom: 20px; }
+
+  .success-overlay h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+  }
+
+  .success-overlay p {
+    font-size: 15px;
+    color: var(--white-dim);
+    max-width: 380px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-dim);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(245,245,245,0.2);
+    text-transform: uppercase;
+  }
+
+  .footer a { color: var(--pink); text-decoration: none; }
+  .footer a:hover { opacity: 0.75; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .form-row, .form-row.three { grid-template-columns: 1fr; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .artist-name { letter-spacing: 0.14em; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-flower">
+        <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#e8468a">
+            <ellipse cx="50" cy="18" rx="7" ry="16" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(45 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(90 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(135 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(180 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(225 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(270 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(315 50 50)" />
+          </g>
+          <circle cx="50" cy="50" r="13" fill="#f075aa" />
+          <circle cx="50" cy="50" r="7" fill="#e8468a" />
+        </svg>
+      </div>
+      <div class="artist-name">ANJALI</div>
+    </div>
+    <div class="artist-tagline">Singer · Songwriter · Live Performer</div>
+    <div class="divider"><span>✦</span></div>
+  </div>
+
+  <!-- THANK YOU BANNER -->
+  <div class="thank-you-banner">
+    <p>
+      <strong>Thanks for booking me for your event!</strong>
+      Please fill in the details below so I can make your performance exactly what you're envisioning. I'll be in touch within 48 hours.
+    </p>
+  </div>
+
+  <!-- FORM -->
+  <form class="booking-form" id="bookingForm" onsubmit="handleSubmit(event)">
+
+    <div class="form-section">
+      <div class="section-label">Your Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="e.g. Sarah" required>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" placeholder="e.g. Mitchell" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group no-mb">
+          <label for="role">Your Role</label>
+          <select id="role">
+            <option value="">Select…</option>
+            <option>Event Planner / Coordinator</option>
+            <option>Bride / Groom</option>
+            <option>Corporate Event Manager</option>
+            <option>Venue Manager</option>
+            <option>Private Host</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group no-mb">
+          <label for="company">Company / Organization</label>
+          <input type="text" id="company" placeholder="Optional">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Event Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="eventName">Event Name</label>
+          <input type="text" id="eventName" placeholder="e.g. Spring Gala 2026" required>
+        </div>
+        <div class="form-group">
+          <label for="eventType">Event Type</label>
+          <select id="eventType" required>
+            <option value="">Select…</option>
+            <option>Wedding / Reception</option>
+            <option>Corporate Event</option>
+            <option>Private Party</option>
+            <option>Cocktail Hour</option>
+            <option>Fundraiser / Gala</option>
+            <option>Birthday / Milestone</option>
+            <option>Restaurant / Bar</option>
+            <option>Festival / Outdoor</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label for="eventDate">Event Date</label>
+          <input type="date" id="eventDate" required>
+        </div>
+        <div class="form-group">
+          <label for="startTime">Start Time</label>
+          <input type="time" id="startTime">
+        </div>
+        <div class="form-group">
+          <label for="duration">Duration</label>
+          <select id="duration">
+            <option value="">Select…</option>
+            <option>1 hour</option>
+            <option>1.5 hours</option>
+            <option>2 hours</option>
+            <option>2.5 hours</option>
+            <option>3 hours</option>
+            <option>3+ hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group no-mb">
+          <label for="guestCount">Expected Guest Count</label>
+          <select id="guestCount">
+            <option value="">Select…</option>
+            <option>Under 25</option>
+            <option>25–50</option>
+            <option>50–100</option>
+            <option>100–200</option>
+            <option>200–500</option>
+            <option>500+</option>
+          </select>
+        </div>
+        <div class="form-group no-mb">
+          <label for="indoorOutdoor">Indoor / Outdoor</label>
+          <select id="indoorOutdoor">
+            <option value="">Select…</option>
+            <option>Indoor</option>
+            <option>Outdoor</option>
+            <option>Both / Hybrid</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Venue</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="venueName">Venue Name</label>
+          <input type="text" id="venueName" placeholder="e.g. The Rosewood Hotel">
+        </div>
+        <div class="form-group">
+          <label for="venueCity">City / State</label>
+          <input type="text" id="venueCity" placeholder="e.g. Portland, OR">
+        </div>
+      </div>
+      <div class="form-group no-mb">
+        <label for="venueAddress">Full Address</label>
+        <input type="text" id="venueAddress" placeholder="Street, City, State, ZIP">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Performance</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="performanceStyle">Performance Style</label>
+          <select id="performanceStyle">
+            <option value="">Select…</option>
+            <option>Solo Acoustic</option>
+            <option>Solo with Backing Track</option>
+            <option>Full Band</option>
+            <option>Flexible / Your Recommendation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="setType">Set Type</label>
+          <select id="setType">
+            <option value="">Select…</option>
+            <option>Originals Only</option>
+            <option>Covers Only</option>
+            <option>Mix of Both</option>
+            <option>Background / Ambient</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,245,245,0.45);margin-bottom:12px">Genre / Vibe</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item"><input type="checkbox" value="indie-pop"><span class="cb-label">Indie Pop</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="folk"><span class="cb-label">Folk / Acoustic</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="pop"><span class="cb-label">Pop Hits / Top 40</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="jazz"><span class="cb-label">Jazz / Bossa Nova</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="rnb"><span class="cb-label">R&amp;B / Soul</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="alt"><span class="cb-label">Alternative / Indie Rock</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="country"><span class="cb-label">Country / Americana</span></label>
+          <label class="checkbox-item"><input type="checkbox" value="original"><span class="cb-label">Anjali Originals</span></label>
+        </div>
+      </div>
+      <div class="form-group no-mb">
+        <label for="songRequests">Song Requests</label>
+        <textarea id="songRequests" placeholder="Any specific songs? A first dance song, a meaningful cover…"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Logistics</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="soundSystem">Sound System Available?</label>
+          <select id="soundSystem">
+            <option value="">Select…</option>
+            <option>Yes — venue provides PA/sound</option>
+            <option>No — I need Anjali to bring equipment</option>
+            <option>Unsure / Need guidance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="loadIn">Load-in / Setup Time</label>
+          <input type="time" id="loadIn">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="parking">Parking Available?</label>
+          <select id="parking">
+            <option value="">Select…</option>
+            <option>Yes — free on site</option>
+            <option>Yes — street/paid nearby</option>
+            <option>No / Limited</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="accommodation">Accommodation Provided?</label>
+          <select id="accommodation">
+            <option value="">Select…</option>
+            <option>Yes — provided by client</option>
+            <option>No</option>
+            <option>To be discussed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group no-mb">
+        <label for="budget">Approximate Budget</label>
+        <input type="range" id="budget" min="300" max="5000" step="100" value="1000" oninput="updateBudget(this.value)">
+        <div class="budget-display" id="budgetDisplay">$1,000</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Anything Else?</div>
+      <div class="form-group">
+        <label for="vibe">Event Vibe / Description</label>
+        <textarea id="vibe" placeholder="Romantic, high-energy, intimate, celebratory… paint the picture for me"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="specialRequests">Special Requests</label>
+        <textarea id="specialRequests" placeholder="Dietary needs, accessibility, must-avoid songs, special announcements…"></textarea>
+      </div>
+      <div class="form-group no-mb">
+        <label for="hearAbout">How did you hear about Anjali?</label>
+        <select id="hearAbout">
+          <option value="">Select…</option>
+          <option>Website — anjalimusic.com</option>
+          <option>Instagram</option>
+          <option>Spotify / Apple Music</option>
+          <option>Saw her perform live</option>
+          <option>Word of mouth / Referral</option>
+          <option>GigSalad / The Bash</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit">Send Booking Request</button>
+      <p class="submit-note">I'll get back to you within 48 hours ✦</p>
+    </div>
+
+  </form>
+
+  <div class="success-overlay" id="successOverlay">
+    <div class="big-icon">🌸</div>
+    <h2>YOU'RE ALL SET</h2>
+    <p>Your booking request has been received. Anjali will be in touch within 48 hours — can't wait to make your event unforgettable.</p>
+  </div>
+
+  <div class="footer">
+    <a href="https://anjalimusic.com" target="_blank">anjalimusic.com</a>
+    &nbsp;✦&nbsp; singer · songwriter · bicoastal
+  </div>
+
+</div>
+
+<script>
+  function updateBudget(val) {
+    const n = parseInt(val);
+    document.getElementById('budgetDisplay').textContent = n >= 5000 ? '$5,000+' : '$' + n.toLocaleString();
+    const pct = ((n - 300) / (5000 - 300)) * 100;
+    document.getElementById('budget').style.background =
+      `linear-gradient(90deg, #e8468a ${pct}%, rgba(255,255,255,0.08) ${pct}%)`;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('bookingForm').style.display = 'none';
+    document.getElementById('successOverlay').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateBudget(1000);
+</script>
+</body>
+</html>
