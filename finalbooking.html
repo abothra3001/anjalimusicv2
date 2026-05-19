@@ -209,7 +209,7 @@
 
   .form-group.no-mb { margin-bottom: 0; }
 
-  label {
+  .form-group label, .genre-label {
     font-size: 10px;
     font-weight: 400;
     letter-spacing: 0.14em;
@@ -217,7 +217,7 @@
     color: rgba(245,245,245,0.45);
   }
 
-  input, select, textarea {
+  input:not([type="checkbox"]):not([type="range"]), select, textarea {
     width: 100%;
     background: var(--black-3);
     border: 1px solid var(--border-dim);
@@ -232,12 +232,12 @@
     -webkit-appearance: none;
   }
 
-  input::placeholder, textarea::placeholder {
+  input:not([type="checkbox"])::placeholder, textarea::placeholder {
     color: rgba(245,245,245,0.2);
     font-style: italic;
   }
 
-  input:focus, select:focus, textarea:focus {
+  input:not([type="checkbox"]):not([type="range"]):focus, select:focus, textarea:focus {
     border-color: var(--pink);
     background: var(--black-4);
     box-shadow: 0 0 0 3px var(--pink-glow);
@@ -273,6 +273,7 @@
     padding: 10px 14px;
     cursor: pointer;
     transition: border-color 0.2s, background 0.2s;
+    user-select: none;
   }
 
   .checkbox-item:hover {
@@ -280,16 +281,25 @@
     background: var(--pink-subtle);
   }
 
+  .checkbox-item:has(input:checked) {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
   .checkbox-item input[type="checkbox"] {
-    width: 15px;
-    height: 15px;
-    min-width: 15px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
     padding: 0;
+    margin: 0;
     cursor: pointer;
     accent-color: var(--pink);
-    background: transparent;
-    border: 1px solid var(--border-dim);
-    border-radius: 2px;
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    border: none;
+    background: none;
+    box-shadow: none;
+    flex-shrink: 0;
   }
 
   .cb-label {
@@ -451,24 +461,24 @@
   </div>
 
   <!-- FORM -->
-  <form class="booking-form" id="bookingForm" onsubmit="handleSubmit(event)" action="https://formspree.io/f/booking@anjalimusic.com" method="POST">
+  <form class="booking-form" id="bookingForm" onsubmit="handleSubmit(event)" action="https://formspree.io/f/xqejarpo" method="POST">
 
     <div class="form-section">
       <div class="section-label">Your Details</div>
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="First Name" placeholder="e.g. Sarah" required>
+          <input type="text" id="firstName" name="First Name" placeholder="e.g. Sarah">
         </div>
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="Last Name" placeholder="e.g. Mitchell" required>
+          <input type="text" id="lastName" name="Last Name" placeholder="e.g. Mitchell">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="Email" placeholder="your@email.com" required>
+          <input type="email" id="email" name="Email" placeholder="your@email.com">
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
@@ -500,11 +510,11 @@
       <div class="form-row">
         <div class="form-group">
           <label for="eventName">Event Name</label>
-          <input type="text" id="eventName" name="Event Name" placeholder="e.g. Spring Gala 2026" required>
+          <input type="text" id="eventName" name="Event Name" placeholder="e.g. Spring Gala 2026">
         </div>
         <div class="form-group">
           <label for="eventType">Event Type</label>
-          <select id="eventType" name="Event Type" required>
+          <select id="eventType" name="Event Type">
             <option value="">Select…</option>
             <option>Wedding / Reception</option>
             <option>Corporate Event</option>
@@ -521,7 +531,7 @@
       <div class="form-row three">
         <div class="form-group">
           <label for="eventDate">Event Date</label>
-          <input type="date" id="eventDate" name="Event Date" required>
+          <input type="date" id="eventDate" name="Event Date">
         </div>
         <div class="form-group">
           <label for="startTime">Start Time</label>
@@ -591,7 +601,6 @@
           <select id="performanceStyle" name="Performance Style">
             <option value="">Select…</option>
             <option>Solo Acoustic</option>
-            <option>Solo with Backing Track</option>
             <option>Full Band</option>
             <option>Flexible / Your Recommendation</option>
           </select>
@@ -608,16 +617,16 @@
         </div>
       </div>
       <div style="margin-bottom:14px">
-        <label style="display:block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,245,245,0.45);margin-bottom:12px">Genre / Vibe</label>
+        <label class="genre-label" style="display:block;margin-bottom:12px">Genre / Vibe</label>
         <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Indie Pop"><span class="cb-label">Indie Pop</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Folk / Acoustic"><span class="cb-label">Folk / Acoustic</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Pop Hits / Top 40"><span class="cb-label">Pop Hits / Top 40</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Jazz / Bossa Nova"><span class="cb-label">Jazz / Bossa Nova</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="R&B / Soul"><span class="cb-label">R&amp;B / Soul</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Alternative / Indie Rock"><span class="cb-label">Alternative / Indie Rock</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Country / Americana"><span class="cb-label">Country / Americana</span></label>
-          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Anjali Originals"><span class="cb-label">Anjali Originals</span></label>
+          <div class="checkbox-item"><input type="checkbox" id="g1" name="Genre" value="Indie Pop"><label class="cb-label" for="g1">Indie Pop</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g2" name="Genre" value="Folk / Acoustic"><label class="cb-label" for="g2">Folk / Acoustic</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g3" name="Genre" value="Pop Hits / Top 40"><label class="cb-label" for="g3">Pop Hits / Top 40</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g4" name="Genre" value="Jazz / Bossa Nova"><label class="cb-label" for="g4">Jazz / Bossa Nova</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g5" name="Genre" value="R&amp;B / Soul"><label class="cb-label" for="g5">R&amp;B / Soul</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g6" name="Genre" value="Alternative / Indie Rock"><label class="cb-label" for="g6">Alternative / Indie Rock</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g7" name="Genre" value="Country / Americana"><label class="cb-label" for="g7">Country / Americana</label></div>
+          <div class="checkbox-item"><input type="checkbox" id="g8" name="Genre" value="Anjali Originals"><label class="cb-label" for="g8">Anjali Originals</label></div>
         </div>
       </div>
       <div class="form-group no-mb">
