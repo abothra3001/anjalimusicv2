@@ -451,34 +451,34 @@
   </div>
 
   <!-- FORM -->
-  <form class="booking-form" id="bookingForm" onsubmit="handleSubmit(event)">
+  <form class="booking-form" id="bookingForm" onsubmit="handleSubmit(event)" action="https://formspree.io/f/booking@anjalimusic.com" method="POST">
 
     <div class="form-section">
       <div class="section-label">Your Details</div>
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" placeholder="e.g. Sarah" required>
+          <input type="text" id="firstName" name="First Name" placeholder="e.g. Sarah" required>
         </div>
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" placeholder="e.g. Mitchell" required>
+          <input type="text" id="lastName" name="Last Name" placeholder="e.g. Mitchell" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="your@email.com" required>
+          <input type="email" id="email" name="Email" placeholder="your@email.com" required>
         </div>
         <div class="form-group">
           <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
+          <input type="tel" id="phone" name="Phone" placeholder="+1 (555) 000-0000">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group no-mb">
           <label for="role">Your Role</label>
-          <select id="role">
+          <select id="role" name="Role">
             <option value="">Select…</option>
             <option>Event Planner / Coordinator</option>
             <option>Bride / Groom</option>
@@ -490,7 +490,7 @@
         </div>
         <div class="form-group no-mb">
           <label for="company">Company / Organization</label>
-          <input type="text" id="company" placeholder="Optional">
+          <input type="text" id="company" name="Company" placeholder="Optional">
         </div>
       </div>
     </div>
@@ -500,11 +500,11 @@
       <div class="form-row">
         <div class="form-group">
           <label for="eventName">Event Name</label>
-          <input type="text" id="eventName" placeholder="e.g. Spring Gala 2026" required>
+          <input type="text" id="eventName" name="Event Name" placeholder="e.g. Spring Gala 2026" required>
         </div>
         <div class="form-group">
           <label for="eventType">Event Type</label>
-          <select id="eventType" required>
+          <select id="eventType" name="Event Type" required>
             <option value="">Select…</option>
             <option>Wedding / Reception</option>
             <option>Corporate Event</option>
@@ -521,15 +521,15 @@
       <div class="form-row three">
         <div class="form-group">
           <label for="eventDate">Event Date</label>
-          <input type="date" id="eventDate" required>
+          <input type="date" id="eventDate" name="Event Date" required>
         </div>
         <div class="form-group">
           <label for="startTime">Start Time</label>
-          <input type="time" id="startTime">
+          <input type="time" id="startTime" name="Start Time">
         </div>
         <div class="form-group">
           <label for="duration">Duration</label>
-          <select id="duration">
+          <select id="duration" name="Duration">
             <option value="">Select…</option>
             <option>1 hour</option>
             <option>1.5 hours</option>
@@ -543,7 +543,7 @@
       <div class="form-row">
         <div class="form-group no-mb">
           <label for="guestCount">Expected Guest Count</label>
-          <select id="guestCount">
+          <select id="guestCount" name="Guest Count">
             <option value="">Select…</option>
             <option>Under 25</option>
             <option>25–50</option>
@@ -555,7 +555,7 @@
         </div>
         <div class="form-group no-mb">
           <label for="indoorOutdoor">Indoor / Outdoor</label>
-          <select id="indoorOutdoor">
+          <select id="indoorOutdoor" name="Indoor or Outdoor">
             <option value="">Select…</option>
             <option>Indoor</option>
             <option>Outdoor</option>
@@ -570,16 +570,16 @@
       <div class="form-row">
         <div class="form-group">
           <label for="venueName">Venue Name</label>
-          <input type="text" id="venueName" placeholder="e.g. The Rosewood Hotel">
+          <input type="text" id="venueName" name="Venue Name" placeholder="e.g. The Rosewood Hotel">
         </div>
         <div class="form-group">
           <label for="venueCity">City / State</label>
-          <input type="text" id="venueCity" placeholder="e.g. Portland, OR">
+          <input type="text" id="venueCity" name="Venue City" placeholder="e.g. Portland, OR">
         </div>
       </div>
       <div class="form-group no-mb">
         <label for="venueAddress">Full Address</label>
-        <input type="text" id="venueAddress" placeholder="Street, City, State, ZIP">
+        <input type="text" id="venueAddress" name="Venue Address" placeholder="Street, City, State, ZIP">
       </div>
     </div>
 
@@ -588,7 +588,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="performanceStyle">Performance Style</label>
-          <select id="performanceStyle">
+          <select id="performanceStyle" name="Performance Style">
             <option value="">Select…</option>
             <option>Solo Acoustic</option>
             <option>Solo with Backing Track</option>
@@ -598,7 +598,7 @@
         </div>
         <div class="form-group">
           <label for="setType">Set Type</label>
-          <select id="setType">
+          <select id="setType" name="Set Type">
             <option value="">Select…</option>
             <option>Originals Only</option>
             <option>Covers Only</option>
@@ -610,19 +610,19 @@
       <div style="margin-bottom:14px">
         <label style="display:block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,245,245,0.45);margin-bottom:12px">Genre / Vibe</label>
         <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" value="indie-pop"><span class="cb-label">Indie Pop</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="folk"><span class="cb-label">Folk / Acoustic</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="pop"><span class="cb-label">Pop Hits / Top 40</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="jazz"><span class="cb-label">Jazz / Bossa Nova</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="rnb"><span class="cb-label">R&amp;B / Soul</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="alt"><span class="cb-label">Alternative / Indie Rock</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="country"><span class="cb-label">Country / Americana</span></label>
-          <label class="checkbox-item"><input type="checkbox" value="original"><span class="cb-label">Anjali Originals</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Indie Pop"><span class="cb-label">Indie Pop</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Folk / Acoustic"><span class="cb-label">Folk / Acoustic</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Pop Hits / Top 40"><span class="cb-label">Pop Hits / Top 40</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Jazz / Bossa Nova"><span class="cb-label">Jazz / Bossa Nova</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="R&B / Soul"><span class="cb-label">R&amp;B / Soul</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Alternative / Indie Rock"><span class="cb-label">Alternative / Indie Rock</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Country / Americana"><span class="cb-label">Country / Americana</span></label>
+          <label class="checkbox-item"><input type="checkbox" name="Genre" value="Anjali Originals"><span class="cb-label">Anjali Originals</span></label>
         </div>
       </div>
       <div class="form-group no-mb">
         <label for="songRequests">Song Requests</label>
-        <textarea id="songRequests" placeholder="Any specific songs? A first dance song, a meaningful cover…"></textarea>
+        <textarea id="songRequests" name="Song Requests" placeholder="Any specific songs? A first dance song, a meaningful cover…"></textarea>
       </div>
     </div>
 
@@ -631,7 +631,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="soundSystem">Sound System Available?</label>
-          <select id="soundSystem">
+          <select id="soundSystem" name="Sound System">
             <option value="">Select…</option>
             <option>Yes — venue provides PA/sound</option>
             <option>No — I need Anjali to bring equipment</option>
@@ -640,13 +640,13 @@
         </div>
         <div class="form-group">
           <label for="loadIn">Load-in / Setup Time</label>
-          <input type="time" id="loadIn">
+          <input type="time" id="loadIn" name="Load-in Time">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="parking">Parking Available?</label>
-          <select id="parking">
+          <select id="parking" name="Parking">
             <option value="">Select…</option>
             <option>Yes — free on site</option>
             <option>Yes — street/paid nearby</option>
@@ -655,7 +655,7 @@
         </div>
         <div class="form-group">
           <label for="accommodation">Accommodation Provided?</label>
-          <select id="accommodation">
+          <select id="accommodation" name="Accommodation">
             <option value="">Select…</option>
             <option>Yes — provided by client</option>
             <option>No</option>
@@ -665,7 +665,7 @@
       </div>
       <div class="form-group no-mb">
         <label for="budget">Approximate Budget</label>
-        <input type="range" id="budget" min="300" max="5000" step="100" value="1000" oninput="updateBudget(this.value)">
+        <input type="range" id="budget" name="Budget" min="300" max="5000" step="100" value="1000" oninput="updateBudget(this.value)">
         <div class="budget-display" id="budgetDisplay">$1,000</div>
       </div>
     </div>
@@ -674,15 +674,15 @@
       <div class="section-label">Anything Else?</div>
       <div class="form-group">
         <label for="vibe">Event Vibe / Description</label>
-        <textarea id="vibe" placeholder="Romantic, high-energy, intimate, celebratory… paint the picture for me"></textarea>
+        <textarea id="vibe" name="Event Vibe" placeholder="Romantic, high-energy, intimate, celebratory… paint the picture for me"></textarea>
       </div>
       <div class="form-group">
         <label for="specialRequests">Special Requests</label>
-        <textarea id="specialRequests" placeholder="Dietary needs, accessibility, must-avoid songs, special announcements…"></textarea>
+        <textarea id="specialRequests" name="Special Requests" placeholder="Dietary needs, accessibility, must-avoid songs, special announcements…"></textarea>
       </div>
       <div class="form-group no-mb">
         <label for="hearAbout">How did you hear about Anjali?</label>
-        <select id="hearAbout">
+        <select id="hearAbout" name="How they heard about Anjali">
           <option value="">Select…</option>
           <option>Website — anjalimusic.com</option>
           <option>Instagram</option>
@@ -724,11 +724,34 @@
       `linear-gradient(90deg, #e8468a ${pct}%, rgba(255,255,255,0.08) ${pct}%)`;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    document.getElementById('bookingForm').style.display = 'none';
-    document.getElementById('successOverlay').classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const form = document.getElementById('bookingForm');
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        document.getElementById('successOverlay').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'Send Booking Request';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again or email booking@anjalimusic.com directly.');
+      }
+    } catch {
+      btn.textContent = 'Send Booking Request';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email booking@anjalimusic.com directly.');
+    }
   }
 
   updateBudget(1000);
