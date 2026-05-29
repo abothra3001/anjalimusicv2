@@ -1140,7 +1140,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const fname = document.getElementById('firstName').value.trim();
     const lname = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -1176,6 +1176,32 @@
       return;
     }
 
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    // Submit to Formspree
+    try {
+      const form = document.getElementById('bookingForm');
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree error');
+      }
+    } catch (err) {
+      btn.textContent = 'Send Booking Request';
+      btn.disabled = false;
+      errEl.textContent = 'Something went wrong sending your request. Please try again or email booking@anjalimusic.com directly.';
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Build and show invoice
     const genres = [...document.querySelectorAll('input[name="Genre"]:checked')].map(x => x.value).join(', ') || '—';
     const budgetVal = document.getElementById('budgetDisplay').textContent;
     const familyVal = document.getElementById('familyFriendly').value || '—';
