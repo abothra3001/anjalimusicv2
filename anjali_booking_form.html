@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANJALI — Event Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0d0d;
+    --black-2: #141414;
+    --black-3: #1c1c1c;
+    --black-4: #242424;
+    --pink: #e8468a;
+    --pink-light: #f075aa;
+    --pink-glow: rgba(232, 70, 138, 0.18);
+    --pink-subtle: rgba(232, 70, 138, 0.08);
+    --white: #f5f5f5;
+    --white-dim: rgba(245,245,245,0.55);
+    --border: rgba(232, 70, 138, 0.2);
+    --border-dim: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(232,70,138,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,70,138,0.07) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .logo-flower {
+    display: flex;
+    align-items: center;
+    animation: spin 18s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .artist-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 9vw, 72px);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .artist-tagline {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.38em;
+    color: var(--pink);
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 28px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 90px;
+    background: linear-gradient(90deg, transparent, var(--pink));
+  }
+
+  .divider::after {
+    background: linear-gradient(90deg, var(--pink), transparent);
+  }
+
+  .divider span { color: var(--pink); font-size: 12px; }
+
+  /* INTRO BANNER */
+  .intro-banner {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 28px;
+    margin-bottom: 44px;
+    background: var(--black-3);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.9s 0.2s ease both;
+    text-align: center;
+  }
+
+  .intro-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .intro-banner::after {
+    content: '♪';
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 52px;
+    opacity: 0.06;
+    color: var(--pink);
+  }
+
+  .intro-banner p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--white-dim);
+  }
+
+  .intro-banner p strong {
+    color: var(--white);
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* FORM */
+  .booking-form { animation: fadeUp 1s 0.3s ease both; }
+
+  .form-section { margin-bottom: 38px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .form-group.no-mb { margin-bottom: 0; }
+
+  .form-group label, .genre-label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.45);
+  }
+
+  input:not([type="checkbox"]):not([type="range"]), select, textarea {
+    width: 100%;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:not([type="checkbox"])::placeholder, textarea::placeholder {
+    color: rgba(245,245,245,0.2);
+    font-style: italic;
+  }
+
+  input:not([type="checkbox"]):not([type="range"]):focus, select:focus, textarea:focus {
+    border-color: var(--pink);
+    background: var(--black-4);
+    box-shadow: 0 0 0 3px var(--pink-glow);
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8468a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    background-color: var(--black-3);
+  }
+
+  select option { background: #1c1c1c; color: var(--white); }
+
+  textarea { resize: vertical; min-height: 88px; line-height: 1.6; }
+
+  /* Checkboxes */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .checkbox-item:hover {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .checkbox-item:has(input:checked) {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--pink);
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    border: none;
+    background: none;
+    box-shadow: none;
+    flex-shrink: 0;
+  }
+
+  .cb-label {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    cursor: pointer;
+  }
+
+  /* Policy boxes */
+  .policy-box {
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-left: 2px solid var(--pink);
+    border-radius: 3px;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .policy-box strong {
+    color: var(--white);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Agreement checkboxes */
+  .agreement-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .agreement-item:hover {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .agreement-item:has(input:checked) {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .agreement-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--pink);
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    flex-shrink: 0;
+  }
+
+  .agreement-item span {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.5;
+  }
+
+  /* Repertoire link */
+  .repertoire-link {
+    font-size: 12px;
+    color: rgba(245,245,245,0.35);
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .repertoire-link a {
+    color: var(--pink-light);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232,70,138,0.3);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .repertoire-link a:hover {
+    color: var(--pink);
+    border-color: var(--pink);
+  }
+
+  /* Budget */
+  .budget-display {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    color: var(--pink-light);
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: auto;
+    appearance: auto;
+    height: 3px;
+    border: none;
+    border-radius: 2px;
+    padding: 0;
+    box-shadow: none;
+    cursor: pointer;
+    accent-color: var(--pink);
+  }
+
+  /* Submit */
+  .submit-wrap { text-align: center; margin-top: 48px; }
+
+  .btn-submit {
+    background: var(--pink);
+    color: var(--black);
+    border: none;
+    padding: 16px 56px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  }
+
+  .btn-submit:hover {
+    background: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(232,70,138,0.35);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .submit-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(245,245,245,0.3);
+    font-style: italic;
+  }
+
+  .error-msg {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--pink-light);
+    text-align: center;
+    display: none;
+  }
+
+  /* INVOICE */
+  #invoicePage { display: none; animation: fadeUp 0.6s ease both; }
+
+  .invoice-wrap {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 44px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .invoice-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .inv-header {
+    text-align: center;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .inv-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--white);
+  }
+
+  .inv-sub {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-top: 6px;
+  }
+
+  .inv-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-top: 18px;
+  }
+
+  .inv-meta {
+    font-size: 11px;
+    color: rgba(245,245,245,0.3);
+    margin-top: 6px;
+    letter-spacing: 0.06em;
+  }
+
+  .inv-thank {
+    background: var(--black-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 18px 20px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.7;
+    text-align: center;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .inv-thank::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .inv-section { margin-bottom: 24px; }
+
+  .inv-section-title {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .inv-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
+  }
+
+  .inv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 13px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    gap: 16px;
+  }
+
+  .inv-row .lbl {
+    color: rgba(245,245,245,0.35);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .inv-row .val {
+    color: var(--white-dim);
+    font-weight: 300;
+    text-align: right;
+  }
+
+  .inv-financial {
+    background: var(--black-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px 18px;
+  }
+
+  .inv-fin-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 5px 0;
+    color: var(--white-dim);
+  }
+
+  .inv-fin-row.total {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--pink-light);
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .inv-footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-dim);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(245,245,245,0.2);
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+
+  .inv-footer a { color: var(--pink); text-decoration: none; }
+
+  .inv-actions { text-align: center; margin-top: 28px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-print {
+    background: transparent;
+    color: var(--pink);
+    border: 1px solid var(--border);
+    padding: 12px 36px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .btn-print:hover { background: var(--pink-subtle); border-color: var(--pink); }
+
+  .btn-back {
+    background: transparent;
+    color: rgba(245,245,245,0.3);
+    border: 1px solid var(--border-dim);
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-back:hover { color: var(--white-dim); border-color: rgba(255,255,255,0.2); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-dim);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(245,245,245,0.2);
+    text-transform: uppercase;
+  }
+
+  .footer a { color: var(--pink); text-decoration: none; }
+  .footer a:hover { opacity: 0.75; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .form-row, .form-row.three { grid-template-columns: 1fr; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .artist-name { letter-spacing: 0.14em; }
+    .invoice-wrap { padding: 28px 20px; }
+  }
+
+  @media print {
+    body { background: white; color: black; }
+    body::before { display: none; }
+    .inv-actions, .footer { display: none; }
+    .invoice-wrap { border: none; padding: 0; background: white; }
+    .inv-logo, .inv-title { color: black; }
+    .inv-sub, .inv-section-title { color: #c0186b; }
+    .inv-row .lbl { color: #888; }
+    .inv-row .val, .inv-thank, .inv-fin-row { color: #333; }
+    .inv-thank { background: #fff5f9; border-color: #f0a0c0; }
+    .inv-financial { background: #fff5f9; border-color: #f0a0c0; }
+    .inv-fin-row.total { color: #c0186b; }
+    .inv-footer { color: #aaa; }
+    .inv-footer a { color: #c0186b; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-flower">
+        <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#e8468a">
+            <ellipse cx="50" cy="18" rx="7" ry="16" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(45 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(90 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(135 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(180 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(225 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(270 50 50)" />
+            <ellipse cx="50" cy="18" rx="7" ry="16" transform="rotate(315 50 50)" />
+          </g>
+          <circle cx="50" cy="50" r="13" fill="#f075aa" />
+          <circle cx="50" cy="50" r="7" fill="#e8468a" />
+        </svg>
+      </div>
+      <div class="artist-name">ANJALI</div>
+    </div>
+    <div class="artist-tagline">Singer · Songwriter · Live Performer</div>
+    <div class="divider"><span>✦</span></div>
+  </div>
+
+  <!-- FORM PAGE -->
+  <div id="formPage">
+
+    <!-- INTRO BANNER -->
+    <div class="intro-banner">
+      <p>
+        <strong>Thanks for booking me for your event!</strong>
+        Please fill in the details below so I can make your performance exactly what you're envisioning. I'll be in touch within 48 hours.
+      </p>
+    </div>
+
+    <form class="booking-form" id="bookingForm" action="https://formspree.io/f/xqejarpo" method="POST">
+
+      <!-- YOUR DETAILS -->
+      <div class="form-section">
+        <div class="section-label">Your Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="First Name" placeholder="e.g. Sarah">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="Last Name" placeholder="e.g. Mitchell">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="Email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="Phone" placeholder="+1 (555) 000-0000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group no-mb">
+            <label for="role">Your Role</label>
+            <select id="role" name="Role">
+              <option value="">Select…</option>
+              <option>Event Planner / Coordinator</option>
+              <option>Bride / Groom</option>
+              <option>Corporate Event Manager</option>
+              <option>Venue Manager</option>
+              <option>Private Host</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group no-mb">
+            <label for="company">Company / Organization</label>
+            <input type="text" id="company" name="Company" placeholder="Optional">
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENT DETAILS -->
+      <div class="form-section">
+        <div class="section-label">Event Details</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventName">Event Name</label>
+            <input type="text" id="eventName" name="Event Name" placeholder="e.g. Spring Gala 2026">
+          </div>
+          <div class="form-group">
+            <label for="eventType">Event Type</label>
+            <select id="eventType" name="Event Type">
+              <option value="">Select…</option>
+              <option>Wedding / Reception</option>
+              <option>Corporate Event</option>
+              <option>Private Party</option>
+              <option>Cocktail Hour</option>
+              <option>Fundraiser / Gala</option>
+              <option>Birthday / Milestone</option>
+              <option>Restaurant / Bar</option>
+              <option>Festival / Outdoor</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row three">
+          <div class="form-group">
+            <label for="eventDate">Event Date</label>
+            <input type="date" id="eventDate" name="Event Date">
+          </div>
+          <div class="form-group">
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" name="Start Time">
+          </div>
+          <div class="form-group">
+            <label for="duration">Duration</label>
+            <select id="duration" name="Duration">
+              <option value="">Select…</option>
+              <option>1 hour</option>
+              <option>1.5 hours</option>
+              <option>2 hours</option>
+              <option>2.5 hours</option>
+              <option>3 hours</option>
+              <option>3+ hours</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guestCount">Expected Guest Count</label>
+            <select id="guestCount" name="Guest Count">
+              <option value="">Select…</option>
+              <option>Under 25</option>
+              <option>25–50</option>
+              <option>50–100</option>
+              <option>100–200</option>
+              <option>200–500</option>
+              <option>500+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="indoorOutdoor">Indoor / Outdoor</label>
+            <select id="indoorOutdoor" name="Indoor or Outdoor">
+              <option value="">Select…</option>
+              <option>Indoor</option>
+              <option>Outdoor</option>
+              <option>Both / Hybrid</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="familyFriendly">Family-Friendly Event?</label>
+          <select id="familyFriendly" name="Family Friendly">
+            <option value="">Select…</option>
+            <option value="Yes — family-friendly set (no profanity)">Yes — please keep set list family-friendly (no profanity)</option>
+            <option value="No — standard set list">No — standard set list is fine</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- VENUE -->
+      <div class="form-section">
+        <div class="section-label">Venue</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="venueName">Venue Name</label>
+            <input type="text" id="venueName" name="Venue Name" placeholder="e.g. The Rosewood Hotel">
+          </div>
+          <div class="form-group">
+            <label for="venueCity">City / State</label>
+            <input type="text" id="venueCity" name="Venue City" placeholder="e.g. Portland, OR">
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="venueAddress">Full Address</label>
+          <input type="text" id="venueAddress" name="Venue Address" placeholder="Street, City, State, ZIP">
+        </div>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div class="form-section">
+        <div class="section-label">Performance</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="performanceStyle">Performance Style</label>
+            <select id="performanceStyle" name="Performance Style">
+              <option value="">Select…</option>
+              <option>Solo Acoustic</option>
+              <option>Full Band</option>
+              <option>Flexible / Your Recommendation</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="setType">Set Type</label>
+            <select id="setType" name="Set Type">
+              <option value="">Select…</option>
+              <option>Originals Only</option>
+              <option>Covers Only</option>
+              <option>Mix of Both</option>
+              <option>Background / Ambient</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="genre-label" style="display:block;margin-bottom:12px">Genre / Vibe</label>
+          <div class="checkbox-grid">
+            <div class="checkbox-item"><input type="checkbox" id="g1" name="Genre" value="Indie Pop"><label class="cb-label" for="g1">Indie Pop</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g2" name="Genre" value="Folk / Acoustic"><label class="cb-label" for="g2">Folk / Acoustic</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g3" name="Genre" value="Pop Hits / Top 40"><label class="cb-label" for="g3">Pop Hits / Top 40</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g4" name="Genre" value="Jazz / Bossa Nova"><label class="cb-label" for="g4">Jazz / Bossa Nova</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g5" name="Genre" value="R&amp;B / Soul"><label class="cb-label" for="g5">R&amp;B / Soul</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g6" name="Genre" value="Alternative / Indie Rock"><label class="cb-label" for="g6">Alternative / Indie Rock</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g7" name="Genre" value="Country / Americana"><label class="cb-label" for="g7">Country / Americana</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="g8" name="Genre" value="Anjali Originals"><label class="cb-label" for="g8">Anjali Originals</label></div>
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="songRequests">Song Requests / Notes</label>
+          <div class="repertoire-link">Browse my full repertoire catalog: <a href="https://www.ultimate-guitar.com/user/playlist/shared?h=5LY67WARFg6BdRIa7W_tFdaN" target="_blank" rel="noopener">view song list ↗</a></div>
+          <textarea id="songRequests" name="Song Requests" placeholder="Any specific songs you'd love to hear, or notes about the set…"></textarea>
+        </div>
+      </div>
+
+      <!-- LOGISTICS -->
+      <div class="form-section">
+        <div class="section-label">Logistics</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="soundSystem">Sound System Available?</label>
+            <select id="soundSystem" name="Sound System">
+              <option value="">Select…</option>
+              <option>Yes — venue provides PA/sound</option>
+              <option>No — I need Anjali to bring equipment</option>
+              <option>Unsure / Need guidance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="loadIn">Load-in / Setup Time</label>
+            <input type="text" id="loadIn" name="Load-in Time" placeholder="e.g. 1 hour before">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parking">Parking Available?</label>
+            <select id="parking" name="Parking">
+              <option value="">Select…</option>
+              <option>Yes — free on site</option>
+              <option>Yes — street/paid nearby</option>
+              <option>No / Limited</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="accommodation">Accommodation Provided?</label>
+            <select id="accommodation" name="Accommodation">
+              <option value="">Select…</option>
+              <option>Yes — provided by client</option>
+              <option>No</option>
+              <option>To be discussed</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="merch">Merch Sales / Tip Jar Permitted?</label>
+            <select id="merch" name="Merch Sales / Tip Jar Permitted">
+              <option value="">Select…</option>
+              <option>Yes — both permitted</option>
+              <option>Merch only</option>
+              <option>Tip jar only</option>
+              <option>No</option>
+              <option>Not sure — needs discussion</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="travelInfo">Travel Distance / Your City</label>
+            <input type="text" id="travelInfo" name="Travel Info" placeholder="e.g. Brooklyn, NY or 30 miles from Manhattan">
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="budget">Approximate Budget</label>
+          <input type="range" id="budget" name="Budget" min="300" max="5000" step="100" value="1000" oninput="updateBudget(this.value)">
+          <div class="budget-display" id="budgetDisplay">$1,000</div>
+        </div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="form-section">
+        <div class="section-label">Payment</div>
+        <div class="form-group no-mb">
+          <label for="paymentMethod">Preferred Payment Method</label>
+          <select id="paymentMethod" name="Payment Method">
+            <option value="">Select…</option>
+            <option>Zelle (preferred)</option>
+            <option>Venmo</option>
+            <option>Cash</option>
+            <option>Check</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- AGREEMENTS -->
+      <div class="form-section">
+        <div class="section-label">Agreements</div>
+        <div class="policy-box">
+          <strong>Deposit &amp; Payment Terms</strong>
+          For new clients, a 50% deposit is due upon booking confirmation. The remaining 50% is due on the day of the event. Your deposit secures your date.
+        </div>
+        <label class="agreement-item">
+          <input type="checkbox" id="agreeDeposit" name="Agreed: Deposit Terms" value="Yes">
+          <span>I understand and agree to the deposit and payment terms above.</span>
+        </label>
+        <div class="policy-box" style="margin-top:16px;">
+          <strong>Cancellation Policy</strong>
+          Full refund if cancelled 30+ days before the event date. Cancellations within 30 days forfeit the deposit.
+        </div>
+        <label class="agreement-item">
+          <input type="checkbox" id="agreeCancel" name="Agreed: Cancellation Policy" value="Yes">
+          <span>I understand and agree to the cancellation policy above.</span>
+        </label>
+        <div class="policy-box" style="margin-top:16px;">
+          <strong>Travel Fee</strong>
+          Events outside a reasonable local radius may incur a travel fee. This will be discussed and agreed upon before your booking is confirmed.
+        </div>
+        <label class="agreement-item">
+          <input type="checkbox" id="agreeTravel" name="Agreed: Travel Fee" value="Yes">
+          <span>I acknowledge that a travel fee may apply and will be confirmed before booking is finalized.</span>
+        </label>
+        <label class="agreement-item" style="margin-top:8px;">
+          <input type="checkbox" id="agreeContract" name="Agreed: Formal Contract" value="Yes">
+          <span>I agree to sign a formal performance contract prior to the event.</span>
+        </label>
+      </div>
+
+      <!-- ANYTHING ELSE -->
+      <div class="form-section">
+        <div class="section-label">Anything Else?</div>
+        <div class="form-group">
+          <label for="vibe">Event Vibe / Description</label>
+          <textarea id="vibe" name="Event Vibe" placeholder="Romantic, high-energy, intimate, celebratory… paint the picture for me"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="specialRequests">Special Requests</label>
+          <textarea id="specialRequests" name="Special Requests" placeholder="Dietary needs, accessibility, must-avoid songs, special announcements…"></textarea>
+        </div>
+        <div class="form-group no-mb">
+          <label for="hearAbout">How did you hear about Anjali?</label>
+          <select id="hearAbout" name="How they heard about Anjali">
+            <option value="">Select…</option>
+            <option>Website — anjalimusic.com</option>
+            <option>Instagram</option>
+            <option>Spotify / Apple Music</option>
+            <option>Saw her perform live</option>
+            <option>Word of mouth / Referral</option>
+            <option>GigSalad / The Bash</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="formError" class="error-msg"></div>
+
+      <div class="submit-wrap">
+        <button type="button" class="btn-submit" onclick="handleSubmit()">Send Booking Request</button>
+        <p class="submit-note">I'll get back to you within 48 hours ✦</p>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- INVOICE PAGE -->
+  <div id="invoicePage">
+    <div class="invoice-wrap">
+      <div class="inv-header">
+        <div class="inv-logo">ANJALI</div>
+        <div class="inv-sub">Singer · Songwriter · Live Performer · anjalimusic.com</div>
+        <div class="inv-title">Booking Request Summary</div>
+        <div class="inv-meta" id="invMeta"></div>
+      </div>
+      <div class="inv-thank" id="invThank"></div>
+      <div class="inv-section"><div class="inv-section-title">Client Details</div><div id="invClient"></div></div>
+      <div class="inv-section"><div class="inv-section-title">Event Details</div><div id="invEvent"></div></div>
+      <div class="inv-section"><div class="inv-section-title">Performance Details</div><div id="invPerf"></div></div>
+      <div class="inv-section"><div class="inv-section-title">Logistics</div><div id="invLogistics"></div></div>
+      <div class="inv-section"><div class="inv-section-title">Financial Summary</div><div class="inv-financial" id="invFinancial"></div></div>
+      <div class="inv-section"><div class="inv-section-title">Agreements Confirmed</div><div id="invAgreements"></div></div>
+      <div class="inv-footer">
+        Thank you for choosing Anjali for your event — I can't wait to make it unforgettable.<br>
+        Questions? Reach out anytime.<br>
+        <a href="https://anjalimusic.com" target="_blank">anjalimusic.com</a> &nbsp;✦&nbsp; singer · songwriter · bicoastal
+      </div>
+    </div>
+    <div class="inv-actions">
+      <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn-back" onclick="showForm()">← Back to Form</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://anjalimusic.com" target="_blank">anjalimusic.com</a>
+    &nbsp;✦&nbsp; singer · songwriter · bicoastal
+  </div>
+
+</div>
+
+<script>
+  function updateBudget(val) {
+    const n = parseInt(val);
+    document.getElementById('budgetDisplay').textContent = n >= 5000 ? '$5,000+' : '$' + n.toLocaleString();
+    const pct = ((n - 300) / (5000 - 300)) * 100;
+    document.getElementById('budget').style.background =
+      `linear-gradient(90deg, #e8468a ${pct}%, rgba(255,255,255,0.08) ${pct}%)`;
+  }
+
+  function row(label, value) {
+    if (!value || value === '') return '';
+    return `<div class="inv-row"><span class="lbl">${label}</span><span class="val">${value}</span></div>`;
+  }
+
+  function showForm() {
+    document.getElementById('formPage').style.display = 'block';
+    document.getElementById('invoicePage').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleSubmit() {
+    const fname = document.getElementById('firstName').value.trim();
+    const lname = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const eventType = document.getElementById('eventType').value;
+    const eventDate = document.getElementById('eventDate').value;
+    const startTime = document.getElementById('startTime').value;
+    const duration = document.getElementById('duration').value;
+    const venueCity = document.getElementById('venueCity').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const agreeDeposit = document.getElementById('agreeDeposit').checked;
+    const agreeCancel = document.getElementById('agreeCancel').checked;
+    const agreeTravel = document.getElementById('agreeTravel').checked;
+    const agreeContract = document.getElementById('agreeContract').checked;
+
+    const errEl = document.getElementById('formError');
+    errEl.style.display = 'none';
+
+    const missing = [];
+    if (!fname || !lname) missing.push('full name');
+    if (!email) missing.push('email address');
+    if (!eventType) missing.push('event type');
+    if (!eventDate) missing.push('event date');
+    if (!startTime) missing.push('start time');
+    if (!duration) missing.push('duration');
+    if (!venueCity) missing.push('city / state');
+    if (!paymentMethod) missing.push('payment method');
+    if (!agreeDeposit || !agreeCancel || !agreeTravel || !agreeContract) missing.push('all four agreements');
+
+    if (missing.length > 0) {
+      errEl.textContent = 'Please complete: ' + missing.join(', ') + '.';
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const genres = [...document.querySelectorAll('input[name="Genre"]:checked')].map(x => x.value).join(', ') || '—';
+    const budgetVal = document.getElementById('budgetDisplay').textContent;
+    const familyVal = document.getElementById('familyFriendly').value || '—';
+
+    const now = new Date();
+    const invNum = 'ANJ-' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+    const submittedDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const eventDateStr = eventDate ? new Date(eventDate + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+    const timeStr = startTime ? new Date('1970-01-01T' + startTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : '—';
+
+    document.getElementById('invMeta').textContent = 'Ref: ' + invNum + '  ·  Submitted: ' + submittedDate;
+    document.getElementById('invThank').innerHTML =
+      'Dear ' + fname + ',<br>Thank you so much for reaching out — I\'m truly honored to be considered for your event. I\'ve received all your details below and will be in touch within 48 hours to confirm everything and get the music sorted. ✦';
+
+    document.getElementById('invClient').innerHTML =
+      row('Name', fname + ' ' + lname) +
+      row('Email', email) +
+      row('Phone', document.getElementById('phone').value.trim() || '—') +
+      row('Role', document.getElementById('role').value || '—') +
+      row('Company / Org', document.getElementById('company').value.trim() || '—');
+
+    document.getElementById('invEvent').innerHTML =
+      row('Event Name', document.getElementById('eventName').value.trim() || '—') +
+      row('Event Type', eventType) +
+      row('Date', eventDateStr) +
+      row('Start Time', timeStr) +
+      row('Duration', duration) +
+      row('Guest Count', document.getElementById('guestCount').value || '—') +
+      row('Indoor / Outdoor', document.getElementById('indoorOutdoor').value || '—') +
+      row('Family-Friendly', familyVal) +
+      row('Venue', document.getElementById('venueName').value.trim() || '—') +
+      row('City / State', venueCity) +
+      row('Address', document.getElementById('venueAddress').value.trim() || '—');
+
+    document.getElementById('invPerf').innerHTML =
+      row('Performance Style', document.getElementById('performanceStyle').value || '—') +
+      row('Set Type', document.getElementById('setType').value || '—') +
+      row('Genre / Vibe', genres) +
+      row('Song Requests / Notes', document.getElementById('songRequests').value.trim() || '—');
+
+    document.getElementById('invLogistics').innerHTML =
+      row('Sound System', document.getElementById('soundSystem').value || '—') +
+      row('Load-in / Setup', document.getElementById('loadIn').value.trim() || '—') +
+      row('Parking', document.getElementById('parking').value || '—') +
+      row('Accommodation', document.getElementById('accommodation').value || '—') +
+      row('Merch / Tip Jar', document.getElementById('merch').value || '—') +
+      row('Travel Info', document.getElementById('travelInfo').value.trim() || '—') +
+      row('Event Vibe', document.getElementById('vibe').value.trim() || '—') +
+      row('Special Requests', document.getElementById('specialRequests').value.trim() || '—') +
+      row('How They Heard About Anjali', document.getElementById('hearAbout').value || '—');
+
+    document.getElementById('invFinancial').innerHTML =
+      '<div class="inv-fin-row"><span>Approximate Budget</span><span>' + budgetVal + '</span></div>' +
+      '<div class="inv-fin-row"><span>Preferred Payment Method</span><span>' + paymentMethod + '</span></div>' +
+      '<div class="inv-fin-row" style="font-size:12px;color:rgba(245,245,245,0.3);border-top:1px solid rgba(232,70,138,0.15);margin-top:8px;padding-top:10px;"><span>Deposit (50% due on confirmation)</span><span>To be confirmed</span></div>' +
+      '<div class="inv-fin-row" style="font-size:12px;color:rgba(245,245,245,0.3);"><span>Balance (50% due day of event)</span><span>To be confirmed</span></div>' +
+      '<div class="inv-fin-row total"><span>Final Total</span><span>To be confirmed upon booking</span></div>';
+
+    document.getElementById('invAgreements').innerHTML =
+      row('Deposit &amp; Payment Terms', '✓ Agreed') +
+      row('Cancellation Policy', '✓ Agreed') +
+      row('Travel Fee Acknowledgment', '✓ Agreed') +
+      row('Formal Contract', '✓ Agreed to sign prior to event');
+
+    document.getElementById('formPage').style.display = 'none';
+    document.getElementById('invoicePage').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateBudget(1000);
+</script>
+</body>
+</html>
