@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANJALI: Share Your Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0d0d0d;
+    --black-2: #141414;
+    --black-3: #1c1c1c;
+    --black-4: #242424;
+    --pink: #e8468a;
+    --pink-light: #f075aa;
+    --pink-glow: rgba(232, 70, 138, 0.18);
+    --pink-subtle: rgba(232, 70, 138, 0.08);
+    --white: #f5f5f5;
+    --white-dim: rgba(245,245,245,0.55);
+    --border: rgba(232, 70, 138, 0.2);
+    --border-dim: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(232,70,138,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(232,70,138,0.07) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .logo-flower {
+    display: flex;
+    align-items: center;
+    animation: spin 18s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .artist-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 9vw, 72px);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .artist-tagline {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.38em;
+    color: var(--pink);
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 28px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 90px;
+    background: linear-gradient(90deg, transparent, var(--pink));
+  }
+
+  .divider::after {
+    background: linear-gradient(90deg, var(--pink), transparent);
+  }
+
+  .divider span { color: var(--pink); font-size: 12px; }
+
+  /* INTRO BANNER */
+  .intro-banner {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 28px;
+    margin-bottom: 44px;
+    background: var(--black-3);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.9s 0.2s ease both;
+    text-align: center;
+  }
+
+  .intro-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .intro-banner::after {
+    content: '♪';
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 52px;
+    opacity: 0.06;
+    color: var(--pink);
+  }
+
+  .intro-banner p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--white-dim);
+  }
+
+  .intro-banner p strong {
+    color: var(--white);
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* FORM */
+  .review-form { animation: fadeUp 1s 0.3s ease both; }
+
+  .form-section { margin-bottom: 38px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .form-group.no-mb { margin-bottom: 0; }
+
+  .form-group label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,245,245,0.45);
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+    width: 100%;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"])::placeholder,
+  textarea::placeholder {
+    color: rgba(245,245,245,0.2);
+    font-style: italic;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  select:focus, textarea:focus {
+    border-color: var(--pink);
+    background: var(--black-4);
+    box-shadow: 0 0 0 3px var(--pink-glow);
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e8468a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    background-color: var(--black-3);
+  }
+
+  select option { background: #1c1c1c; color: var(--white); }
+
+  textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+  /* STAR RATING */
+  .stars-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 18px 0 10px;
+  }
+
+  .star {
+    font-size: 28px;
+    cursor: pointer;
+    color: rgba(232,70,138,0.2);
+    transition: color 0.15s, transform 0.15s;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .star.lit, .star.hover { color: var(--pink); transform: scale(1.15); }
+
+  .star-label {
+    text-align: center;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(245,245,245,0.3);
+    letter-spacing: 0.06em;
+    min-height: 1.4em;
+    transition: color 0.2s;
+  }
+
+  .star-label.active { color: var(--pink-light); }
+
+  /* TESTIMONIAL PREVIEW */
+  .preview-box {
+    background: var(--black-3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--pink);
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-top: 10px;
+    display: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--pink), transparent);
+  }
+
+  .preview-box.visible { display: block; }
+
+  .preview-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 8px;
+  }
+
+  .preview-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* CHECKBOX GRID */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .checkbox-item:hover {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .checkbox-item:has(input:checked) {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--pink);
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    border: none;
+    background: none;
+    box-shadow: none;
+    flex-shrink: 0;
+  }
+
+  .cb-label {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    cursor: pointer;
+  }
+
+  /* PERMISSION RADIO */
+  .permission-box {
+    background: var(--black-3);
+    border: 1px solid var(--border-dim);
+    border-left: 2px solid var(--pink);
+    border-radius: 3px;
+    padding: 18px 18px;
+    margin-bottom: 10px;
+  }
+
+  .permission-box p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .radio-options { display: flex; flex-direction: column; gap: 8px; }
+
+  .radio-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--black-4);
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .radio-item:hover {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .radio-item:has(input:checked) {
+    border-color: var(--pink);
+    background: var(--pink-subtle);
+  }
+
+  .radio-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin-top: 1px;
+    cursor: pointer;
+    accent-color: var(--pink);
+    flex-shrink: 0;
+  }
+
+  .radio-item span {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  /* SUBMIT */
+  .submit-wrap { text-align: center; margin-top: 48px; }
+
+  .btn-submit {
+    background: var(--pink);
+    color: var(--black);
+    border: none;
+    padding: 16px 56px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  }
+
+  .btn-submit:hover {
+    background: var(--pink-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(232,70,138,0.35);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .submit-note {
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(245,245,245,0.3);
+    font-style: italic;
+  }
+
+  .error-msg {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--pink-light);
+    text-align: center;
+    display: none;
+  }
+
+  /* SUCCESS PAGE */
+  #successPage {
+    display: none;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .success-wrap {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 56px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .success-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  }
+
+  .success-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .success-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .success-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.7;
+    max-width: 42ch;
+    margin: 0 auto 28px;
+  }
+
+  .success-link {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--pink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .success-link:hover { color: var(--pink-light); border-color: var(--pink-light); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-dim);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(245,245,245,0.2);
+    text-transform: uppercase;
+  }
+
+  .footer a { color: var(--pink); text-decoration: none; }
+  .footer a:hover { opacity: 0.75; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 560px) {
+    .form-row { grid-template-columns: 1fr; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .page { padding: 40px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-flower">
+        <svg width="32" height="32" viewBox="-16 -16 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g opacity="0.65">
+            <g transform="rotate(0)">  <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(45)"> <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(90)"> <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(135)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(180)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(225)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(270)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(315)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+          </g>
+          <circle r="3.5" fill="#e8468a"/>
+        </svg>
+      </div>
+      <div class="artist-name">ANJALI</div>
+      <div class="logo-flower" style="animation-direction:reverse;">
+        <svg width="32" height="32" viewBox="-16 -16 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g opacity="0.65">
+            <g transform="rotate(0)">  <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(45)"> <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(90)"> <ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(135)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(180)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(225)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(270)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+            <g transform="rotate(315)"><ellipse cx="0" cy="-9" rx="2.8" ry="5.5" fill="#e8468a"/></g>
+          </g>
+          <circle r="3.5" fill="#e8468a"/>
+        </svg>
+      </div>
+    </div>
+    <div class="artist-tagline">Singer · Songwriter · Live Performer</div>
+    <div class="divider"><span>✦</span></div>
+  </div>
+
+  <!-- FORM PAGE -->
+  <div id="formPage">
+
+    <div class="intro-banner">
+      <p>
+        <strong>Thank you for having me at your event.</strong>
+        I'd love to hear how it went. Your words help other couples and planners find the right music for their most important moments and they genuinely mean a lot to me. This takes about two minutes.
+      </p>
+    </div>
+
+    <form class="review-form" id="reviewForm" action="https://formspree.io/f/xdavzaej" method="POST">
+      <input type="hidden" name="_subject" value="New Testimonial Submission: anjalimusic.com" />
+      <input type="hidden" id="ratingInput" name="Rating" value="" />
+
+      <!-- OVERALL RATING -->
+      <div class="form-section">
+        <div class="section-label">Overall Experience</div>
+        <div class="stars-wrap" id="starsWrap">
+          <span class="star" data-v="1">★</span>
+          <span class="star" data-v="2">★</span>
+          <span class="star" data-v="3">★</span>
+          <span class="star" data-v="4">★</span>
+          <span class="star" data-v="5">★</span>
+        </div>
+        <div class="star-label" id="starLabel">Tap to rate</div>
+      </div>
+
+      <!-- ABOUT YOU -->
+      <div class="form-section">
+        <div class="section-label">About You</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name *</label>
+            <input type="text" id="name" name="Name" placeholder="How you'd like to be credited" required />
+          </div>
+          <div class="form-group">
+            <label for="title">Title / Role</label>
+            <input type="text" id="title" name="Title" placeholder="e.g. Bride, Event Coordinator" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="eventType">Event Type</label>
+            <select id="eventType" name="Event Type">
+              <option value="">Select...</option>
+              <option>Wedding</option>
+              <option>Corporate Event</option>
+              <option>Private Party</option>
+              <option>Public Event</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Approximate Date</label>
+            <input type="month" id="eventDate" name="Event Date" />
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="venue">Venue / Location</label>
+          <input type="text" id="venue" name="Venue" placeholder="e.g. The Ritz Carlton, New York" />
+        </div>
+      </div>
+
+      <!-- THE REVIEW -->
+      <div class="form-section">
+        <div class="section-label">Your Experience</div>
+        <div class="form-group">
+          <label for="testimonial">In Your Own Words *</label>
+          <textarea
+            id="testimonial"
+            name="Testimonial"
+            placeholder="What stood out? How did the music make you or your guests feel? What would you tell someone considering booking Anjali?"
+            required
+          ></textarea>
+          <div class="preview-box" id="previewBox">
+            <div class="preview-label">Preview</div>
+            <div class="preview-text" id="previewText"></div>
+          </div>
+        </div>
+        <div class="form-group no-mb">
+          <label for="highlight">One-Line Highlight <span style="font-size:9px;letter-spacing:0;text-transform:none;color:rgba(245,245,245,0.25);">optional, the quote you'd want on a poster</span></label>
+          <input type="text" id="highlight" name="Highlight Quote" placeholder="Leave blank to use your full response" />
+        </div>
+      </div>
+
+      <!-- WHAT WORKED -->
+      <div class="form-section">
+        <div class="section-label">What Worked Well</div>
+        <div class="checkbox-grid">
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Song selection" />
+            <span class="cb-label">Song selection</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Reading the room" />
+            <span class="cb-label">Reading the room</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Multilingual repertoire" />
+            <span class="cb-label">Multilingual repertoire</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Guest interaction" />
+            <span class="cb-label">Guest interaction</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Original song commission" />
+            <span class="cb-label">Original song commission</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Pre-event communication" />
+            <span class="cb-label">Pre-event communication</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Professionalism" />
+            <span class="cb-label">Professionalism</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="Highlights" value="Took requests" />
+            <span class="cb-label">Took requests</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- PERMISSION -->
+      <div class="form-section">
+        <div class="section-label">Permission to Share</div>
+        <div class="permission-box">
+          <p>Would you be comfortable with your words appearing on anjalimusic.com or in promotional materials? Your name will appear exactly as written above.</p>
+          <div class="radio-options">
+            <label class="radio-item">
+              <input type="radio" name="Permission" value="Yes: full quote and name" required />
+              <span><strong style="color:var(--white);font-weight:500;">Yes</strong> &ndash; use my full quote and name</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="Permission" value="Yes: first name only" />
+              <span><strong style="color:var(--white);font-weight:500;">Yes</strong> &ndash; first name only (e.g. "Sarah, Wedding 2025")</span>
+            </label>
+            <label class="radio-item">
+              <input type="radio" name="Permission" value="No: private feedback only" />
+              <span><strong style="color:var(--white);font-weight:500;">No</strong> &ndash; private feedback for Anjali only</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANYTHING ELSE -->
+      <div class="form-section">
+        <div class="section-label">Anything Else</div>
+        <div class="form-group no-mb">
+          <label for="other">Suggestions, requests, or a moment I might not have known about</label>
+          <textarea id="other" name="Additional Notes" style="min-height:80px;" placeholder="Optional..."></textarea>
+        </div>
+      </div>
+
+      <div id="formError" class="error-msg"></div>
+
+      <div class="submit-wrap">
+        <button type="button" class="btn-submit" onclick="handleSubmit()">Submit My Review</button>
+        <p class="submit-note">Thank you for taking the time. It genuinely means a lot. ✦</p>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- SUCCESS PAGE -->
+  <div id="successPage">
+    <div class="success-wrap">
+      <div class="success-icon">✦</div>
+      <div class="success-title">Thank You</div>
+      <p class="success-text">Your words mean everything. I'll read every line. If you've given permission to share, your review will appear on the site soon.</p>
+      <a href="https://anjalimusic.com" class="success-link">← Back to anjalimusic.com</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://anjalimusic.com" target="_blank">anjalimusic.com</a>
+    &nbsp;✦&nbsp; singer · songwriter · bicoastal
+  </div>
+
+</div>
+
+<script>
+  // STAR RATING
+  const stars = document.querySelectorAll('.star');
+  const starLabel = document.getElementById('starLabel');
+  const ratingInput = document.getElementById('ratingInput');
+  const labels = ['', 'It was okay', 'Pretty good', 'Really lovely', 'Wonderful', 'Absolutely unforgettable'];
+  let selectedRating = 0;
+
+  stars.forEach(star => {
+    star.addEventListener('mouseenter', () => {
+      const v = +star.dataset.v;
+      stars.forEach((s, i) => s.classList.toggle('hover', i < v));
+      starLabel.textContent = labels[v];
+      starLabel.classList.add('active');
+    });
+    star.addEventListener('mouseleave', () => {
+      stars.forEach(s => s.classList.remove('hover'));
+      starLabel.textContent = selectedRating ? labels[selectedRating] : 'Tap to rate';
+      starLabel.classList.toggle('active', !!selectedRating);
+    });
+    star.addEventListener('click', () => {
+      selectedRating = +star.dataset.v;
+      ratingInput.value = selectedRating + ' / 5 stars';
+      stars.forEach((s, i) => {
+        s.classList.toggle('lit', i < selectedRating);
+        s.classList.remove('hover');
+      });
+      starLabel.textContent = labels[selectedRating];
+      starLabel.classList.add('active');
+    });
+  });
+
+  // LIVE PREVIEW
+  const testimonialField = document.getElementById('testimonial');
+  const previewBox = document.getElementById('previewBox');
+  const previewText = document.getElementById('previewText');
+
+  testimonialField.addEventListener('input', () => {
+    const val = testimonialField.value.trim();
+    if (val.length > 20) {
+      previewText.textContent = '\u201C' + val + '\u201D';
+      previewBox.classList.add('visible');
+    } else {
+      previewBox.classList.remove('visible');
+    }
+  });
+
+  // SUBMIT
+  async function handleSubmit() {
+    const name = document.getElementById('name').value.trim();
+    const testimonial = document.getElementById('testimonial').value.trim();
+    const permission = document.querySelector('input[name="Permission"]:checked');
+    const errEl = document.getElementById('formError');
+    errEl.style.display = 'none';
+
+    const missing = [];
+    if (!name) missing.push('your name');
+    if (!testimonial) missing.push('your review');
+    if (!permission) missing.push('a permission option');
+
+    if (missing.length > 0) {
+      errEl.textContent = 'Please complete: ' + missing.join(', ') + '.';
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    try {
+      const form = document.getElementById('reviewForm');
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) throw new Error();
+    } catch {
+      btn.textContent = 'Submit My Review';
+      btn.disabled = false;
+      errEl.textContent = 'Something went wrong. Please email booking@anjalimusic.com directly.';
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    document.getElementById('formPage').style.display = 'none';
+    document.getElementById('successPage').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
