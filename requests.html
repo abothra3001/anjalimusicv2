@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Request a Song — ANJALI</title>
   <meta name="theme-color" content="#111010">
+  <!-- PWA install support — required for push notifications to work on iPhone at all -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Anjali Live">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Fraunces:ital,wght@1,300&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
@@ -16,12 +22,17 @@
   window.VENMO_USERNAME     = "AnjaliBothra";
   window.DASHBOARD_PASSWORD = "anjali2024";   // ← change this!
   window.ARTIST_NAME        = "ANJALI";
+  // Paste the "Web Push certificate" key pair from:
+  // Firebase Console → Project Settings → Cloud Messaging tab → Web configuration
+  window.FIREBASE_VAPID_KEY = "PASTE_YOUR_VAPID_KEY_HERE";
   // ============================================================
 </script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
     import { getDatabase, ref, push, onValue, update, remove, get }
       from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getMessaging, getToken, onMessage, isSupported as isMessagingSupported }
+      from "https://www.gstatic.com/firebasejs/12.11.0/firebase-messaging.js";
 
     // ============================================================
     // ★ FIREBASE CONFIG — paste your values here
@@ -64,6 +75,33 @@
 
     window.fbClearAll = async () => {
       await remove(ref(db, "requests"));
+    };
+
+    // ── Push notifications (Firebase Cloud Messaging) ──────────
+    window.fbGetFcmToken = async (swRegistration) => {
+      const supported = await isMessagingSupported().catch(() => false);
+      if (!supported) return null;
+      const messaging = getMessaging(app);
+      return await getToken(messaging, {
+        vapidKey: window.FIREBASE_VAPID_KEY,
+        serviceWorkerRegistration: swRegistration,
+      });
+    };
+
+    window.fbOnForegroundMessage = async (callback) => {
+      const supported = await isMessagingSupported().catch(() => false);
+      if (!supported) return;
+      const messaging = getMessaging(app);
+      onMessage(messaging, callback);
+    };
+
+    // Store the token in the database so the Cloud Function knows where to push
+    window.fbSaveToken = async (token) => {
+      await update(ref(db, `notifTokens/${token}`), { ts: Date.now() });
+    };
+
+    window.fbRemoveToken = async (token) => {
+      await remove(ref(db, `notifTokens/${token}`));
     };
 
     window.fbReady = true;
@@ -208,6 +246,25 @@
 let view    = "fan";   // fan | queue | login | dashboard
 let authed  = false;
 let unsubscribe = null;
+let swRegistration = null;
+let fgMessageBound = false;
+
+// Register the FCM background service worker as early as possible.
+// Must be served from the same folder as this page.
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("firebase-messaging-sw.js")
+    .then(reg => { swRegistration = reg; })
+    .catch(err => console.warn("Service worker registration failed:", err));
+}
+
+// iOS only allows push once this page has been added to the Home Screen
+// and opened from there — an open Safari/Chrome tab never gets push on iOS.
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+function isStandalone() {
+  return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+}
 
 // ── Wait for Firebase ────────────────────────────────────────
 function whenReady(fn) {
@@ -254,6 +311,11 @@ function fanHTML() {
       <div class="field">
         <label class="label">song request *</label>
         <input class="input" id="f-song" placeholder="song name (+ artist if not mine)" autofocus>
+        <a href="https://www.ultimate-guitar.com/user/playlist/shared?h=5LY67WARFg6BdRIa7W_tFdaN"
+           target="_blank" rel="noopener"
+           style="display:inline-block;margin-top:6px;font-size:11px;color:#E0528D;font-style:italic;">
+          need ideas? browse the song list →
+        </a>
       </div>
       <div class="field">
         <label class="label">your name <span style="opacity:0.5;font-weight:400">(optional)</span></label>
@@ -453,15 +515,41 @@ function initDash() {
     const granted = "Notification" in window && Notification.permission === "granted";
     if (notifEl) notifEl.textContent = granted ? "on ✓" : "off";
     if (notifWrap) {
-      notifWrap.innerHTML = !granted && "Notification" in window
-        ? `<button class="notif-btn" onclick="enableNotifs()">🔔 enable push notifications</button>`
-        : "";
+      if (granted) {
+        notifWrap.innerHTML = "";
+      } else if (isIOS() && !isStandalone()) {
+        // iOS blocks push entirely unless the site is installed to the Home Screen first
+        notifWrap.innerHTML = `
+          <div class="error-box" style="text-align:left;line-height:1.6">
+            📲 On iPhone, notifications only work after adding this page to your
+            Home Screen: tap the <strong>Share</strong> icon → <strong>Add to Home Screen</strong> →
+            open it from that new icon, then come back here to enable notifications.
+          </div>`;
+      } else if ("Notification" in window) {
+        notifWrap.innerHTML = `<button class="notif-btn" onclick="enableNotifs()">🔔 enable push notifications</button>`;
+      } else {
+        notifWrap.innerHTML = "";
+      }
     }
   }
   updateNotifUI();
   window._updateNotifUI = updateNotifUI;
 
-  let prevLen = 0;
+  // Foreground push handler: when the dashboard tab is open and a push
+  // arrives, Firebase doesn't auto-display it — we show it ourselves.
+  if (!fgMessageBound) {
+    fgMessageBound = true;
+    window.fbOnForegroundMessage((payload) => {
+      const data = payload.data || {};
+      if (Notification.permission === "granted") {
+        new Notification(data.title || "New song request", {
+          body: data.body || "",
+          icon: "icon-192.png",
+        });
+      }
+    });
+  }
+
   whenReady(() => {
     unsubscribe = window.fbListen(all => {
       const active = all.filter(r=>!r.played).sort((a,b)=>b.tip-a.tip||a.ts-b.ts);
@@ -472,18 +560,6 @@ function initDash() {
       const st = document.getElementById("stat-tips");
       if (sc) sc.textContent = active.length;
       if (st) st.textContent = "$"+totalTips;
-
-      // Push notification on new request
-      if (prevLen > 0 && active.length > prevLen) {
-        const newest = active.find(r => r.ts > Date.now() - 8000);
-        if (newest && Notification.permission === "granted") {
-          new Notification(`🎵 New request: "${newest.song}"`, {
-            body: newest.name + (newest.tip>0 ? ` · $${newest.tip} tip` : ""),
-            icon: "/favicon.ico",
-          });
-        }
-      }
-      prevLen = active.length;
 
       // List
       const el = document.getElementById("dash-list");
@@ -529,7 +605,29 @@ async function clearAll() {
 }
 
 async function enableNotifs() {
-  const p = await Notification.requestPermission();
+  const btn = document.querySelector(".notif-btn");
+  if (btn) { btn.disabled = true; btn.textContent = "enabling…"; }
+
+  const perm = await Notification.requestPermission();
+  if (perm !== "granted") {
+    if (window._updateNotifUI) window._updateNotifUI();
+    return;
+  }
+
+  try {
+    if (!swRegistration && "serviceWorker" in navigator) {
+      swRegistration = await navigator.serviceWorker.register("firebase-messaging-sw.js");
+    }
+    const token = await window.fbGetFcmToken(swRegistration);
+    if (token) {
+      await window.fbSaveToken(token);
+    } else {
+      console.warn("No FCM token returned — check FIREBASE_VAPID_KEY and that this device/browser supports push.");
+    }
+  } catch (err) {
+    console.error("Failed to enable push notifications:", err);
+    alert("Couldn't enable notifications — see console for details.");
+  }
   if (window._updateNotifUI) window._updateNotifUI();
 }
 

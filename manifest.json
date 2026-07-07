@@ -1,0 +1,13 @@
+{
+  "name": "Anjali — Live Request Dashboard",
+  "short_name": "Anjali Live",
+  "start_url": "requests.html#dashboard",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#111010",
+  "theme_color": "#111010",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
