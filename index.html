@@ -256,9 +256,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:cent
 .merch-placeholder span{font-size:12px;}
 
 /* LIVE VIDEOS */
-.video-section{margin-top:56px;padding-top:48px;border-top:1px solid var(--border);}
 .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
-.video-embed-wrap{max-width:340px;margin:0 auto;width:100%;}
+.video-embed-wrap{max-width:340px;margin:0 auto;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden;padding:1px;}
+.video-embed-wrap iframe{border-radius:5px;}
 .release-info{padding:14px 16px 16px;}
 .release-title{font-family:'Fraunces',serif;font-size:18px;font-style:italic;font-weight:400;color:var(--cream);margin-bottom:3px;}
 .release-year{font-size:10px;letter-spacing:0.15em;color:var(--muted);margin-bottom:8px;}
@@ -416,24 +416,7 @@ src="https://www.facebook.com/tr?id=1725872301759303&ev=PageView&noscript=1"
   <div class="shows-list" id="upcoming-shows">
     <div class="cal-loading"><div class="cal-spinner"></div> loading upcoming shows…</div>
   </div>
-
-  <div class="video-section">
-    <p class="section-eyebrow">watch</p>
-    <h2 class="section-heading" style="margin-bottom:32px;">live <em>clips</em></h2>
-    <div class="video-grid">
-      <div class="video-embed-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/CvxLzJhAVzI/" data-instgrm-version="14" style="width:100%;"></blockquote>
-      </div>
-      <div class="video-embed-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DbCiLU0s7Vw/" data-instgrm-version="14" style="width:100%;"></blockquote>
-      </div>
-      <div class="video-embed-wrap">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DAHt86ERdYU/" data-instgrm-version="14" style="width:100%;"></blockquote>
-      </div>
-    </div>
-  </div>
 </section>
-<script async src="//www.instagram.com/embed.js"></script>
 
 <!-- MUSIC -->
 <section class="section-wrap" id="music">
@@ -556,6 +539,24 @@ src="https://www.facebook.com/tr?id=1725872301759303&ev=PageView&noscript=1"
     </div>
   </div>
 </section>
+
+<!-- LIVE CLIPS -->
+<section class="section-wrap dark" id="videos">
+  <p class="section-eyebrow">watch</p>
+  <h2 class="section-heading" style="margin-bottom:32px;">live <em>clips</em></h2>
+  <div class="video-grid">
+    <div class="video-embed-wrap">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/CvxLzJhAVzI/" data-instgrm-version="14" style="width:100%;"></blockquote>
+    </div>
+    <div class="video-embed-wrap">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DbCiLU0s7Vw/" data-instgrm-version="14" style="width:100%;"></blockquote>
+    </div>
+    <div class="video-embed-wrap">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DAHt86ERdYU/" data-instgrm-version="14" style="width:100%;"></blockquote>
+    </div>
+  </div>
+</section>
+<script async src="//www.instagram.com/embed.js"></script>
 
 <!-- CONTACT -->
 <section class="section-wrap" id="contact">
@@ -789,15 +790,15 @@ const PLATFORM_LINKS = {
 const RELEASES = [
   { id:'5BeAzRgPVtjcWGSKeleKfd', title:'Facades', year:'2026', type:'Single', img:'facades.png', spotify:'https://open.spotify.com/album/5BeAzRgPVtjcWGSKeleKfd' },
   { id:'66DpLXtl0O32AYgTNXq5ld', title:'skeletons', year:'2026', type:'Single', img:'skeletons.png', spotify:'https://open.spotify.com/album/66DpLXtl0O32AYgTNXq5ld' },
-  { id:'0Z4mdDLNdM5CHQDAG7MIm9', title:'Pathetic', year:'2026', type:'Single', img:'https://i.scdn.co/image/ab67616d000048512bb7e1322339d3c97b2b9b8d', spotify:'https://open.spotify.com/album/0Z4mdDLNdM5CHQDAG7MIm9' },
-  { id:'2BlyFlAd8dWInRbppCHr4w', title:'Sociopath (remix)', year:'2026', type:'Single', img:'https://i.scdn.co/image/ab67616d0000485102f0a33fcf7506fbe88b7bdd', spotify:'https://open.spotify.com/album/2BlyFlAd8dWInRbppCHr4w' },
-  { id:'1sBnB1tOHM8KPqzYaOgOAS', title:'Sociopath', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d00004851638d47d67d3feedb5a1b07cc', spotify:'https://open.spotify.com/album/1sBnB1tOHM8KPqzYaOgOAS' },
-  { id:'3U2YKUtk7bMdgUmyDrTd5e', title:'missinu.', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d000048514a86c501b72c48b306e890bb', spotify:'https://open.spotify.com/album/3U2YKUtk7bMdgUmyDrTd5e' },
-  { id:'2VhLriYymdNdBWKypAwTw6', title:"mini m&m's", year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d00001e02416a72011b65deb5a3ec5e54', spotify:'https://open.spotify.com/album/2VhLriYymdNdBWKypAwTw6' },
-  { id:'4B3s21ktLwKXBSQsjpjFuZ', title:'Displacement', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d00004851bf5698ff21309caf8569092d', spotify:'https://open.spotify.com/album/4B3s21ktLwKXBSQsjpjFuZ' },
-  { id:'1qo4IiS5C1B6QQ1FPkdRjA', title:'Lost in Translation', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d000048513dffa2ed9352129e9ec410c0', spotify:'https://open.spotify.com/album/1qo4IiS5C1B6QQ1FPkdRjA' },
-  { id:'7DyPIG7zMFhfAc9JPF52Ae', title:'Magazine', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d000048512ce0edb57791cc6be641f189', spotify:'https://open.spotify.com/album/7DyPIG7zMFhfAc9JPF52Ae' },
-  { id:'339t43R4LIcZtFlXhq4IW5', title:'Apathy', year:'2023', type:'Album', img:'https://i.scdn.co/image/ab67616d00001e0213242fd5583ad99f77e1bcc2', spotify:'https://open.spotify.com/album/339t43R4LIcZtFlXhq4IW5' },
+  { id:'0Z4mdDLNdM5CHQDAG7MIm9', title:'Pathetic', year:'2026', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b2732bb7e1322339d3c97b2b9b8d', spotify:'https://open.spotify.com/album/0Z4mdDLNdM5CHQDAG7MIm9' },
+  { id:'2BlyFlAd8dWInRbppCHr4w', title:'Sociopath (remix)', year:'2026', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b27302f0a33fcf7506fbe88b7bdd', spotify:'https://open.spotify.com/album/2BlyFlAd8dWInRbppCHr4w' },
+  { id:'1sBnB1tOHM8KPqzYaOgOAS', title:'Sociopath', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b273638d47d67d3feedb5a1b07cc', spotify:'https://open.spotify.com/album/1sBnB1tOHM8KPqzYaOgOAS' },
+  { id:'3U2YKUtk7bMdgUmyDrTd5e', title:'missinu.', year:'2025', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b2734a86c501b72c48b306e890bb', spotify:'https://open.spotify.com/album/3U2YKUtk7bMdgUmyDrTd5e' },
+  { id:'2VhLriYymdNdBWKypAwTw6', title:"mini m&m's", year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b273416a72011b65deb5a3ec5e54', spotify:'https://open.spotify.com/album/2VhLriYymdNdBWKypAwTw6' },
+  { id:'4B3s21ktLwKXBSQsjpjFuZ', title:'Displacement', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b273bf5698ff21309caf8569092d', spotify:'https://open.spotify.com/album/4B3s21ktLwKXBSQsjpjFuZ' },
+  { id:'1qo4IiS5C1B6QQ1FPkdRjA', title:'Lost in Translation', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b2733dffa2ed9352129e9ec410c0', spotify:'https://open.spotify.com/album/1qo4IiS5C1B6QQ1FPkdRjA' },
+  { id:'7DyPIG7zMFhfAc9JPF52Ae', title:'Magazine', year:'2024', type:'Single', img:'https://i.scdn.co/image/ab67616d0000b2732ce0edb57791cc6be641f189', spotify:'https://open.spotify.com/album/7DyPIG7zMFhfAc9JPF52Ae' },
+  { id:'339t43R4LIcZtFlXhq4IW5', title:'Apathy', year:'2023', type:'Album', img:'https://i.scdn.co/image/ab67616d0000b27313242fd5583ad99f77e1bcc2', spotify:'https://open.spotify.com/album/339t43R4LIcZtFlXhq4IW5' },
 ];
 
 
