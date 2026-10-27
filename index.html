@@ -495,7 +495,7 @@ src="https://www.facebook.com/tr?id=1725872301759303&ev=PageView&noscript=1"
 <section class="section-wrap" id="merch">
   <p class="section-eyebrow">shop</p>
   <h2 class="section-heading">merch &amp; <em>apparel</em></h2>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--muted);margin-bottom:36px;margin-top:-24px;">🚧 merch is under construction. Shop the current pieces on Etsy while new designs are on the way.</p>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--muted);margin-bottom:36px;margin-top:-24px;">🚧 merch is currently limited - come to a local show to cop some. you can check out some styles on my etsy shop!</p>
   <div class="merch-grid">
       <a class="merch-card" href="https://www.etsy.com/shop/anjalimusic" target="_blank" style="text-decoration:none;color:inherit;">
         <div class="merch-img"><img src="hoodie.png" alt="Oversized Fleece Hoodie" loading="lazy" style="width:100%;height:100%;object-fit:cover;"><span class="merch-badge">new</span></div>
@@ -526,13 +526,13 @@ src="https://www.facebook.com/tr?id=1725872301759303&ev=PageView&noscript=1"
     <a href="https://www.etsy.com/shop/anjalimusic" target="_blank" class="btn-primary">visit the shop on etsy →</a>
   </div>
   <div class="merch-ideas" id="merch-ideas">
-    <h3>what should I make next?</h3>
-    <p>tell me what merch you'd actually wear, use, or hang on your wall. Any idea is welcome.</p>
+    <h3>i'm at a crossroads when it comes to merch...</h3>
+    <p>i want to migrate to a more environmental and intentional line of clothing.</p>
     <form id="merch-idea-form" onsubmit="submitMerchIdea(event)">
-      <textarea id="merch-idea-text" name="idea" required maxlength="1000" placeholder="a tote bag with the Sociopath cover art, a phone case, stickers…" aria-label="Your merch idea"></textarea>
+      <textarea id="merch-idea-text" name="idea" required maxlength="1000" placeholder="are you an environmentally conscious designer? do you have ideas? want to say hello?" aria-label="Your message"></textarea>
       <div class="merch-ideas-row">
-        <input type="email" id="merch-idea-email" name="email" placeholder="your email (optional, if you want to hear when it drops)" aria-label="Your email (optional)">
-        <button type="submit" class="btn-primary" id="merch-idea-submit">send idea</button>
+        <input type="email" id="merch-idea-email" name="email" placeholder="your email (optional)" aria-label="Your email (optional)">
+        <button type="submit" class="btn-primary" id="merch-idea-submit">send</button>
       </div>
       <p class="merch-ideas-status" id="merch-idea-status" role="status"></p>
     </form>
@@ -988,7 +988,7 @@ async function submitMerchIdea(e) {
     const res = await fetch('https://formspree.io/f/mbdppdpy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ formType: 'merch idea', idea, email: email || '(not given)', ...(email ? { _replyto: email } : {}), _subject: 'new merch idea from the website' })
+      body: JSON.stringify({ formType: 'merch message', idea, email: email || '(not given)', ...(email ? { _replyto: email } : {}), _subject: 'new merch message from the website' })
     });
     if (!res.ok) throw new Error(res.status);
     e.target.reset();
